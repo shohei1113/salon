@@ -1,15 +1,13 @@
-import React, { useEffect } from 'react'
-import { useDispatch } from 'redux-react-hook'
-import { setLoading } from '../../../redux/modules/ui'
+import React from 'react'
+import { withRouter } from 'react-router-dom'
+import { DefaultTemplate } from '../../templates/default-template'
 
-const Top: React.FC = () => {
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(setLoading())
-  }, [dispatch])
-
-  return <div>top</div>
+const Top: React.FC = (props: any) => {
+  return (
+    <DefaultTemplate {...props}>
+      <div>top</div>
+    </DefaultTemplate>
+  )
 }
 
-export default Top
+export default withRouter(Top)

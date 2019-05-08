@@ -1,19 +1,17 @@
 const initialState = {
   isLoading: false,
+  isOpenNav: false,
 }
 
 export type State = typeof initialState
 
 export default function reducer(state = initialState, action: any) {
   switch (action.type) {
-    case 'ui/setLoading':
-      return { ...state, isLoading: true }
-    case 'ui/clearLoading':
-      return { ...state, isLoading: false }
+    case 'ui/toggleNav':
+      return { ...state, isOpenNav: !state.isOpenNav }
     default:
       return state
   }
 }
 
-export const setLoading = () => ({ type: 'ui/setLoading' })
-export const clearLoading = () => ({ type: 'ui/clearLoading' })
+export const toggleNav = () => ({ type: 'ui/toggleNav' })

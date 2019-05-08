@@ -1,5 +1,13 @@
-import * as React from 'react'
+import React from 'react'
+import { withRouter } from 'react-router-dom'
+import { DefaultTemplate } from '../../templates/default-template'
 
-export default () => {
-  return <div>about</div>
+const About: React.FC = (props: any) => {
+  return (
+    <DefaultTemplate {...props}>
+      <div>about</div>
+    </DefaultTemplate>
+  )
 }
+
+export default withRouter(About)
