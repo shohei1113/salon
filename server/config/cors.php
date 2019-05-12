@@ -12,9 +12,9 @@ return [
     |
     */
    
-    'supportsCredentials' => false,
+    'supportsCredentials' => true,
     'allowedOrigins' => ['*'],
-    'allowedOriginsPatterns' => [],
+    'allowedOriginsPatterns' => ['Content-Type', 'X-Requested-With'],
     'allowedHeaders' => ['*'],
     'allowedMethods' => ['*'],
     'exposedHeaders' => [],
