@@ -15,7 +15,14 @@ class CreateSocialiteAccountsTable extends Migration
     {
         Schema::create('socialite_accounts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->timestamps();
+            $table->unsignedInteger('user_id');
+            $table->string('provider');
+            $table->string('account_id');
+            $table->unique(['provider', 'account_id']);
+//            $table->foreign('user_id')
+//                ->references('id')
+//                ->on('users')
+//                ->onDelete('cascade');
         });
     }
 
