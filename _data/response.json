@@ -1,0 +1,39 @@
+// 認証レスポンス
+{
+  
+}
+
+
+// 画面ごとのデータ
+// カテゴリー一覧画面
+{
+  "categoryTitle": "芸能コース",
+  "salons": [
+    {
+      "title": "サロンタイトル",
+      "image": "https://hayaokuri.com/image.png",
+      "owner": "サロンオーナー名"
+    }
+  ]
+}
+
+
+// カテゴリ詳細画面
+{
+  "isMember": true, // 参加済みか boolean
+  "salonData": { // サロンデータ
+    "title": "サロンタイトル",
+    "description": "サロン説明",
+    "owner": "サロンオーナー名",
+    "memberCount": 10, // number
+    "price": 1000, // 月額料金 number
+    "image": "",
+    "messgage": "", // メッセージ string
+    "contents": "", // コンテンツ string
+    "target": "" // こんな方におすすめ string
+  },
+  "ownerData": { // オーナーデータ
+    "name": "",
+
+  }
+}
