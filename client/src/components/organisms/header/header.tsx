@@ -1,4 +1,5 @@
 import React from 'react'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { useDispatch } from 'redux-react-hook'
 import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
@@ -44,7 +45,7 @@ function Header(props: Props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" color="inherit" className={classes.grow}>
-            News
+            <Link to="/">HAYAOKURI</Link>
           </Typography>
           <Button color="inherit">Login</Button>
         </Toolbar>

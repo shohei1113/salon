@@ -3,22 +3,24 @@ import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import COLOR from '../../../const/color'
 import { DefaultTemplate } from '../../templates/default-template'
+import { Album } from '../../molecules/album'
+import Hero from './hero'
+import Category from './category'
 
 const Top: React.FC = (props: any) => {
   return (
     <DefaultTemplate {...props}>
-      <Hero>
-        <HeroBg />
-        <Title>HAYAOKURI</Title>
-      </Hero>
+      <Hero />
+      <Category />
+      {/* <Album /> */}
     </DefaultTemplate>
   )
 }
 
-const Hero = styled.div`
-  position: relative;
-  height: 500px;
-`
+// const Hero = styled.div`
+//   position: relative;
+//   height: 500px;
+// `
 const HeroBg = styled.div`
   height: 100%;
   filter: brightness(0.6);
