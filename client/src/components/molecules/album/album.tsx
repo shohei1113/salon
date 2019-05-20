@@ -1,25 +1,15 @@
 import React from 'react'
 import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles'
 import classNames from 'classnames'
-import AppBar from '@material-ui/core/AppBar'
 import Button from '@material-ui/core/Button'
-import CameraIcon from '@material-ui/icons/PhotoCamera'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
-import CssBaseline from '@material-ui/core/CssBaseline'
 import Grid from '@material-ui/core/Grid'
-import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 
 const styles = (theme: any) => ({
-  appBar: {
-    position: 'relative',
-  },
-  icon: {
-    marginRight: theme.spacing.unit * 2,
-  },
   heroUnit: {
     backgroundColor: theme.palette.background.paper,
   },
@@ -55,30 +45,16 @@ const styles = (theme: any) => ({
   cardContent: {
     flexGrow: 1,
   },
-  footer: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing.unit * 6,
-  },
 })
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+const cards = [1, 2, 3, 4, 5, 6]
 
 function Album(props: any) {
   const { classes } = props
 
   return (
     <React.Fragment>
-      <CssBaseline />
-      <AppBar position="static" className={classes.appBar}>
-        <Toolbar>
-          <CameraIcon className={classes.icon} />
-          <Typography variant="h6" color="inherit" noWrap>
-            Album layout
-          </Typography>
-        </Toolbar>
-      </AppBar>
       <main>
-        {/* Hero unit */}
         <div className={classes.heroUnit}>
           <div className={classes.heroContent}>
             <Typography
@@ -88,7 +64,7 @@ function Album(props: any) {
               color="textPrimary"
               gutterBottom
             >
-              Album layout
+              経営者コース
             </Typography>
             <Typography
               variant="h6"
@@ -150,21 +126,6 @@ function Album(props: any) {
           </Grid>
         </div>
       </main>
-      {/* Footer */}
-      <footer className={classes.footer}>
-        <Typography variant="h6" align="center" gutterBottom>
-          Footer
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          align="center"
-          color="textSecondary"
-          component="p"
-        >
-          Something here to give the footer a purpose!
-        </Typography>
-      </footer>
-      {/* End footer */}
     </React.Fragment>
   )
 }

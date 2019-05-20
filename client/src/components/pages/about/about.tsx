@@ -5,7 +5,7 @@ import { DefaultTemplate } from '../../templates/default-template'
 const About: React.FC = (props: any) => {
   return (
     <DefaultTemplate {...props}>
-      <div>about</div>
+      <div>abfout</div>
     </DefaultTemplate>
   )
 }

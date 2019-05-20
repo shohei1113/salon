@@ -13,6 +13,7 @@ const styles = (theme: any) => ({
   mainFeaturedPost: {
     backgroundColor: theme.palette.grey[800],
     backgroundImage: 'url(/assets/images/hero.jpg)',
+    backgroundSize: 'cover',
     color: theme.palette.common.white,
     marginBottom: theme.spacing.unit * 4,
     // filter: 'brightness(0.6)',
@@ -25,7 +26,7 @@ const styles = (theme: any) => ({
   },
 })
 
-function Blog(props: any) {
+function Hero(props: any) {
   const { classes } = props
 
   return (
@@ -55,4 +56,4 @@ function Blog(props: any) {
   )
 }
 
-export default withStyles(styles)(Blog)
+export default withStyles(styles)(Hero)
