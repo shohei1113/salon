@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
-import { withStyles } from '@material-ui/core/styles'
+import { Theme } from '@material-ui/core/styles/createMuiTheme'
+import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
@@ -9,7 +10,9 @@ import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
 import Hidden from '@material-ui/core/Hidden'
 
-const styles = (theme: any) => ({
+interface Props extends WithStyles<typeof styles> {}
+
+const styles = (theme: Theme) => ({
   layout: {
     width: 'auto',
     // marginLeft: theme.spacing.unit * 3,

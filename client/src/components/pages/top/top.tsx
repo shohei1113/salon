@@ -3,7 +3,6 @@ import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import COLOR from '../../../const/color'
 import { DefaultTemplate } from '../../templates/default-template'
-import { Album } from '../../molecules/album'
 import Hero from './hero'
 import Category from './category'
 
@@ -12,7 +11,6 @@ const Top: React.FC = (props: any) => {
     <DefaultTemplate {...props}>
       <Hero />
       <Category />
-      {/* <Album /> */}
     </DefaultTemplate>
   )
 }

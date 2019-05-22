@@ -1,10 +1,13 @@
 import React from 'react'
-import { withStyles } from '@material-ui/core/styles'
+import { Theme } from '@material-ui/core/styles/createMuiTheme'
+import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 
-const styles = (theme: any) => ({
+interface Props extends WithStyles<typeof styles> {}
+
+const styles = (theme: Theme) => ({
   layout: {
     width: 'auto',
     // marginLeft: theme.spacing.unit * 3,
@@ -26,7 +29,7 @@ const styles = (theme: any) => ({
   },
 })
 
-function Hero(props: any) {
+function Hero(props: Props) {
   const { classes } = props
 
   return (

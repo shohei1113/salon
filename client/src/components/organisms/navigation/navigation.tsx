@@ -41,10 +41,7 @@ function Navigation(props: Props) {
       <Drawer open={isOpenNav} onClose={toggleDrawer}>
         <div className={classes.list}>
           <List>
-            {[
-              { name: 'top', path: '/' },
-              { name: 'about', path: '/about' },
-            ].map((item, index) => (
+            {[{ name: 'top', path: '/' }].map((item, index) => (
               <ListItem
                 key={item.path}
                 button
