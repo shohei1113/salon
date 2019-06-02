@@ -5,6 +5,7 @@ import reset from 'styled-reset'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import { theme } from './const/theme'
 import { store } from './redux/create-store'
+import { Auth } from './components/utils/auth'
 import Router from './router'
 
 const App: React.FC = () => {
@@ -13,6 +14,7 @@ const App: React.FC = () => {
       <StoreContext.Provider value={store}>
         <GlobalStyle />
         <MuiThemeProvider theme={theme}>
+          <Auth />
           <Router />
         </MuiThemeProvider>
       </StoreContext.Provider>

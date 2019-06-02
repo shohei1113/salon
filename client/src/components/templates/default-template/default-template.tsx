@@ -1,6 +1,7 @@
 import React from 'react'
 import { Header } from '../../organisms/header'
 import { Navigation } from '../../organisms/navigation'
+import { Footer } from '../../organisms/footer'
 
 interface Props {
   history?: any
@@ -13,6 +14,7 @@ const DefaultTemplate: React.FC = (props: Props) => {
       <Header />
       {props.children}
       <Navigation history={props.history} />
+      <Footer />
     </>
   )
 }

@@ -10,30 +10,15 @@ const Top: React.FC = (props: any) => {
   return (
     <DefaultTemplate {...props}>
       <Hero />
-      <Category />
+      <Content>
+        <Category />
+      </Content>
     </DefaultTemplate>
   )
 }
 
-// const Hero = styled.div`
-//   position: relative;
-//   height: 500px;
-// `
-const HeroBg = styled.div`
-  height: 100%;
-  filter: brightness(0.6);
-  background-size: cover;
-  background-image: url('/assets/images/hero.jpg');
-`
-
-const Title = styled.h1`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 48px;
-  color: ${COLOR.WHITE};
-  letter-spacing: 10px;
+const Content = styled.div`
+  margin: 0 20px;
 `
 
 export default withRouter(Top)

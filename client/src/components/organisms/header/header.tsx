@@ -47,7 +47,9 @@ function Header(props: Props) {
           <Typography variant="h6" color="inherit" className={classes.grow}>
             <Link to="/">HAYAOKURI</Link>
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button color="inherit">
+            <Link to="/login">LOGIN</Link>
+          </Button>
         </Toolbar>
       </AppBar>
     </div>

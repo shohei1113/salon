@@ -13,10 +13,16 @@ import Hidden from '@material-ui/core/Hidden'
 interface Props extends WithStyles<typeof styles> {}
 
 const styles = (theme: Theme) => ({
+  heroContent: {
+    maxWidth: 600,
+    margin: '0 auto',
+    padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`,
+  },
   layout: {
     width: 'auto',
     // marginLeft: theme.spacing.unit * 3,
     // marginRight: theme.spacing.unit * 3,
+    padding: 200,
   },
   mainFeaturedPost: {
     backgroundColor: theme.palette.grey[800],
@@ -44,16 +50,18 @@ const styles = (theme: Theme) => ({
 
 const featuredPosts = [
   {
-    title: 'management',
+    title: '経営コース',
     url: '/category/management',
     description:
       'This is a wider card with supporting text below as a natural lead-in to additional content.',
+    image: 'management.jpg',
   },
   {
-    title: 'entertainment',
+    title: '芸能コース',
     url: '/category/entertainment',
     description:
       'This is a wider card with supporting text below as a natural lead-in to additional content.',
+    image: 'entertainment.jpg',
   },
 ]
 
@@ -61,34 +69,48 @@ function Category(props: any) {
   const { classes } = props
 
   return (
-    <Grid container spacing={40} className={classes.cardGrid}>
-      {featuredPosts.map(post => (
-        <Grid item key={post.title} xs={12} md={6}>
-          <Card className={classes.card}>
-            <div className={classes.cardDetails}>
-              <CardContent>
-                <Typography component="h2" variant="h5">
-                  {post.title}
-                </Typography>
-                <Typography variant="subtitle1" paragraph>
-                  {post.description}
-                </Typography>
-                <Typography variant="subtitle1" color="primary">
-                  <Link to={post.url}>Continue reading...</Link>
-                </Typography>
-              </CardContent>
-            </div>
-            <Hidden xsDown>
-              <CardMedia
-                className={classes.cardMedia}
-                image="/assets/images/hero.jpg" // eslint-disable-line max-len
-                title="Image title"
-              />
-            </Hidden>
-          </Card>
-        </Grid>
-      ))}
-    </Grid>
+    <div>
+      <div className={classes.heroContent}>
+        <Typography
+          component="h2"
+          variant="h4"
+          align="center"
+          color="textPrimary"
+          gutterBottom
+        >
+          サロンカテゴリー
+        </Typography>
+      </div>
+
+      <Grid container spacing={40} className={classes.cardGrid}>
+        {featuredPosts.map(post => (
+          <Grid item key={post.title} xs={12} md={6}>
+            <Card className={classes.card}>
+              <div className={classes.cardDetails}>
+                <CardContent>
+                  <Typography component="h2" variant="h5">
+                    {post.title}
+                  </Typography>
+                  <Typography variant="subtitle1" paragraph>
+                    {post.description}
+                  </Typography>
+                  <Typography variant="subtitle1" color="primary">
+                    <Link to={post.url}>もっとみる</Link>
+                  </Typography>
+                </CardContent>
+              </div>
+              <Hidden xsDown>
+                <CardMedia
+                  className={classes.cardMedia}
+                  image={`/assets/images/category/${post.image}`}
+                  title="Image title"
+                />
+              </Hidden>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </div>
   )
 }
 
