@@ -24,4 +24,4 @@ const Management: React.FC = (props: any) => {
   )
 }
 
-export default withRouter(Management)
+export default withRouter(Management as any)

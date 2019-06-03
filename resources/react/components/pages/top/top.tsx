@@ -21,4 +21,4 @@ const Content = styled.div`
   margin: 0 20px;
 `
 
-export default withRouter(Top)
+export default withRouter(Top as any)
