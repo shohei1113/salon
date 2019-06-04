@@ -44,7 +44,7 @@ function Hero(props: Props) {
                 color="inherit"
                 gutterBottom
               >
-                Title of a longer featured blog post
+                Title of a longer featured blog post f
               </Typography>
               <Typography variant="h5" color="inherit" paragraph>
                 Multiple lines of text that form the lede, informing new readers

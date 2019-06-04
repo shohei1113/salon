@@ -7,7 +7,6 @@ import Button from '@material-ui/core/Button'
 import Avatar from '@material-ui/core/Avatar'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import { DefaultTemplate } from '../../templates/default-template'
-import FacebookLogin from 'react-facebook-login'
 
 declare const FB: any
 
@@ -55,20 +54,6 @@ const Login: React.FC = (props: any) => {
         >
           sign up or login
         </Button> */}
-        <FacebookLogin
-          appId="2177764942337215"
-          autoLoad={true}
-          fields="name,email,picture"
-          // onClick={componentClicked}
-          callback={responseFacebook}
-        />
-        <div
-          onClick={() => {
-            FB.logout()
-          }}
-        >
-          logout
-        </div>
       </div>
     </DefaultTemplate>
   )

@@ -7,6 +7,6 @@
     </head>
     <body>
         <div id="root"></div>
-        <script src="/js/index.js"></script>
+        <script src="{{ mix('/assets/javascript/index.js') }}"></script>
     </body>
 </html>

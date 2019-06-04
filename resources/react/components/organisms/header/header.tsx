@@ -50,6 +50,9 @@ function Header(props: Props) {
           <Button color="inherit">
             <Link to="/login">LOGIN</Link>
           </Button>
+          <Button color="inherit">
+            <Link to="/signup">signup</Link>
+          </Button>
         </Toolbar>
       </AppBar>
     </div>
