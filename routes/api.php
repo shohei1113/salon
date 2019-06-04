@@ -24,6 +24,7 @@ Route::group(['namespace' => 'API'], function() {
     Route::get('auth/{socialite}/callback', 'AuthController@socialiteCallback');
 
     Route::group(['middleware' => ['jwt.auth']], function () {
+        Route::get('me', 'UserController@loginUserInfo');
         Route::get('test', 'TestController@index');
     });
 });
