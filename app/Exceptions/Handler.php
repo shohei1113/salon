@@ -2,7 +2,6 @@
 
 namespace App\Exceptions;
 
-use App\Console\Commands\CreateRepositoryFileCommand;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;

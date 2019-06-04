@@ -66,4 +66,9 @@ class User extends Authenticatable implements JWTSubject
             'password' => Hash::make($data['password']),
         ]);
     }
+
+    public function fetchUserById($id)
+    {
+        return $this->find($id);
+    }
 }

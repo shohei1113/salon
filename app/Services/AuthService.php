@@ -1,8 +1,9 @@
 <?php
+
 namespace App\Services;
+
 use App\Entities\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use Tymon\JWTAuth\JWTAuth;
 
@@ -48,6 +49,7 @@ class AuthService
     }
 
     /**
+     * @param $socialite
      * @return JsonResponse
      */
     public function handleProviderCallback($socialite)
@@ -66,5 +68,4 @@ class AuthService
             'token' => $token
         ]);
     }
-
 }
