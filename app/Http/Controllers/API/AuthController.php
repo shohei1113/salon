@@ -3,31 +3,46 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Services\SocialiteService;
+use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\RegisterResource;
+use App\Services\AuthService;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\JWTAuth;
 
 class AuthController extends Controller
 {
     private $auth;
-    private $logger;
-    private $socialiteService;
+    private $authService;
 
-    public function __construct(JWTAuth $auth, SocialiteService $socialiteService)
+    /**
+     * AuthController constructor.
+     * @param JWTAuth $auth
+     * @param AuthService $authService
+     */
+    public function __construct(JWTAuth $auth, AuthService $authService)
     {
         $this->auth = $auth;
-        $this->socialiteService = $socialiteService;
+        $this->authService = $authService;
+    }
+
+    /**
+     * @param RegisterRequest $request
+     * @return mixed
+     */
+    public function register(RegisterRequest $request)
+    {
+        $registerUser = $this->authService->registerUser($request->all());
+        return new RegisterResource($registerUser);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function login(Request $request)
     {
-        if (!$token = $this->auth->attempt($request->only('email', 'password'))) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
+        $token = $this->authService->login($request->only(['email', 'password']));
 
         return response()->json([
             'access_token' => $token,
@@ -44,7 +59,7 @@ class AuthController extends Controller
     {
         return response()->json(
             [
-                'redirect_url' => $this->socialiteService->getRedirectToSocialiteUrl($socialite),
+                'redirect_url' => $this->authService->getRedirectToSocialiteUrl($socialite),
             ],
             200, ['Content-Type' => 'application/json'],
             JSON_UNESCAPED_SLASHES
@@ -56,9 +71,12 @@ class AuthController extends Controller
      */
     public function socialiteCallback($socialite)
     {
-        return $this->socialiteService->handleProviderCallback($socialite);
+        return $this->authService->handleProviderCallback($socialite);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function logout()
     {
         auth()->logout();

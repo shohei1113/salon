@@ -17,9 +17,13 @@ class AuthService
         $this->user = $user;
     }
 
-    public function register($data)
+    /**
+     * @param $data
+     * @return mixed
+     */
+    public function registerUser($data)
     {
-        $this->user->createUser($data);
+        return $this->user->createUser($data);
     }
 
     /**
@@ -31,6 +35,7 @@ class AuthService
         if (!$token = $this->auth->attempt($data)) {
             throw new \Exception('Unauthorized', 401);
         }
+        return $token;
     }
 
     /**
