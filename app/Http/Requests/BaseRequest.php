@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Requests;
-
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class BaseRequest extends FormRequest
 {
@@ -13,18 +14,19 @@ class BaseRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
-
     /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
+     * @param Validator $validator
      */
-    public function rules()
+    public function failedValidation(Validator $validator)
     {
-        return [
-            //
+        $response = [
+            'message' => 'Validation Failed',
+            'errors' => $validator->errors()->toArray(),
         ];
+        throw new HttpResponseException(
+            response()->json($response, 422)
+        );
     }
 }
