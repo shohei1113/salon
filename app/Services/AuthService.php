@@ -2,10 +2,11 @@
 namespace App\Services;
 use App\Entities\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use Tymon\JWTAuth\JWTAuth;
 
-class SocialiteService
+class AuthService
 {
     private $auth;
     private $user;
@@ -14,6 +15,27 @@ class SocialiteService
     {
         $this->auth = $auth;
         $this->user = $user;
+    }
+
+    /**
+     * @param $data
+     * @return mixed
+     */
+    public function registerUser($data)
+    {
+        return $this->user->createUser($data);
+    }
+
+    /**
+     * @param $data
+     * @throws \Exception
+     */
+    public function login($data)
+    {
+        if (!$token = $this->auth->attempt($data)) {
+            throw new \Exception('Unauthorized', 401);
+        }
+        return $token;
     }
 
     /**

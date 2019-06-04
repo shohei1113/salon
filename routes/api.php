@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 
 Route::group(['namespace' => 'API'], function() {
 
+    Route::post('register', 'AuthController@register')->name('api.register');
     Route::post('me', 'AuthController@login')->name('auth.login');
     Route::delete('me', 'AuthController@logout');
     Route::post('/logout', 'AuthController@logout');
