@@ -2,8 +2,10 @@
 
 namespace App\Exceptions;
 
+use App\Console\Commands\CreateRepositoryFileCommand;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\JsonResponse;
 
 class Handler extends ExceptionHandler
 {
@@ -38,14 +40,19 @@ class Handler extends ExceptionHandler
     }
 
     /**
-     * Render an exception into an HTTP response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @param Exception $exception
+     * @return JsonResponse|\Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+        $code = $exception->getCode();
+        $message = $exception->getMessage();
+
+        $error = [
+            'code' => $code,
+            'message' => $message,
+        ];
+        return new JsonResponse($error);
     }
 }
