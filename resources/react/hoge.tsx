@@ -15,7 +15,6 @@ const styles = (theme: Theme): StyleRules =>
     },
     paragraph: {
       fontFamily: 'serif',
-      padding: theme.spacing.unit * 2,
     },
   })
 

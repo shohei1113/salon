@@ -18,11 +18,9 @@ const styles = (theme: Theme) => ({
     backgroundImage: 'url(/assets/images/hero.jpg)',
     backgroundSize: 'cover',
     color: theme.palette.common.white,
-    marginBottom: theme.spacing.unit * 4,
     // filter: 'brightness(0.6)',
   },
   mainFeaturedPostContent: {
-    padding: `${theme.spacing.unit * 6}px`,
     [theme.breakpoints.up('md')]: {
       paddingRight: 0,
     },

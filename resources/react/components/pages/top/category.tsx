@@ -16,7 +16,7 @@ const styles = (theme: Theme) => ({
   heroContent: {
     maxWidth: 600,
     margin: '0 auto',
-    padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`,
+    padding: 20,
   },
   layout: {
     width: 'auto',
@@ -28,11 +28,9 @@ const styles = (theme: Theme) => ({
     backgroundColor: theme.palette.grey[800],
     backgroundImage: 'url(/assets/images/hero.jpg)',
     color: theme.palette.common.white,
-    marginBottom: theme.spacing.unit * 4,
     // filter: 'brightness(0.6)',
   },
   mainFeaturedPostContent: {
-    padding: `${theme.spacing.unit * 6}px`,
     [theme.breakpoints.up('md')]: {
       paddingRight: 0,
     },
@@ -82,7 +80,7 @@ function Category(props: any) {
         </Typography>
       </div>
 
-      <Grid container spacing={40} className={classes.cardGrid}>
+      <Grid container spacing={4} className={classes.cardGrid}>
         {featuredPosts.map(post => (
           <Grid item key={post.title} xs={12} md={6}>
             <Card className={classes.card}>

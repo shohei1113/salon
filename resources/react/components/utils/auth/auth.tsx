@@ -30,7 +30,7 @@ const Auth: React.FC = (props: Props) => {
       console.log(a)
     }
 
-    fetchAuth()
+    // fetchAuth()
 
     dispatch(initAuth())
   }, [])

@@ -8,14 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Avatar from '@material-ui/core/Avatar'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import {
-  composeValidators,
-  required,
-  email,
-  alphabeticAndNumeric,
-  greaterNumber,
-  sameValue,
-} from '../../../utils/validator'
+import { composeValidators, required } from '../../../utils/validator'
 import { DefaultTemplate } from '../../templates/default-template'
 import { TextField } from '../../atoms/text-field'
 
@@ -39,8 +32,9 @@ const styles = (theme: Theme) => ({
   },
 })
 
-const Signup: React.FC = (props: any) => {
+const Register: React.FC = (props: any) => {
   const { classes } = props
+  console.log(props)
 
   const handleSubmit = async form => {
     console.log(form)
@@ -59,35 +53,19 @@ const Signup: React.FC = (props: any) => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          新規登録
+          本登録
         </Typography>
         <Formik
-          initialValues={{ email: '', password: '', passwordConfirm: '' }}
+          initialValues={{ name: '' }}
           onSubmit={handleSubmit}
           validate={(values: any) => {
             const errors: any = {}
-            const emailError = composeValidators(
-              required('メールアドレスを入力してください'),
-              email
-            )(values.email)
-            const passwordError = composeValidators(
-              required('パスワードを入力してください'),
-              alphabeticAndNumeric,
-              greaterNumber(6)
-            )(values.password)
-            const passwordConfirmError = composeValidators(
-              required('パスワードを入力してください'),
-              sameValue(values.password)
-            )(values.passwordConfirm)
+            const nameError = composeValidators(
+              required('名前を入力してください')
+            )(values.name)
 
-            if (emailError) {
-              errors.email = emailError
-            }
-            if (passwordError) {
-              errors.password = passwordError
-            }
-            if (passwordConfirmError) {
-              errors.passwordConfirm = passwordConfirmError
+            if (nameError) {
+              errors.name = nameError
             }
 
             return errors
@@ -95,38 +73,14 @@ const Signup: React.FC = (props: any) => {
           render={({ handleSubmit }) => (
             <form onSubmit={handleSubmit} className={classes.form}>
               <Field
-                name="email"
+                name="name"
                 render={({ field, form }) => (
                   <TextField
                     field={field}
                     form={form}
-                    type="email"
-                    label="メールアドレス"
-                    placeholder="example.com"
-                  />
-                )}
-              />
-              <Field
-                name="password"
-                render={({ field, form }) => (
-                  <TextField
-                    field={field}
-                    form={form}
-                    type="password"
-                    label="パスワード"
-                    placeholder="半角英数6文字以上"
-                  />
-                )}
-              />
-              <Field
-                name="passwordConfirm"
-                render={({ field, form }) => (
-                  <TextField
-                    field={field}
-                    form={form}
-                    type="password"
-                    label="パスワード確認"
-                    placeholder="半角英数6文字以上"
+                    type="text"
+                    label="名前"
+                    placeholder="田中 太郎"
                   />
                 )}
               />
@@ -147,4 +101,4 @@ const Signup: React.FC = (props: any) => {
   )
 }
 
-export default withRouter(withStyles(styles)(Signup) as any)
+export default withRouter(withStyles(styles)(Register) as any)

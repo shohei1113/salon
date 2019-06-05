@@ -60970,13 +60970,13 @@ function Album(props) {
                     react_1.default.createElement(Typography_1.default, { component: "h1", variant: "h2", align: "center", color: "textPrimary", gutterBottom: true }, "\u7D4C\u55B6\u8005\u30B3\u30FC\u30B9"),
                     react_1.default.createElement(Typography_1.default, { variant: "h6", align: "center", color: "textSecondary", paragraph: true }, "Something short and leading about the collection below\u2014its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely."),
                     react_1.default.createElement("div", { className: classes.heroButtons },
-                        react_1.default.createElement(Grid_1.default, { container: true, spacing: 16, justify: "center" },
+                        react_1.default.createElement(Grid_1.default, { container: true, spacing: 8, justify: "center" },
                             react_1.default.createElement(Grid_1.default, { item: true },
                                 react_1.default.createElement(Button_1.default, { variant: "contained", color: "primary" }, "Main call to action")),
                             react_1.default.createElement(Grid_1.default, { item: true },
                                 react_1.default.createElement(Button_1.default, { variant: "outlined", color: "primary" }, "Secondary action")))))),
             react_1.default.createElement("div", { className: classnames_1.default(classes.layout, classes.cardGrid) },
-                react_1.default.createElement(Grid_1.default, { container: true, spacing: 40 }, cards.map(card => (react_1.default.createElement(Grid_1.default, { item: true, key: card, sm: 6, md: 4, lg: 3 },
+                react_1.default.createElement(Grid_1.default, { container: true, spacing: 4 }, cards.map(card => (react_1.default.createElement(Grid_1.default, { item: true, key: card, sm: 6, md: 4, lg: 3 },
                     react_1.default.createElement(Card_1.default, { className: classes.card },
                         react_1.default.createElement(CardMedia_1.default, { className: classes.cardMedia, image: "data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22288%22%20height%3D%22225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20288%20225%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_164edaf95ee%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_164edaf95ee%22%3E%3Crect%20width%3D%22288%22%20height%3D%22225%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2296.32500076293945%22%20y%3D%22118.8%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" // eslint-disable-line max-len
                             , title: "Image title" }),
@@ -61022,61 +61022,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-const classnames_1 = __importDefault(__webpack_require__(/*! classnames */ "./node_modules/classnames/index.js"));
 const styles_1 = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
 const Typography_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js"));
-const Grid_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Grid */ "./node_modules/@material-ui/core/esm/Grid/index.js"));
 const styles = (theme) => ({
     layout: {
         width: 'auto',
-        marginLeft: theme.spacing.unit * 3,
-        marginRight: theme.spacing.unit * 3,
-        [theme.breakpoints.up(900 + theme.spacing.unit * 3 * 2)]: {
+        [theme.breakpoints.up(900)]: {
             width: 1200,
             margin: '0 auto',
         },
     },
     footer: {
-        marginTop: theme.spacing.unit * 8,
         borderTop: `1px solid ${theme.palette.divider}`,
-        padding: `${theme.spacing.unit * 6}px 0`,
+        padding: theme.spacing(2),
     },
 });
-const footers = [
-    {
-        title: 'Company',
-        description: ['Team', 'History', 'Contact us', 'Locations'],
-    },
-    {
-        title: 'Features',
-        description: [
-            'Cool stuff',
-            'Random feature',
-            'Team feature',
-            'Developer stuff',
-            'Another one',
-        ],
-    },
-    {
-        title: 'Resources',
-        description: [
-            'Resource',
-            'Resource name',
-            'Another resource',
-            'Final resource',
-        ],
-    },
-    {
-        title: 'Legal',
-        description: ['Privacy policy', 'Terms of use'],
-    },
-];
 function Header(props) {
     const { classes } = props;
-    return (react_1.default.createElement("footer", { className: classnames_1.default(classes.footer, classes.layout) },
-        react_1.default.createElement(Grid_1.default, { container: true, spacing: 32, justify: "space-evenly" }, footers.map(footer => (react_1.default.createElement(Grid_1.default, { item: true, xs: true, key: footer.title },
-            react_1.default.createElement(Typography_1.default, { variant: "h6", color: "textPrimary", gutterBottom: true }, footer.title),
-            footer.description.map(item => (react_1.default.createElement(Typography_1.default, { key: item, variant: "subtitle1", color: "textSecondary" }, item)))))))));
+    return (react_1.default.createElement("footer", { className: classes.footer },
+        react_1.default.createElement(Typography_1.default, { variant: "h6", align: "center", gutterBottom: true }, "Footer"),
+        react_1.default.createElement(Typography_1.default, { variant: "subtitle1", align: "center", color: "textSecondary", component: "p" }, "Something here to give the footer a purpose!")));
 }
 exports.default = styles_1.withStyles(styles)(Header);
 
@@ -61446,6 +61411,105 @@ exports.default = react_router_dom_1.withRouter(withStyles_1.default(styles)(Log
 
 /***/ }),
 
+/***/ "./resources/react/components/pages/register/index.ts":
+/*!************************************************************!*\
+  !*** ./resources/react/components/pages/register/index.ts ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var register_1 = __webpack_require__(/*! ./register */ "./resources/react/components/pages/register/register.tsx");
+exports.Register = register_1.default;
+
+
+/***/ }),
+
+/***/ "./resources/react/components/pages/register/register.tsx":
+/*!****************************************************************!*\
+  !*** ./resources/react/components/pages/register/register.tsx ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+const axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
+const formik_1 = __webpack_require__(/*! formik */ "./node_modules/formik/dist/formik.esm.js");
+const withStyles_1 = __importDefault(__webpack_require__(/*! @material-ui/core/styles/withStyles */ "./node_modules/@material-ui/core/styles/withStyles.js"));
+const Typography_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js"));
+const Button_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/esm/Button/index.js"));
+const Avatar_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Avatar */ "./node_modules/@material-ui/core/esm/Avatar/index.js"));
+const LockOutlined_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/LockOutlined */ "./node_modules/@material-ui/icons/LockOutlined.js"));
+const validator_1 = __webpack_require__(/*! ../../../utils/validator */ "./resources/react/utils/validator.ts");
+const default_template_1 = __webpack_require__(/*! ../../templates/default-template */ "./resources/react/components/templates/default-template/index.ts");
+const text_field_1 = __webpack_require__(/*! ../../atoms/text-field */ "./resources/react/components/atoms/text-field/index.ts");
+const styles = (theme) => ({
+    paper: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    avatar: {
+        margin: 20,
+        backgroundColor: theme.palette.secondary.main,
+    },
+    submit: {
+        marginTop: 60,
+    },
+    form: {
+        width: 300,
+    },
+});
+const Register = (props) => {
+    const { classes } = props;
+    console.log(props);
+    const handleSubmit = (form) => __awaiter(this, void 0, void 0, function* () {
+        console.log(form);
+        const res = yield axios_1.default({
+            method: 'GET',
+            url: '/api/test',
+            headers: {},
+        });
+        console.log(res);
+    });
+    return (react_1.default.createElement(default_template_1.DefaultTemplate, Object.assign({}, props),
+        react_1.default.createElement("div", { className: classes.paper },
+            react_1.default.createElement(Avatar_1.default, { className: classes.avatar },
+                react_1.default.createElement(LockOutlined_1.default, null)),
+            react_1.default.createElement(Typography_1.default, { component: "h1", variant: "h5" }, "\u672C\u767B\u9332"),
+            react_1.default.createElement(formik_1.Formik, { initialValues: { name: '' }, onSubmit: handleSubmit, validate: (values) => {
+                    const errors = {};
+                    const nameError = validator_1.composeValidators(validator_1.required('名前を入力してください'))(values.name);
+                    if (nameError) {
+                        errors.name = nameError;
+                    }
+                    return errors;
+                }, render: ({ handleSubmit }) => (react_1.default.createElement("form", { onSubmit: handleSubmit, className: classes.form },
+                    react_1.default.createElement(formik_1.Field, { name: "name", render: ({ field, form }) => (react_1.default.createElement(text_field_1.TextField, { field: field, form: form, type: "text", label: "\u540D\u524D", placeholder: "\u7530\u4E2D \u592A\u90CE" })) }),
+                    react_1.default.createElement(Button_1.default, { type: "submit", fullWidth: true, variant: "contained", color: "primary", className: classes.submit }, "\u9001\u4FE1"))) }))));
+};
+exports.default = react_router_dom_1.withRouter(withStyles_1.default(styles)(Register));
+
+
+/***/ }),
+
 /***/ "./resources/react/components/pages/signup/index.ts":
 /*!**********************************************************!*\
   !*** ./resources/react/components/pages/signup/index.ts ***!
@@ -61471,12 +61535,21 @@ exports.Signup = signup_1.default;
 
 "use strict";
 
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+const axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
 const formik_1 = __webpack_require__(/*! formik */ "./node_modules/formik/dist/formik.esm.js");
 const withStyles_1 = __importDefault(__webpack_require__(/*! @material-ui/core/styles/withStyles */ "./node_modules/@material-ui/core/styles/withStyles.js"));
 const Typography_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js"));
@@ -61505,33 +61578,39 @@ const styles = (theme) => ({
 });
 const Signup = (props) => {
     const { classes } = props;
-    const handleSubmit = form => {
+    const handleSubmit = (form) => __awaiter(this, void 0, void 0, function* () {
         console.log(form);
-    };
+        const res = yield axios_1.default({
+            method: 'GET',
+            url: '/api/test',
+            headers: {},
+        });
+        console.log(res);
+    });
     return (react_1.default.createElement(default_template_1.DefaultTemplate, Object.assign({}, props),
         react_1.default.createElement("div", { className: classes.paper },
             react_1.default.createElement(Avatar_1.default, { className: classes.avatar },
                 react_1.default.createElement(LockOutlined_1.default, null)),
             react_1.default.createElement(Typography_1.default, { component: "h1", variant: "h5" }, "\u65B0\u898F\u767B\u9332"),
-            react_1.default.createElement(formik_1.Formik, { initialValues: { email: '', password: '', name: '' }, onSubmit: handleSubmit, validate: (values) => {
+            react_1.default.createElement(formik_1.Formik, { initialValues: { email: '', password: '', passwordConfirm: '' }, onSubmit: handleSubmit, validate: (values) => {
                     const errors = {};
                     const emailError = validator_1.composeValidators(validator_1.required('メールアドレスを入力してください'), validator_1.email)(values.email);
-                    const passwordError = validator_1.composeValidators(validator_1.required('パスワードを入力してください'), validator_1.alphabeticAndNumeric)(values.password);
-                    const nameError = validator_1.composeValidators(validator_1.required('名前を入力してください'))(values.name);
+                    const passwordError = validator_1.composeValidators(validator_1.required('パスワードを入力してください'), validator_1.alphabeticAndNumeric, validator_1.greaterNumber(6))(values.password);
+                    const passwordConfirmError = validator_1.composeValidators(validator_1.required('パスワードを入力してください'), validator_1.sameValue(values.password))(values.passwordConfirm);
                     if (emailError) {
                         errors.email = emailError;
                     }
                     if (passwordError) {
                         errors.password = passwordError;
                     }
-                    if (nameError) {
-                        errors.name = nameError;
+                    if (passwordConfirmError) {
+                        errors.passwordConfirm = passwordConfirmError;
                     }
                     return errors;
                 }, render: ({ handleSubmit }) => (react_1.default.createElement("form", { onSubmit: handleSubmit, className: classes.form },
                     react_1.default.createElement(formik_1.Field, { name: "email", render: ({ field, form }) => (react_1.default.createElement(text_field_1.TextField, { field: field, form: form, type: "email", label: "\u30E1\u30FC\u30EB\u30A2\u30C9\u30EC\u30B9", placeholder: "example.com" })) }),
-                    react_1.default.createElement(formik_1.Field, { name: "password", render: ({ field, form }) => (react_1.default.createElement(text_field_1.TextField, { field: field, form: form, type: "password", label: "\u30D1\u30B9\u30EF\u30FC\u30C9", placeholder: "password" })) }),
-                    react_1.default.createElement(formik_1.Field, { name: "name", render: ({ field, form }) => (react_1.default.createElement(text_field_1.TextField, { field: field, form: form, type: "text", label: "\u540D\u524D", placeholder: "\u7530\u4E2D \u592A\u90CE" })) }),
+                    react_1.default.createElement(formik_1.Field, { name: "password", render: ({ field, form }) => (react_1.default.createElement(text_field_1.TextField, { field: field, form: form, type: "password", label: "\u30D1\u30B9\u30EF\u30FC\u30C9", placeholder: "\u534A\u89D2\u82F1\u65706\u6587\u5B57\u4EE5\u4E0A" })) }),
+                    react_1.default.createElement(formik_1.Field, { name: "passwordConfirm", render: ({ field, form }) => (react_1.default.createElement(text_field_1.TextField, { field: field, form: form, type: "password", label: "\u30D1\u30B9\u30EF\u30FC\u30C9\u78BA\u8A8D", placeholder: "\u534A\u89D2\u82F1\u65706\u6587\u5B57\u4EE5\u4E0A" })) }),
                     react_1.default.createElement(Button_1.default, { type: "submit", fullWidth: true, variant: "contained", color: "primary", className: classes.submit }, "\u9001\u4FE1"))) }))));
 };
 exports.default = react_router_dom_1.withRouter(withStyles_1.default(styles)(Signup));
@@ -61565,7 +61644,7 @@ const styles = (theme) => ({
     heroContent: {
         maxWidth: 600,
         margin: '0 auto',
-        padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`,
+        padding: 20,
     },
     layout: {
         width: 'auto',
@@ -61577,10 +61656,8 @@ const styles = (theme) => ({
         backgroundColor: theme.palette.grey[800],
         backgroundImage: 'url(/assets/images/hero.jpg)',
         color: theme.palette.common.white,
-        marginBottom: theme.spacing.unit * 4,
     },
     mainFeaturedPostContent: {
-        padding: `${theme.spacing.unit * 6}px`,
         [theme.breakpoints.up('md')]: {
             paddingRight: 0,
         },
@@ -61614,7 +61691,7 @@ function Category(props) {
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("div", { className: classes.heroContent },
             react_1.default.createElement(Typography_1.default, { component: "h2", variant: "h4", align: "center", color: "textPrimary", gutterBottom: true }, "\u30B5\u30ED\u30F3\u30AB\u30C6\u30B4\u30EA\u30FC")),
-        react_1.default.createElement(Grid_1.default, { container: true, spacing: 40, className: classes.cardGrid }, featuredPosts.map(post => (react_1.default.createElement(Grid_1.default, { item: true, key: post.title, xs: 12, md: 6 },
+        react_1.default.createElement(Grid_1.default, { container: true, spacing: 4, className: classes.cardGrid }, featuredPosts.map(post => (react_1.default.createElement(Grid_1.default, { item: true, key: post.title, xs: 12, md: 6 },
             react_1.default.createElement(Card_1.default, { className: classes.card },
                 react_1.default.createElement("div", { className: classes.cardDetails },
                     react_1.default.createElement(CardContent_1.default, null,
@@ -61657,10 +61734,8 @@ const styles = (theme) => ({
         backgroundImage: 'url(/assets/images/hero.jpg)',
         backgroundSize: 'cover',
         color: theme.palette.common.white,
-        marginBottom: theme.spacing.unit * 4,
     },
     mainFeaturedPostContent: {
-        padding: `${theme.spacing.unit * 6}px`,
         [theme.breakpoints.up('md')]: {
             paddingRight: 0,
         },
@@ -61744,16 +61819,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const styled_components_1 = __importDefault(__webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js"));
 const header_1 = __webpack_require__(/*! ../../organisms/header */ "./resources/react/components/organisms/header/index.ts");
 const navigation_1 = __webpack_require__(/*! ../../organisms/navigation */ "./resources/react/components/organisms/navigation/index.ts");
 const footer_1 = __webpack_require__(/*! ../../organisms/footer */ "./resources/react/components/organisms/footer/index.ts");
 const DefaultTemplate = (props) => {
     return (react_1.default.createElement(react_1.default.Fragment, null,
         react_1.default.createElement(header_1.Header, null),
-        props.children,
+        react_1.default.createElement(Content, null, props.children),
         react_1.default.createElement(navigation_1.Navigation, { history: props.history }),
         react_1.default.createElement(footer_1.Footer, null)));
 };
+const Content = styled_components_1.default.div `
+  padding-bottom: 40px;
+`;
 exports.default = DefaultTemplate;
 
 
@@ -61817,7 +61896,7 @@ const Auth = (props) => {
             });
             console.log(a);
         });
-        fetchAuth();
+        // fetchAuth()
         dispatch(auth_1.initAuth());
     }, []);
     return null;
@@ -62100,6 +62179,7 @@ const scroll_to_top_1 = __webpack_require__(/*! ./components/utils/scroll-to-top
 const top_1 = __webpack_require__(/*! ./components/pages/top */ "./resources/react/components/pages/top/index.ts");
 const login_1 = __webpack_require__(/*! ./components/pages/login */ "./resources/react/components/pages/login/index.ts");
 const signup_1 = __webpack_require__(/*! ./components/pages/signup */ "./resources/react/components/pages/signup/index.ts");
+const register_1 = __webpack_require__(/*! ./components/pages/register */ "./resources/react/components/pages/register/index.ts");
 const category_1 = __webpack_require__(/*! ./components/pages/category */ "./resources/react/components/pages/category/index.ts");
 const management_1 = __webpack_require__(/*! ./components/pages/category/management */ "./resources/react/components/pages/category/management/index.ts");
 const detail_1 = __webpack_require__(/*! ./components/pages/category/detail */ "./resources/react/components/pages/category/detail/index.ts");
@@ -62109,6 +62189,7 @@ exports.default = () => {
             React.createElement(react_router_dom_1.Route, { path: "/", exact: true, component: top_1.Top }),
             React.createElement(react_router_dom_1.Route, { path: "/login", exact: true, component: login_1.Login }),
             React.createElement(react_router_dom_1.Route, { path: "/signup", exact: true, component: signup_1.Signup }),
+            React.createElement(react_router_dom_1.Route, { path: "/register", exact: true, component: register_1.Register }),
             React.createElement(react_router_dom_1.Route, { path: "/category", exact: true, component: category_1.Category }),
             React.createElement(react_router_dom_1.Route, { path: "/category/management", exact: true, component: management_1.Management }),
             React.createElement(react_router_dom_1.Route, { path: "/category/detail/:salonId", component: detail_1.Detail }))));

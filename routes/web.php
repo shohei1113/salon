@@ -17,5 +17,8 @@ Route::get('/', function () {
 Route::get('/signup', function () {
     return view('index');
 });
+Route::get('/register', function () {
+    return view('index');
+});
 
 Route::get('/home', 'HomeController@index')->name('home');

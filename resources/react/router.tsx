@@ -4,6 +4,7 @@ import { ScrollToTop } from './components/utils/scroll-to-top'
 import { Top } from './components/pages/top'
 import { Login } from './components/pages/login'
 import { Signup } from './components/pages/signup'
+import { Register } from './components/pages/register'
 import { Category } from './components/pages/category'
 import { Management } from './components/pages/category/management'
 import { Detail } from './components/pages/category/detail'
@@ -15,6 +16,7 @@ export default () => {
         <Route path="/" exact component={Top} />
         <Route path="/login" exact component={Login} />
         <Route path="/signup" exact component={Signup} />
+        <Route path="/register" exact component={Register} />
         <Route path="/category" exact component={Category} />
         <Route path="/category/management" exact component={Management} />
         <Route path="/category/detail/:salonId" component={Detail} />
