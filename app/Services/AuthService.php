@@ -3,7 +3,12 @@
 namespace App\Services;
 
 use App\Entities\User;
+use App\Mail\EmailVerification;
+use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Socialite\Facades\Socialite;
 use Tymon\JWTAuth\JWTAuth;
 
@@ -21,10 +26,53 @@ class AuthService
     /**
      * @param $data
      * @return mixed
+     * @throws Exception
+     */
+    public function signupUser($data)
+    {
+        DB::beginTransaction();
+        try {
+            $user = $this->user->createUser($data);
+            $this->sendPreRegisterMail($user);
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw new Exception($e->getMessage(), $e->getCode());
+        }
+
+        return $user;
+    }
+
+    /**
+     * @param Request $request
+     * @return string
+     * @throws Exception
      */
     public function registerUser($data)
     {
-        return $this->user->createUser($data);
+        $user = $this->user->fetchUserByToken($data['token']);
+
+        if (!isset($user)) {
+            throw new Exception('invalid token', 401);
+        }
+
+        if ($user->email_verified == User::REGISTERED_USER) {
+            throw new Exception('registerd user');
+        }
+
+        $user->updateUser($data);
+        $token = $this->auth->fromUser($user);
+
+        return $token;
+    }
+
+    /**
+     * @param $user
+     */
+    public function sendPreRegisterMail($user)
+    {
+        $email = new EmailVerification($user);
+        Mail::to($user->email)->send($email);
     }
 
     /**
@@ -34,7 +82,7 @@ class AuthService
     public function login($data)
     {
         if (!$token = $this->auth->attempt($data)) {
-            throw new \Exception('Unauthorized', 401);
+            throw new Exception('Unauthorized', 401);
         }
         return $token;
     }

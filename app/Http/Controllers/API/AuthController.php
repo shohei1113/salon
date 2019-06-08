@@ -29,10 +29,26 @@ class AuthController extends Controller
      * @param RegisterRequest $request
      * @return mixed
      */
-    public function register(RegisterRequest $request)
+    public function signup(RegisterRequest $request)
     {
-        $registerUser = $this->authService->registerUser($request->all());
+        $registerUser = $this->authService->signupUser($request->all());
         return new RegisterResource($registerUser);
+    }
+
+    /**
+     * @param Request $request
+     * @return string
+     * @throws \Exception
+     */
+    public function register(Request $request)
+    {
+        $token = $this->authService->registerUser($request->all());
+
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expire_in' => auth('api')->factory()->getTTL(),
+        ]);
     }
 
     /**

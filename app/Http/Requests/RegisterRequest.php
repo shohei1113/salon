@@ -14,7 +14,7 @@ class RegisterRequest extends BaseRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:255|unique:users',
+            'name' => 'string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|min:6',
         ];
