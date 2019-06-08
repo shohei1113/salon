@@ -40,7 +40,7 @@ function SimpleSnackbar() {
         }}
         open={isOpen}
         autoHideDuration={6000}
-        onClose={handleClose}
+        // onClose={handleClose}
         ContentProps={{
           'aria-describedby': 'message-id',
         }}

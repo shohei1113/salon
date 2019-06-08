@@ -1,5 +1,6 @@
 const initialState = {
   isLoggedin: false,
+  jwt: 'hoge',
 }
 
 export type State = typeof initialState

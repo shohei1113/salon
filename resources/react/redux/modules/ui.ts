@@ -17,6 +17,10 @@ export type State = typeof initialState
 
 export default function reducer(state = initialState, action: any) {
   switch (action.type) {
+    case 'ui/setLoader':
+      return { ...state, isLoading: true }
+    case 'ui/clearLoader':
+      return { ...state, isLoading: false }
     case 'ui/toggleNav':
       return { ...state, isOpenNav: !state.isOpenNav }
     case 'ui/setModal':
@@ -60,22 +64,20 @@ export default function reducer(state = initialState, action: any) {
   }
 }
 
+export const setLoader = () => ({ type: 'ui/setLoader' })
+export const clearLoader = () => ({ type: 'ui/clearLoader' })
 export const toggleNav = () => ({ type: 'ui/toggleNav' })
-
 export const setModal = (payload: any) => ({
   type: 'ui/setModal',
   payload,
 })
-
 export const clearModal = () => ({
   type: 'ui/clearModal',
 })
-
 export const setSnackbar = (payload: any) => ({
   type: 'ui/setSnackbar',
   payload,
 })
-
 export const clearSnackbar = () => ({
   type: 'ui/clearSnackbar',
 })
