@@ -4,10 +4,23 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Class AuthResource
+ * @package App\Http\Resources
+ */
 class AuthResource extends JsonResource
 {
+    /**
+     * @var
+     */
     private $message;
-    public function __construct($resource, $message)
+
+    /**
+     * AuthResource constructor.
+     * @param $resource
+     * @param $message
+     */
+    public function __construct($resource, $message = '')
     {
         parent::__construct($resource);
         $this->message = $message;
@@ -21,7 +34,6 @@ class AuthResource extends JsonResource
      */
     public function toArray($request)
     {
-        UserResource::withoutWrapping();
         return [
             'data' => [
                 'user' => new UserResource($this),

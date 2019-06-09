@@ -4,16 +4,26 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
-use App\Http\Resources\RegisterResource;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\AuthResource;
+use App\Http\Resources\UserInfoResource;
 use App\Services\AuthService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\JWTAuth;
 
+/**
+ * Class AuthController
+ * @package App\Http\Controllers\API
+ */
 class AuthController extends Controller
 {
+    /**
+     * @var JWTAuth
+     */
     private $auth;
+
+    /**
+     * @var AuthService
+     */
     private $authService;
 
     /**
@@ -29,46 +39,44 @@ class AuthController extends Controller
 
     /**
      * @param RegisterRequest $request
-     * @return RegisterResource
+     * @return UserInfoResource
      * @throws \Exception
      */
     public function signup(RegisterRequest $request)
     {
         $registerUser = $this->authService->signupUser($request->all());
-        return new RegisterResource($registerUser);
+        return new UserInfoResource($registerUser, config('const.auth.signup'));
     }
 
     /**
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return AuthResource
      * @throws \Exception
      */
     public function register(Request $request)
     {
-        $data = $this->authService->registerUser($request->all());
-
-        return response()->json([
-            'user' => new RegisterResource($data['user']),
-            'access_token' => $data['token'],
-            'token_type' => 'bearer',
-            'expire_in' => auth('api')->factory()->getTTL(),
-        ]);
+        $user = $this->authService->registerUser($request->all());
+        return new AuthResource($user, config('const.auth.register'));
     }
 
     /**
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return AuthResource
      * @throws \Exception
      */
     public function login(Request $request)
     {
-        $data = $this->authService->login($request->all());
+        $user = $this->authService->login($request->all());
+        return new AuthResource($user, config('const.auth.login'));
+    }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout()
+    {
         return response()->json([
-            'user' => new UserResource($data['user']),
-            'access_token' => $data['token'],
-            'token_type' => 'bearer',
-            'expire_in' => auth('api')->factory()->getTTL(),
+            'message' => config('const.auth.logout')
         ]);
     }
 
@@ -93,13 +101,5 @@ class AuthController extends Controller
     public function socialiteCallback($socialite)
     {
         return $this->authService->handleProviderCallback($socialite);
-    }
-
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function logout()
-    {
-        return response()->json(['message' => 'logout']);
     }
 }
