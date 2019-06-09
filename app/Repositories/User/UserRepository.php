@@ -65,4 +65,13 @@ class UserRepository implements UserRepositoryInterface
     {
         return $this->user->where('email_verify_token', $token)->first();
     }
+
+    /**
+     * @param $email
+     * @return mixed
+     */
+    public function fetchUserByEmail($email)
+    {
+        return $this->user->where('email', $email)->first();
+    }
 }
