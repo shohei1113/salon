@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\RegisterResource;
+use App\Http\Resources\UserResource;
 use App\Services\AuthService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -47,7 +48,7 @@ class AuthController extends Controller
         $data = $this->authService->registerUser($request->all());
 
         return response()->json([
-            'user' => $data['user'],
+            'user' => new RegisterResource($data['user']),
             'access_token' => $data['token'],
             'token_type' => 'bearer',
             'expire_in' => auth('api')->factory()->getTTL(),
@@ -61,10 +62,10 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        $data = $this->authService->login($request->only(['email', 'password']));
+        $data = $this->authService->login($request->all());
 
         return response()->json([
-            'user' => $data['user'],
+            'user' => new UserResource($data['user']),
             'access_token' => $data['token'],
             'token_type' => 'bearer',
             'expire_in' => auth('api')->factory()->getTTL(),
