@@ -15,7 +15,19 @@ class CreateSalonsTable extends Migration
     {
         Schema::create('salons', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('owner_id')->unsigned();
+            $table->bigInteger('category_id')->unsigned();
+            $table->string('title');
+            $table->text('description');
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('owner_id')
+                ->references('id')
+                ->on('users');
+            $table->foreign('category_id')
+                ->references('id')
+                ->on('categories');
         });
     }
 

@@ -28,6 +28,6 @@ Route::group(['namespace' => 'API'], function() {
 
     Route::group(['middleware' => ['jwt.auth']], function () {
         Route::get('me', 'UserController@loginUserInfo');
-        Route::get('test', 'TestController@index');
+        Route::apiResource('category', 'CategoryController');
     });
 });
