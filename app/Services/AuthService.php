@@ -45,7 +45,7 @@ class AuthService
     }
 
     /**
-     * @param Request $request
+     * @param $data
      * @return string
      * @throws Exception
      */
@@ -61,7 +61,7 @@ class AuthService
             throw new Exception('registerd user');
         }
 
-        $user->updateUser($data);
+        $this->user->updateUser($user, $data);
         $token = $this->auth->fromUser($user);
 
         return $token;
