@@ -21,8 +21,7 @@ Route::group(['namespace' => 'API'], function() {
     Route::post('signup', 'AuthController@signup')->name('api.signup');
     Route::post('register', 'AuthController@register')->name('api.register');
     Route::post('me', 'AuthController@login')->name('auth.login');
-    Route::delete('me', 'AuthController@logout');
-    Route::post('/logout', 'AuthController@logout');
+    Route::delete('me', 'AuthController@logout')->middleware('jwt.refresh');
 
     Route::get('auth/login/{socialite}', 'AuthController@redirectToSocialiteProvider');
     Route::get('auth/{socialite}/callback', 'AuthController@socialiteCallback');
