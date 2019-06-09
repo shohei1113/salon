@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use App\Entities\User;
+use App\Repositories\User\UserRepository;
 
 class UserService
 {
     private $user;
 
-    public function __construct(User $user)
+    public function __construct(UserRepository $user)
     {
         $this->user = $user;
     }
