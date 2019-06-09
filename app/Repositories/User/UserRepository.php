@@ -5,6 +5,10 @@ namespace App\Repositories\User;
 use App\Entities\User;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * Class UserRepository
+ * @package App\Repositories\User
+ */
 class UserRepository implements UserRepositoryInterface
 {
     /**

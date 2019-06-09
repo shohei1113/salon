@@ -13,11 +13,24 @@ use Illuminate\Support\Facades\Mail;
 use Laravel\Socialite\Facades\Socialite;
 use Tymon\JWTAuth\JWTAuth;
 
+
 class AuthService
 {
+    /**
+     * @var JWTAuth
+     */
     private $auth;
+
+    /**
+     * @var UserRepository
+     */
     private $user;
 
+    /**
+     * AuthService constructor.
+     * @param JWTAuth $auth
+     * @param UserRepository $user
+     */
     public function __construct(JWTAuth $auth, UserRepository $user)
     {
         $this->auth = $auth;
@@ -62,10 +75,9 @@ class AuthService
         }
 
         $this->user->updateUser($user, $data);
-        $data['user'] = $user;
-        $data['token'] = $this->auth->fromUser($user);
+        $user->token = $this->auth->fromUser($user);
 
-        return $data;
+        return $user;
     }
 
     /**
@@ -84,11 +96,12 @@ class AuthService
      */
     public function login($data)
     {
-        if (!$loginUserData['token'] = $this->auth->attempt($data)) {
+        if (!$token = $this->auth->attempt($data)) {
             throw new Exception('Unauthorized', 401);
         }
-        $loginUserData['user'] = $this->user->fetchUserByEmail($data['email']);
-        return $loginUserData;
+        $user = $this->user->fetchUserByEmail($data['email']);
+        $user->token = $token;
+        return $user;
     }
 
     /**
