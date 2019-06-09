@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Entities\User;
 use App\Mail\EmailVerification;
+use App\Repositories\User\UserRepository;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ class AuthService
     private $auth;
     private $user;
 
-    public function __construct(JWTAuth $auth, User $user)
+    public function __construct(JWTAuth $auth, UserRepository $user)
     {
         $this->auth = $auth;
         $this->user = $user;

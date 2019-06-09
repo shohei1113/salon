@@ -27,7 +27,8 @@ class AuthController extends Controller
 
     /**
      * @param RegisterRequest $request
-     * @return mixed
+     * @return RegisterResource
+     * @throws \Exception
      */
     public function signup(RegisterRequest $request)
     {
