@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
-import { useDispatch } from 'redux-react-hook'
+import { useMappedState, useDispatch } from 'redux-react-hook'
 import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -27,6 +27,9 @@ export interface Props extends WithStyles<typeof styles> {}
 
 function Header(props: Props) {
   const { classes } = props
+  const { isLoggedin, user } = useMappedState(
+    React.useCallback(state => state.auth, [])
+  )
   const dispatch = useDispatch()
   const toggleDrawer = () => {
     dispatch(toggleNav())
@@ -47,12 +50,18 @@ function Header(props: Props) {
           <Typography variant="h6" color="inherit" className={classes.grow}>
             <Link to="/">HAYAOKURI</Link>
           </Typography>
-          <Button color="inherit">
-            <Link to="/login">LOGIN</Link>
-          </Button>
-          <Button color="inherit">
-            <Link to="/signup">signup</Link>
-          </Button>
+          {isLoggedin ? (
+            <div>{user.name}</div>
+          ) : (
+            <>
+              <Button color="inherit">
+                <Link to="/login">LOGIN</Link>
+              </Button>
+              <Button color="inherit">
+                <Link to="/signup">signup</Link>
+              </Button>
+            </>
+          )}
         </Toolbar>
       </AppBar>
     </div>

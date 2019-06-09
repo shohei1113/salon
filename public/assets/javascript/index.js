@@ -64211,6 +64211,7 @@ const styles = styles_1.createStyles({
 });
 function Header(props) {
     const { classes } = props;
+    const { isLoggedin, user } = redux_react_hook_1.useMappedState(react_1.default.useCallback(state => state.auth, []));
     const dispatch = redux_react_hook_1.useDispatch();
     const toggleDrawer = () => {
         dispatch(ui_1.toggleNav());
@@ -64222,10 +64223,11 @@ function Header(props) {
                     react_1.default.createElement(Menu_1.default, null)),
                 react_1.default.createElement(Typography_1.default, { variant: "h6", color: "inherit", className: classes.grow },
                     react_1.default.createElement(react_router_dom_1.Link, { to: "/" }, "HAYAOKURI")),
-                react_1.default.createElement(Button_1.default, { color: "inherit" },
-                    react_1.default.createElement(react_router_dom_1.Link, { to: "/login" }, "LOGIN")),
-                react_1.default.createElement(Button_1.default, { color: "inherit" },
-                    react_1.default.createElement(react_router_dom_1.Link, { to: "/signup" }, "signup"))))));
+                isLoggedin ? (react_1.default.createElement("div", null, user.name)) : (react_1.default.createElement(react_1.default.Fragment, null,
+                    react_1.default.createElement(Button_1.default, { color: "inherit" },
+                        react_1.default.createElement(react_router_dom_1.Link, { to: "/login" }, "LOGIN")),
+                    react_1.default.createElement(Button_1.default, { color: "inherit" },
+                        react_1.default.createElement(react_router_dom_1.Link, { to: "/signup" }, "signup"))))))));
 }
 exports.default = styles_1.withStyles(styles)(Header);
 
@@ -64680,17 +64682,33 @@ exports.Login = login_1.default;
 
 "use strict";
 
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+const redux_react_hook_1 = __webpack_require__(/*! redux-react-hook */ "./node_modules/redux-react-hook/dist/index.es.js");
+const formik_1 = __webpack_require__(/*! formik */ "./node_modules/formik/dist/formik.esm.js");
 const withStyles_1 = __importDefault(__webpack_require__(/*! @material-ui/core/styles/withStyles */ "./node_modules/@material-ui/core/styles/withStyles.js"));
 const Typography_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js"));
+const Button_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/esm/Button/index.js"));
 const Avatar_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Avatar */ "./node_modules/@material-ui/core/esm/Avatar/index.js"));
 const LockOutlined_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/LockOutlined */ "./node_modules/@material-ui/icons/LockOutlined.js"));
+const path_1 = __importDefault(__webpack_require__(/*! ../../../const/path */ "./resources/react/const/path.ts"));
+const validator_1 = __webpack_require__(/*! ../../../utils/validator */ "./resources/react/utils/validator.ts");
+const use_fetch_api_1 = __importDefault(__webpack_require__(/*! ../../../hooks/use-fetch-api */ "./resources/react/hooks/use-fetch-api.ts"));
+const auth_1 = __webpack_require__(/*! ../../../redux/modules/auth */ "./resources/react/redux/modules/auth.ts");
+const ui_1 = __webpack_require__(/*! ../../../redux/modules/ui */ "./resources/react/redux/modules/ui.ts");
 const default_template_1 = __webpack_require__(/*! ../../templates/default-template */ "./resources/react/components/templates/default-template/index.ts");
+const text_field_1 = __webpack_require__(/*! ../../atoms/text-field */ "./resources/react/components/atoms/text-field/index.ts");
 const styles = (theme) => ({
     paper: {
         display: 'flex',
@@ -64701,21 +64719,63 @@ const styles = (theme) => ({
         margin: 20,
         backgroundColor: theme.palette.secondary.main,
     },
+    form: {
+        width: 300,
+    },
     submit: {
-        margin: 30,
+        marginTop: 60,
     },
 });
 const Login = (props) => {
     const { classes } = props;
-    console.log(props);
-    const responseFacebook = response => {
-        console.log(response);
+    const dispatch = redux_react_hook_1.useDispatch();
+    const [axiosConfig, setAxiosConfig] = react_1.useState({});
+    const [isStartFetch, setStartFetch] = react_1.useState(false);
+    const { isLoading, data, error } = use_fetch_api_1.default(axiosConfig, isStartFetch);
+    if (!isLoading && data) {
+        console.log('成功！', data);
+        dispatch(auth_1.initAuth({
+            token: data.access_token,
+            user: data.user,
+        }));
+        dispatch(ui_1.clearLoader());
+    }
+    if (!isLoading && error) {
+        console.log('エラー！');
+        dispatch(ui_1.clearLoader());
+    }
+    const handleSubmit = form => {
+        dispatch(ui_1.setLoader());
+        setAxiosConfig({
+            method: 'POST',
+            url: `${path_1.default}/api/me`,
+            data: {
+                email: form.email,
+                password: form.password,
+            },
+        });
+        setStartFetch(true);
     };
     return (react_1.default.createElement(default_template_1.DefaultTemplate, Object.assign({}, props),
         react_1.default.createElement("div", { className: classes.paper },
-            react_1.default.createElement(Typography_1.default, { component: "h1", variant: "h5" }, "Sign in"),
             react_1.default.createElement(Avatar_1.default, { className: classes.avatar },
-                react_1.default.createElement(LockOutlined_1.default, null)))));
+                react_1.default.createElement(LockOutlined_1.default, null)),
+            react_1.default.createElement(Typography_1.default, { component: "h1", variant: "h5" }, "\u30ED\u30B0\u30A4\u30F3"),
+            react_1.default.createElement(formik_1.Formik, { initialValues: { email: '', password: '' }, onSubmit: handleSubmit, validate: (values) => {
+                    const errors = {};
+                    const emailError = validator_1.composeValidators(validator_1.required('メールアドレスを入力してください'), validator_1.email)(values.email);
+                    const passwordError = validator_1.composeValidators(validator_1.required('パスワードを入力してください'), validator_1.alphabeticAndNumeric, validator_1.greaterNumber(6))(values.password);
+                    if (emailError) {
+                        errors.email = emailError;
+                    }
+                    if (passwordError) {
+                        errors.password = passwordError;
+                    }
+                    return errors;
+                }, render: ({ handleSubmit }) => (react_1.default.createElement("form", { onSubmit: handleSubmit, className: classes.form },
+                    react_1.default.createElement(formik_1.Field, { name: "email", render: ({ field, form }) => (react_1.default.createElement(text_field_1.TextField, { field: field, form: form, type: "email", label: "\u30E1\u30FC\u30EB\u30A2\u30C9\u30EC\u30B9", placeholder: "example.com" })) }),
+                    react_1.default.createElement(formik_1.Field, { name: "password", render: ({ field, form }) => (react_1.default.createElement(text_field_1.TextField, { field: field, form: form, type: "password", label: "\u30D1\u30B9\u30EF\u30FC\u30C9", placeholder: "\u534A\u89D2\u82F1\u65706\u6587\u5B57\u4EE5\u4E0A" })) }),
+                    react_1.default.createElement(Button_1.default, { type: "submit", fullWidth: true, variant: "contained", color: "primary", className: classes.submit }, "\u9001\u4FE1"))) }))));
 };
 exports.default = react_router_dom_1.withRouter(withStyles_1.default(styles)(Login));
 
@@ -64769,7 +64829,9 @@ const Avatar_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Avata
 const LockOutlined_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/LockOutlined */ "./node_modules/@material-ui/icons/LockOutlined.js"));
 const path_1 = __importDefault(__webpack_require__(/*! ../../../const/path */ "./resources/react/const/path.ts"));
 const validator_1 = __webpack_require__(/*! ../../../utils/validator */ "./resources/react/utils/validator.ts");
+const get_url_param_1 = __importDefault(__webpack_require__(/*! ../../../utils/get-url-param */ "./resources/react/utils/get-url-param.ts"));
 const use_fetch_api_1 = __importDefault(__webpack_require__(/*! ../../../hooks/use-fetch-api */ "./resources/react/hooks/use-fetch-api.ts"));
+const auth_1 = __webpack_require__(/*! ../../../redux/modules/auth */ "./resources/react/redux/modules/auth.ts");
 const ui_1 = __webpack_require__(/*! ../../../redux/modules/ui */ "./resources/react/redux/modules/ui.ts");
 const default_template_1 = __webpack_require__(/*! ../../templates/default-template */ "./resources/react/components/templates/default-template/index.ts");
 const text_field_1 = __webpack_require__(/*! ../../atoms/text-field */ "./resources/react/components/atoms/text-field/index.ts");
@@ -64792,12 +64854,17 @@ const styles = (theme) => ({
 });
 const Register = (props) => {
     const { classes } = props;
+    const token = get_url_param_1.default('token');
     const dispatch = redux_react_hook_1.useDispatch();
     const [axiosConfig, setAxiosConfig] = react_1.useState({});
     const [isStartFetch, setStartFetch] = react_1.useState(false);
     const { isLoading, data, error } = use_fetch_api_1.default(axiosConfig, isStartFetch);
     if (!isLoading && data) {
         console.log('成功！', data);
+        dispatch(auth_1.initAuth({
+            token: data.access_token,
+            user: data.user,
+        }));
         dispatch(ui_1.clearLoader());
     }
     if (!isLoading && error) {
@@ -64805,15 +64872,13 @@ const Register = (props) => {
         dispatch(ui_1.clearLoader());
     }
     const handleSubmit = form => {
-        console.log('submit');
         dispatch(ui_1.setLoader());
         setAxiosConfig({
             method: 'POST',
             url: `${path_1.default}/api/register`,
             data: {
-                name: 'hoge7',
-                email: 'hoge7@hayaokuri.com',
-                password: '00000000',
+                token,
+                name: form.name,
             },
         });
         setStartFetch(true);
@@ -64864,28 +64929,30 @@ exports.Signup = signup_1.default;
 
 "use strict";
 
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
 };
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const redux_react_hook_1 = __webpack_require__(/*! redux-react-hook */ "./node_modules/redux-react-hook/dist/index.es.js");
 const react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-const axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
 const formik_1 = __webpack_require__(/*! formik */ "./node_modules/formik/dist/formik.esm.js");
 const withStyles_1 = __importDefault(__webpack_require__(/*! @material-ui/core/styles/withStyles */ "./node_modules/@material-ui/core/styles/withStyles.js"));
 const Typography_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js"));
 const Button_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/esm/Button/index.js"));
 const Avatar_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Avatar */ "./node_modules/@material-ui/core/esm/Avatar/index.js"));
 const LockOutlined_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/LockOutlined */ "./node_modules/@material-ui/icons/LockOutlined.js"));
+const path_1 = __importDefault(__webpack_require__(/*! ../../../const/path */ "./resources/react/const/path.ts"));
 const validator_1 = __webpack_require__(/*! ../../../utils/validator */ "./resources/react/utils/validator.ts");
+const use_fetch_api_1 = __importDefault(__webpack_require__(/*! ../../../hooks/use-fetch-api */ "./resources/react/hooks/use-fetch-api.ts"));
+const ui_1 = __webpack_require__(/*! ../../../redux/modules/ui */ "./resources/react/redux/modules/ui.ts");
 const default_template_1 = __webpack_require__(/*! ../../templates/default-template */ "./resources/react/components/templates/default-template/index.ts");
 const text_field_1 = __webpack_require__(/*! ../../atoms/text-field */ "./resources/react/components/atoms/text-field/index.ts");
 const styles = (theme) => ({
@@ -64898,24 +64965,39 @@ const styles = (theme) => ({
         margin: 20,
         backgroundColor: theme.palette.secondary.main,
     },
-    submit: {
-        marginTop: 60,
-    },
     form: {
         width: 300,
+    },
+    submit: {
+        marginTop: 60,
     },
 });
 const Signup = (props) => {
     const { classes } = props;
-    const handleSubmit = (form) => __awaiter(this, void 0, void 0, function* () {
-        console.log(form);
-        const res = yield axios_1.default({
-            method: 'GET',
-            url: '/api/test',
-            headers: {},
+    const dispatch = redux_react_hook_1.useDispatch();
+    const [axiosConfig, setAxiosConfig] = react_1.useState({});
+    const [isStartFetch, setStartFetch] = react_1.useState(false);
+    const { isLoading, data, error } = use_fetch_api_1.default(axiosConfig, isStartFetch);
+    if (!isLoading && data) {
+        console.log('成功！', data);
+        dispatch(ui_1.clearLoader());
+    }
+    if (!isLoading && error) {
+        console.log('エラー！');
+        dispatch(ui_1.clearLoader());
+    }
+    const handleSubmit = form => {
+        dispatch(ui_1.setLoader());
+        setAxiosConfig({
+            method: 'POST',
+            url: `${path_1.default}/api/signup`,
+            data: {
+                email: form.email,
+                password: form.password,
+            },
         });
-        console.log(res);
-    });
+        setStartFetch(true);
+    };
     return (react_1.default.createElement(default_template_1.DefaultTemplate, Object.assign({}, props),
         react_1.default.createElement("div", { className: classes.paper },
             react_1.default.createElement(Avatar_1.default, { className: classes.avatar },
@@ -65200,42 +65282,50 @@ exports.DefaultTemplate = default_template_1.default;
 
 "use strict";
 
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
 };
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const redux_react_hook_1 = __webpack_require__(/*! redux-react-hook */ "./node_modules/redux-react-hook/dist/index.es.js");
-const axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
+const path_1 = __importDefault(__webpack_require__(/*! ../../../const/path */ "./resources/react/const/path.ts"));
+const use_fetch_api_1 = __importDefault(__webpack_require__(/*! ../../../hooks/use-fetch-api */ "./resources/react/hooks/use-fetch-api.ts"));
 const auth_1 = __webpack_require__(/*! ../../../redux/modules/auth */ "./resources/react/redux/modules/auth.ts");
+const ui_1 = __webpack_require__(/*! ../../../redux/modules/ui */ "./resources/react/redux/modules/ui.ts");
 const Auth = (props) => {
+    const { token } = redux_react_hook_1.useMappedState(react_1.default.useCallback(state => state.auth, []));
     const dispatch = redux_react_hook_1.useDispatch();
+    const axiosConfig = {
+        method: 'GET',
+        url: `${path_1.default}/api/me`,
+        headers: { Authorization: `Bearer ${token}` },
+    };
+    const { isLoading, data, error } = use_fetch_api_1.default(axiosConfig, true);
     react_1.useEffect(() => {
-        const fetchAuth = () => __awaiter(this, void 0, void 0, function* () {
-            const { data: { redirect_url }, } = yield axios_1.default({
-                method: 'GET',
-                url: 'https://76980c7d.ngrok.io/api/auth/login/facebook',
-                headers: {},
-            });
-            console.log(redirect_url);
-            const a = yield axios_1.default({
-                method: 'GET',
-                url: redirect_url,
-                headers: { 'Access-Control-Allow-Origin': '*' },
-            });
-            console.log(a);
-        });
-        // fetchAuth()
-        dispatch(auth_1.initAuth());
-    }, []);
+        if (!token) {
+            return;
+        }
+        if (!isLoading) {
+            dispatch(ui_1.setLoader());
+        }
+        if (error) {
+            dispatch(ui_1.clearLoader());
+            return;
+        }
+        if (data) {
+            dispatch(auth_1.loginAuth({
+                user: data.user,
+            }));
+            dispatch(ui_1.clearLoader());
+        }
+    }, [data]);
     return null;
 };
 exports.default = Auth;
@@ -65486,18 +65576,22 @@ exports.default = () => {
 Object.defineProperty(exports, "__esModule", { value: true });
 const initialState = {
     isLoggedin: false,
-    jwt: 'hoge',
+    token: undefined,
+    user: undefined,
 };
 function reducer(state = initialState, action) {
     switch (action.type) {
-        case 'auth/init':
-            return Object.assign({}, state);
+        case 'auth/initAuth':
+            return Object.assign({}, state, { isLoggedin: true, token: action.payload.token, user: action.payload.user });
+        case 'auth/loginAuth':
+            return Object.assign({}, state, { isLoggedin: true, user: action.payload.user });
         default:
             return state;
     }
 }
 exports.default = reducer;
-exports.initAuth = () => ({ type: 'auth/init' });
+exports.initAuth = (payload) => ({ type: 'auth/initAuth', payload });
+exports.loginAuth = (payload) => ({ type: 'auth/loginAuth', payload });
 
 
 /***/ }),
@@ -65633,7 +65727,7 @@ const categories_1 = __importDefault(__webpack_require__(/*! ./modules/categorie
 const authPersistConfig = {
     key: 'auth',
     storage: storage_1.default,
-    blacklist: ['isLoggedin'],
+    blacklist: ['isLoggedin', 'user'],
 };
 exports.default = redux_1.combineReducers({
     auth: redux_persist_1.persistReducer(authPersistConfig, auth_1.default),
@@ -65682,6 +65776,32 @@ exports.default = () => {
             React.createElement(react_router_dom_1.Route, { path: "/category/management", exact: true, component: management_1.Management }),
             React.createElement(react_router_dom_1.Route, { path: "/category/detail/:salonId", component: detail_1.Detail }))));
 };
+
+
+/***/ }),
+
+/***/ "./resources/react/utils/get-url-param.ts":
+/*!************************************************!*\
+  !*** ./resources/react/utils/get-url-param.ts ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const getUrlParam = (key) => {
+    const query = window.location.search;
+    if (query === '') {
+        return null;
+    }
+    const value = query
+        .split('?')[1]
+        .split('&')
+        .find(param => param.split('=')[0] === key);
+    return value ? value.split('=')[1] : null;
+};
+exports.default = getUrlParam;
 
 
 /***/ }),

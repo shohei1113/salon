@@ -14,7 +14,7 @@ export interface StoreState {
 const authPersistConfig = {
   key: 'auth',
   storage: storage,
-  blacklist: ['isLoggedin'],
+  blacklist: ['isLoggedin', 'user'],
 }
 
 export default combineReducers({

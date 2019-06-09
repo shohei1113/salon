@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useDispatch } from 'redux-react-hook'
 import { withRouter } from 'react-router-dom'
-import axios from 'axios'
 import { Field, Formik } from 'formik'
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
 import { Theme } from '@material-ui/core/styles/createMuiTheme'
@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Avatar from '@material-ui/core/Avatar'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
+import PATH from '../../../const/path'
 import {
   composeValidators,
   required,
@@ -16,6 +17,8 @@ import {
   greaterNumber,
   sameValue,
 } from '../../../utils/validator'
+import useFetchApi from '../../../hooks/use-fetch-api'
+import { setLoader, clearLoader } from '../../../redux/modules/ui'
 import { DefaultTemplate } from '../../templates/default-template'
 import { TextField } from '../../atoms/text-field'
 
@@ -31,25 +34,42 @@ const styles = (theme: Theme) => ({
     margin: 20,
     backgroundColor: theme.palette.secondary.main,
   },
-  submit: {
-    marginTop: 60,
-  },
   form: {
     width: 300,
+  },
+  submit: {
+    marginTop: 60,
   },
 })
 
 const Signup: React.FC = (props: any) => {
   const { classes } = props
+  const dispatch = useDispatch()
+  const [axiosConfig, setAxiosConfig] = useState({})
+  const [isStartFetch, setStartFetch] = useState(false)
+  const { isLoading, data, error } = useFetchApi(axiosConfig, isStartFetch)
 
-  const handleSubmit = async form => {
-    console.log(form)
-    const res = await axios({
-      method: 'GET',
-      url: '/api/test',
-      headers: {},
+  if (!isLoading && data) {
+    console.log('成功！', data)
+    dispatch(clearLoader())
+  }
+
+  if (!isLoading && error) {
+    console.log('エラー！')
+    dispatch(clearLoader())
+  }
+
+  const handleSubmit = form => {
+    dispatch(setLoader())
+    setAxiosConfig({
+      method: 'POST',
+      url: `${PATH}/api/signup`,
+      data: {
+        email: form.email,
+        password: form.password,
+      },
     })
-    console.log(res)
+    setStartFetch(true)
   }
 
   return (

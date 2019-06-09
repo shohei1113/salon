@@ -10,7 +10,9 @@ import Avatar from '@material-ui/core/Avatar'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import PATH from '../../../const/path'
 import { composeValidators, required } from '../../../utils/validator'
+import getUrlParam from '../../../utils/get-url-param'
 import useFetchApi from '../../../hooks/use-fetch-api'
+import { initAuth } from '../../../redux/modules/auth'
 import { setLoader, clearLoader } from '../../../redux/modules/ui'
 import { DefaultTemplate } from '../../templates/default-template'
 import { TextField } from '../../atoms/text-field'
@@ -37,6 +39,7 @@ const styles = (theme: Theme) => ({
 
 const Register: React.FC = (props: any) => {
   const { classes } = props
+  const token = getUrlParam('token')
   const dispatch = useDispatch()
   const [axiosConfig, setAxiosConfig] = useState({})
   const [isStartFetch, setStartFetch] = useState(false)
@@ -44,6 +47,12 @@ const Register: React.FC = (props: any) => {
 
   if (!isLoading && data) {
     console.log('成功！', data)
+    dispatch(
+      initAuth({
+        token: data.access_token,
+        user: data.user,
+      })
+    )
     dispatch(clearLoader())
   }
 
@@ -53,15 +62,13 @@ const Register: React.FC = (props: any) => {
   }
 
   const handleSubmit = form => {
-    console.log('submit')
     dispatch(setLoader())
     setAxiosConfig({
       method: 'POST',
       url: `${PATH}/api/register`,
       data: {
-        name: 'hoge7',
-        email: 'hoge7@hayaokuri.com',
-        password: '00000000',
+        token,
+        name: form.name,
       },
     })
     setStartFetch(true)

@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useMappedState, useDispatch } from 'redux-react-hook'
-import axios from 'axios'
-import { initAuth } from '../../../redux/modules/auth'
+import PATH from '../../../const/path'
+import useFetchApi from '../../../hooks/use-fetch-api'
+import { loginAuth } from '../../../redux/modules/auth'
+import { setLoader, clearLoader } from '../../../redux/modules/ui'
 
 interface Props {
   history?: any
@@ -9,31 +11,38 @@ interface Props {
 }
 
 const Auth: React.FC = (props: Props) => {
+  const { token } = useMappedState(React.useCallback(state => state.auth, []))
   const dispatch = useDispatch()
+  const axiosConfig = {
+    method: 'GET',
+    url: `${PATH}/api/me`,
+    headers: { Authorization: `Bearer ${token}` },
+  }
+  const { isLoading, data, error } = useFetchApi(axiosConfig, true)
 
   useEffect(() => {
-    const fetchAuth = async () => {
-      const {
-        data: { redirect_url },
-      } = await axios({
-        method: 'GET',
-        url: 'https://76980c7d.ngrok.io/api/auth/login/facebook',
-        headers: {},
-      })
-      console.log(redirect_url)
-
-      const a = await axios({
-        method: 'GET',
-        url: redirect_url,
-        headers: { 'Access-Control-Allow-Origin': '*' },
-      })
-      console.log(a)
+    if (!token) {
+      return
     }
 
-    // fetchAuth()
+    if (!isLoading) {
+      dispatch(setLoader())
+    }
 
-    dispatch(initAuth())
-  }, [])
+    if (error) {
+      dispatch(clearLoader())
+      return
+    }
+
+    if (data) {
+      dispatch(
+        loginAuth({
+          user: data.user,
+        })
+      )
+      dispatch(clearLoader())
+    }
+  }, [data])
 
   return null
 }
