@@ -46,7 +46,7 @@ class AuthService
 
     /**
      * @param $data
-     * @return string
+     * @return mixed
      * @throws Exception
      */
     public function registerUser($data)
@@ -62,9 +62,10 @@ class AuthService
         }
 
         $this->user->updateUser($user, $data);
-        $token = $this->auth->fromUser($user);
+        $data['user'] = $user;
+        $data['token'] = $this->auth->fromUser($user);
 
-        return $token;
+        return $data;
     }
 
     /**
@@ -78,14 +79,16 @@ class AuthService
 
     /**
      * @param $data
-     * @throws \Exception
+     * @return mixed
+     * @throws Exception
      */
     public function login($data)
     {
-        if (!$token = $this->auth->attempt($data)) {
+        if (!$loginUserData['token'] = $this->auth->attempt($data)) {
             throw new Exception('Unauthorized', 401);
         }
-        return $token;
+        $loginUserData['user'] = $this->user->fetchUserByEmail($data['email']);
+        return $loginUserData;
     }
 
     /**

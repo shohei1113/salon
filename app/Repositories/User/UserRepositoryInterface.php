@@ -10,4 +10,6 @@ interface UserRepositoryInterface
     public function fetchUserById($id);
 
     public function fetchUserByToken($token);
+
+    public function fetchUserByEmail($email);
 }

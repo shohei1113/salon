@@ -7,6 +7,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\RegisterResource;
 use App\Services\AuthService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\JWTAuth;
 
 class AuthController extends Controller
@@ -38,15 +39,16 @@ class AuthController extends Controller
 
     /**
      * @param Request $request
-     * @return string
+     * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
     public function register(Request $request)
     {
-        $token = $this->authService->registerUser($request->all());
+        $data = $this->authService->registerUser($request->all());
 
         return response()->json([
-            'access_token' => $token,
+            'user' => $data['user'],
+            'access_token' => $data['token'],
             'token_type' => 'bearer',
             'expire_in' => auth('api')->factory()->getTTL(),
         ]);
@@ -59,10 +61,11 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        $token = $this->authService->login($request->only(['email', 'password']));
+        $data = $this->authService->login($request->only(['email', 'password']));
 
         return response()->json([
-            'access_token' => $token,
+            'user' => $data['user'],
+            'access_token' => $data['token'],
             'token_type' => 'bearer',
             'expire_in' => auth('api')->factory()->getTTL(),
         ]);
@@ -96,7 +99,6 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        auth()->logout();
         return response()->json(['message' => 'logout']);
     }
 }

@@ -6,12 +6,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class RegisterResource extends JsonResource
 {
-    public function __construct($resource)
-    {
-        parent::__construct($resource);
-        self::$wrap = 'register_user';
-    }
-
     /**
      * Transform the resource into an array.
      *
