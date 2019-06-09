@@ -2,14 +2,16 @@
 
 namespace App\Entities;
 
+use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use Notifiable;
+    use MustVerifyEmail, Notifiable;
+
+    const REGISTERED_USER = 1;
 
     /**
      * The attributes that are mass assignable.
@@ -18,6 +20,7 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $fillable = [
         'name', 'email', 'password',
+        'email_verified', 'email_verify_token',
     ];
 
     /**
@@ -52,23 +55,5 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
-    }
-
-    /**
-     * @param $data
-     * @return mixed
-     */
-    public function createUser($data)
-    {
-        return $this->create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-    }
-
-    public function fetchUserById($id)
-    {
-        return $this->find($id);
     }
 }

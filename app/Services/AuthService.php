@@ -3,7 +3,13 @@
 namespace App\Services;
 
 use App\Entities\User;
+use App\Mail\EmailVerification;
+use App\Repositories\User\UserRepository;
+use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Socialite\Facades\Socialite;
 use Tymon\JWTAuth\JWTAuth;
 
@@ -12,7 +18,7 @@ class AuthService
     private $auth;
     private $user;
 
-    public function __construct(JWTAuth $auth, User $user)
+    public function __construct(JWTAuth $auth, UserRepository $user)
     {
         $this->auth = $auth;
         $this->user = $user;
@@ -21,22 +27,68 @@ class AuthService
     /**
      * @param $data
      * @return mixed
+     * @throws Exception
      */
-    public function registerUser($data)
+    public function signupUser($data)
     {
-        return $this->user->createUser($data);
+        DB::beginTransaction();
+        try {
+            $user = $this->user->createUser($data);
+            $this->sendPreRegisterMail($user);
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw new Exception($e->getMessage(), $e->getCode());
+        }
+
+        return $user;
     }
 
     /**
      * @param $data
-     * @throws \Exception
+     * @return mixed
+     * @throws Exception
+     */
+    public function registerUser($data)
+    {
+        $user = $this->user->fetchUserByToken($data['token']);
+
+        if (!isset($user)) {
+            throw new Exception('invalid token', 401);
+        }
+
+        if ($user->email_verified == User::REGISTERED_USER) {
+            throw new Exception('registerd user');
+        }
+
+        $this->user->updateUser($user, $data);
+        $data['user'] = $user;
+        $data['token'] = $this->auth->fromUser($user);
+
+        return $data;
+    }
+
+    /**
+     * @param $user
+     */
+    public function sendPreRegisterMail($user)
+    {
+        $email = new EmailVerification($user);
+        Mail::to($user->email)->send($email);
+    }
+
+    /**
+     * @param $data
+     * @return mixed
+     * @throws Exception
      */
     public function login($data)
     {
-        if (!$token = $this->auth->attempt($data)) {
-            throw new \Exception('Unauthorized', 401);
+        if (!$loginUserData['token'] = $this->auth->attempt($data)) {
+            throw new Exception('Unauthorized', 401);
         }
-        return $token;
+        $loginUserData['user'] = $this->user->fetchUserByEmail($data['email']);
+        return $loginUserData;
     }
 
     /**
