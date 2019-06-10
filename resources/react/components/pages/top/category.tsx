@@ -49,14 +49,14 @@ const styles = (theme: Theme) => ({
 const featuredPosts = [
   {
     title: '経営コース',
-    url: '/category/management',
+    url: '/salons?category-id=1',
     description:
       'This is a wider card with supporting text below as a natural lead-in to additional content.',
     image: 'management.jpg',
   },
   {
     title: '芸能コース',
-    url: '/category/entertainment',
+    url: '/salons?category-id=2',
     description:
       'This is a wider card with supporting text below as a natural lead-in to additional content.',
     image: 'entertainment.jpg',

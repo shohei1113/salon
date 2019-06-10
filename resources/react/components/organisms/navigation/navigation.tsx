@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { useMappedState, useDispatch } from 'redux-react-hook'
 import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles'
 import Drawer from '@material-ui/core/Drawer'
 import List from '@material-ui/core/List'
 import Divider from '@material-ui/core/Divider'
+import ListSubheader from '@material-ui/core/ListSubheader'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import PATH from '../../../const/path'
@@ -42,7 +44,7 @@ function Navigation(props: Props) {
       console.log('成功！', response)
       dispatch(resetAuth())
       dispatch(clearLoader())
-      dispatch(setSnackbar({ message: 'ログアウトしました' }))
+      dispatch(setSnackbar({ message: response.message }))
       history.push('/')
     }
   }, [response])
@@ -88,8 +90,24 @@ function Navigation(props: Props) {
             >
               <ListItemText primary="top" />
             </ListItem>
-            {auth.isLoggedin && (
-              <>
+          </List>
+          <Divider />
+          {auth.isLoggedin && (
+            <>
+              <List>
+                <ListSubheader inset>サロン</ListSubheader>
+                <Link to="/">
+                  <ListItem button>
+                    <ListItemText primary="開講サロン" />
+                  </ListItem>
+                </Link>
+
+                <ListItem button>
+                  <ListItemText primary="受講サロン" />
+                </ListItem>
+              </List>
+              <Divider />
+              <List>
                 <ListItem
                   button
                   onClick={() => {
@@ -98,9 +116,9 @@ function Navigation(props: Props) {
                 >
                   <ListItemText primary="ログアウト" />
                 </ListItem>
-              </>
-            )}
-          </List>
+              </List>
+            </>
+          )}
           <Divider />
         </div>
       </Drawer>

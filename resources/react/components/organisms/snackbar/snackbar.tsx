@@ -22,24 +22,19 @@ function SimpleSnackbar() {
   )
   const dispatch = useDispatch()
 
-  function handleOpen() {
-    dispatch(setSnackbar({ variant: '', message: 'test' }))
-  }
-
   function handleClose() {
     dispatch(clearSnackbar())
   }
 
   return (
     <div>
-      <Button onClick={handleOpen}>Open simple snackbar</Button>
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'left',
         }}
         open={isOpen}
-        autoHideDuration={6000}
+        // autoHideDuration={6000}
         onClose={handleClose}
         ContentProps={{
           'aria-describedby': 'message-id',

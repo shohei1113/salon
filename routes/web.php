@@ -26,5 +26,11 @@ Route::get('/login', function () {
 Route::get('/salons', function () {
     return view('index');
 });
+Route::get('/salon', function () {
+    return view('index');
+});
+Route::get('/salon/register', function () {
+    return view('index');
+});
 
 Route::get('/home', 'HomeController@index')->name('home');

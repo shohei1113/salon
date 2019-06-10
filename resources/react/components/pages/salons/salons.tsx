@@ -30,17 +30,17 @@ const Salons: React.FC = (props: any) => {
   const dispatch = useDispatch()
   const axiosConfig = {
     method: 'GET',
-    url: `${PATH}/api/salon`,
+    url: `${PATH}/api/category/1/salon`,
   }
-  const { isLoading, response, error } = useFetchApi(axiosConfig, true)
+  // const { isLoading, response, error } = useFetchApi(axiosConfig, true)
 
-  useEffect(() => {
-    // dispatch(
-    //   initSalons({
-    //     salons: data.salons,
-    //   })
-    // )
-  }, [response])
+  // useEffect(() => {
+  //   // dispatch(
+  //   //   initSalons({
+  //   //     salons: data.salons,
+  //   //   })
+  //   // )
+  // }, [response])
 
   return (
     <DefaultTemplate {...props}>

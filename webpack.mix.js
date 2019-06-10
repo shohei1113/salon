@@ -4,6 +4,7 @@ mix.browserSync('http://localhost:8085')
 
 mix
   .react('resources/react/index.tsx', 'public/assets/javascript')
+  .sourceMaps()
   .webpackConfig({
     module: {
       rules: [

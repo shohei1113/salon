@@ -46,20 +46,22 @@ const Register: React.FC = (props: any) => {
   const { isLoading, response, error } = useFetchApi(axiosConfig, isStartFetch)
 
   useEffect(() => {
-    console.log('成功！', response)
-    dispatch(
-      initAuth({
-        token: response.data.access_token,
-        user: response.data.user,
-      })
-    )
-    dispatch(clearLoader())
-  }, [response])
+    if (response) {
+      console.log('成功！', response)
+      dispatch(
+        initAuth({
+          token: response.data.access_token,
+          user: response.data.user,
+        })
+      )
+      dispatch(clearLoader())
+    }
 
-  useEffect(() => {
-    console.log('エラー！')
-    dispatch(clearLoader())
-  }, [error])
+    if (error) {
+      console.log('エラー！')
+      dispatch(clearLoader())
+    }
+  }, [response, error])
 
   const handleSubmit = form => {
     dispatch(setLoader())

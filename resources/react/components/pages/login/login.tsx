@@ -44,7 +44,6 @@ const styles = (theme: Theme) => ({
 
 const Login: React.FC = (props: any) => {
   const { classes, history } = props
-  console.log(props)
   const dispatch = useDispatch()
   const [axiosConfig, setAxiosConfig] = useState({})
   const [isStartFetch, setStartFetch] = useState(false)
@@ -55,12 +54,12 @@ const Login: React.FC = (props: any) => {
       console.log('成功！', response)
       dispatch(
         initAuth({
-          token: response.access_token,
-          user: response.user.user,
+          token: response.data.access_token,
+          user: response.data.user,
         })
       )
       dispatch(clearLoader())
-      dispatch(setSnackbar({ message: 'ログインしました' }))
+      dispatch(setSnackbar({ message: response.message }))
       history.push('/')
     }
 

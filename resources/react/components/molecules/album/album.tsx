@@ -1,4 +1,5 @@
 import React from 'react'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles'
 import classNames from 'classnames'
 import Button from '@material-ui/core/Button'
@@ -57,9 +58,11 @@ function Album(props: any) {
                 <Typography>{card.description}</Typography>
               </CardContent>
               <CardActions>
-                <Button size="small" color="primary">
-                  View
-                </Button>
+                <Link to={card.url}>
+                  <Button size="small" color="primary">
+                    View
+                  </Button>
+                </Link>
                 <Button size="small" color="primary">
                   Edit
                 </Button>
