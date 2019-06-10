@@ -21,6 +21,13 @@ export default function reducer(state = initialState, action: any) {
         isLoggedin: true,
         user: action.payload.user,
       }
+    case 'auth/resetAuth':
+      return {
+        ...state,
+        isLoggedin: false,
+        token: undefined,
+        user: undefined,
+      }
     default:
       return state
   }
@@ -28,3 +35,4 @@ export default function reducer(state = initialState, action: any) {
 
 export const initAuth = (payload: any) => ({ type: 'auth/initAuth', payload })
 export const loginAuth = (payload: any) => ({ type: 'auth/loginAuth', payload })
+export const resetAuth = () => ({ type: 'auth/resetAuth' })

@@ -4,19 +4,21 @@ import axios from 'axios'
 export default (axiosConfig: any, isStartFetch: any) => {
   const [isLoading, setLoading] = useState(false)
   const [error, setError] = useState(false)
-  const [data, setdData] = useState<any>(undefined)
+  const [response, setResponse] = useState<any>(undefined)
 
   const request = async () => {
     setLoading(true)
     try {
       const { data } = await axios(axiosConfig)
-      setdData(data)
+      setResponse(data)
     } catch (e) {
       console.log('Error getting document', e)
       setError(e)
     } finally {
       setLoading(false)
     }
+
+    return () => {}
   }
 
   useEffect(() => {
@@ -25,5 +27,5 @@ export default (axiosConfig: any, isStartFetch: any) => {
     }
   }, [isStartFetch])
 
-  return { isLoading, data, error }
+  return { isLoading, response, error }
 }

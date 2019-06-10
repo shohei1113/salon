@@ -7,7 +7,7 @@ import reducer from './reducer'
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['auth', 'ui', 'categories'],
+  blacklist: ['auth', 'ui', 'categories', 'salons'],
 }
 const persistedReducer = persistReducer(persistConfig, reducer)
 const middlewares: Array<any> = []

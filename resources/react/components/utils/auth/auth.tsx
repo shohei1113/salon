@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useMappedState, useDispatch } from 'redux-react-hook'
 import PATH from '../../../const/path'
 import useFetchApi from '../../../hooks/use-fetch-api'
@@ -11,14 +11,14 @@ interface Props {
 }
 
 const Auth: React.FC = (props: Props) => {
-  const { token } = useMappedState(React.useCallback(state => state.auth, []))
+  const { token } = useMappedState(useCallback(state => state.auth, []))
   const dispatch = useDispatch()
   const axiosConfig = {
     method: 'GET',
     url: `${PATH}/api/me`,
     headers: { Authorization: `Bearer ${token}` },
   }
-  const { isLoading, data, error } = useFetchApi(axiosConfig, true)
+  const { isLoading, response, error } = useFetchApi(axiosConfig, true)
 
   useEffect(() => {
     if (!token) {
@@ -34,15 +34,15 @@ const Auth: React.FC = (props: Props) => {
       return
     }
 
-    if (data) {
+    if (response) {
       dispatch(
         loginAuth({
-          user: data.user,
+          user: response.data.user,
         })
       )
       dispatch(clearLoader())
     }
-  }, [data])
+  }, [response, error])
 
   return null
 }

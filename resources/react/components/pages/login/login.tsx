@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 import { useDispatch } from 'redux-react-hook'
 import { Field, Formik } from 'formik'
@@ -18,7 +18,7 @@ import {
 } from '../../../utils/validator'
 import useFetchApi from '../../../hooks/use-fetch-api'
 import { initAuth } from '../../../redux/modules/auth'
-import { setLoader, clearLoader } from '../../../redux/modules/ui'
+import { setLoader, clearLoader, setSnackbar } from '../../../redux/modules/ui'
 import { DefaultTemplate } from '../../templates/default-template'
 import { TextField } from '../../atoms/text-field'
 
@@ -43,27 +43,32 @@ const styles = (theme: Theme) => ({
 })
 
 const Login: React.FC = (props: any) => {
-  const { classes } = props
+  const { classes, history } = props
+  console.log(props)
   const dispatch = useDispatch()
   const [axiosConfig, setAxiosConfig] = useState({})
   const [isStartFetch, setStartFetch] = useState(false)
-  const { isLoading, data, error } = useFetchApi(axiosConfig, isStartFetch)
+  const { isLoading, response, error } = useFetchApi(axiosConfig, isStartFetch)
 
-  if (!isLoading && data) {
-    console.log('成功！', data)
-    dispatch(
-      initAuth({
-        token: data.access_token,
-        user: data.user,
-      })
-    )
-    dispatch(clearLoader())
-  }
+  useEffect(() => {
+    if (response) {
+      console.log('成功！', response)
+      dispatch(
+        initAuth({
+          token: response.access_token,
+          user: response.user.user,
+        })
+      )
+      dispatch(clearLoader())
+      dispatch(setSnackbar({ message: 'ログインしました' }))
+      history.push('/')
+    }
 
-  if (!isLoading && error) {
-    console.log('エラー！')
-    dispatch(clearLoader())
-  }
+    if (error) {
+      console.log('エラー！')
+      dispatch(clearLoader())
+    }
+  }, [response, error])
 
   const handleSubmit = form => {
     dispatch(setLoader())

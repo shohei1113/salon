@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'redux-react-hook'
 import { withRouter } from 'react-router-dom'
 import { Field, Formik } from 'formik'
@@ -43,23 +43,23 @@ const Register: React.FC = (props: any) => {
   const dispatch = useDispatch()
   const [axiosConfig, setAxiosConfig] = useState({})
   const [isStartFetch, setStartFetch] = useState(false)
-  const { isLoading, data, error } = useFetchApi(axiosConfig, isStartFetch)
+  const { isLoading, response, error } = useFetchApi(axiosConfig, isStartFetch)
 
-  if (!isLoading && data) {
-    console.log('成功！', data)
+  useEffect(() => {
+    console.log('成功！', response)
     dispatch(
       initAuth({
-        token: data.access_token,
-        user: data.user,
+        token: response.data.access_token,
+        user: response.data.user,
       })
     )
     dispatch(clearLoader())
-  }
+  }, [response])
 
-  if (!isLoading && error) {
+  useEffect(() => {
     console.log('エラー！')
     dispatch(clearLoader())
-  }
+  }, [error])
 
   const handleSubmit = form => {
     dispatch(setLoader())

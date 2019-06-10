@@ -64033,17 +64033,6 @@ const CardMedia_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Ca
 const Grid_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Grid */ "./node_modules/@material-ui/core/esm/Grid/index.js"));
 const Typography_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js"));
 const styles = (theme) => ({
-    heroUnit: {
-        backgroundColor: theme.palette.background.paper,
-    },
-    heroContent: {
-        maxWidth: 600,
-        margin: '0 auto',
-        padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`,
-    },
-    heroButtons: {
-        marginTop: theme.spacing.unit * 4,
-    },
     layout: {
         width: 'auto',
         marginLeft: theme.spacing.unit * 3,
@@ -64069,32 +64058,20 @@ const styles = (theme) => ({
         flexGrow: 1,
     },
 });
-const cards = [1, 2, 3, 4, 5, 6];
 function Album(props) {
-    const { classes } = props;
-    return (react_1.default.createElement(react_1.default.Fragment, null,
-        react_1.default.createElement("main", null,
-            react_1.default.createElement("div", { className: classes.heroUnit },
-                react_1.default.createElement("div", { className: classes.heroContent },
-                    react_1.default.createElement(Typography_1.default, { component: "h1", variant: "h2", align: "center", color: "textPrimary", gutterBottom: true }, "\u7D4C\u55B6\u8005\u30B3\u30FC\u30B9"),
-                    react_1.default.createElement(Typography_1.default, { variant: "h6", align: "center", color: "textSecondary", paragraph: true }, "Something short and leading about the collection below\u2014its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely."),
-                    react_1.default.createElement("div", { className: classes.heroButtons },
-                        react_1.default.createElement(Grid_1.default, { container: true, spacing: 8, justify: "center" },
-                            react_1.default.createElement(Grid_1.default, { item: true },
-                                react_1.default.createElement(Button_1.default, { variant: "contained", color: "primary" }, "Main call to action")),
-                            react_1.default.createElement(Grid_1.default, { item: true },
-                                react_1.default.createElement(Button_1.default, { variant: "outlined", color: "primary" }, "Secondary action")))))),
-            react_1.default.createElement("div", { className: classnames_1.default(classes.layout, classes.cardGrid) },
-                react_1.default.createElement(Grid_1.default, { container: true, spacing: 4 }, cards.map(card => (react_1.default.createElement(Grid_1.default, { item: true, key: card, sm: 6, md: 4, lg: 3 },
-                    react_1.default.createElement(Card_1.default, { className: classes.card },
-                        react_1.default.createElement(CardMedia_1.default, { className: classes.cardMedia, image: "data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22288%22%20height%3D%22225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20288%20225%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_164edaf95ee%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_164edaf95ee%22%3E%3Crect%20width%3D%22288%22%20height%3D%22225%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2296.32500076293945%22%20y%3D%22118.8%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" // eslint-disable-line max-len
-                            , title: "Image title" }),
-                        react_1.default.createElement(CardContent_1.default, { className: classes.cardContent },
-                            react_1.default.createElement(Typography_1.default, { gutterBottom: true, variant: "h5", component: "h2" }, "Heading"),
-                            react_1.default.createElement(Typography_1.default, null, "This is a media card. You can use this section to describe the content.")),
-                        react_1.default.createElement(CardActions_1.default, null,
-                            react_1.default.createElement(Button_1.default, { size: "small", color: "primary" }, "View"),
-                            react_1.default.createElement(Button_1.default, { size: "small", color: "primary" }, "Edit")))))))))));
+    const { classes, cards } = props;
+    console.log(cards);
+    return (react_1.default.createElement("div", { className: classnames_1.default(classes.layout, classes.cardGrid) },
+        react_1.default.createElement(Grid_1.default, { container: true, spacing: 4 }, cards.map(card => (react_1.default.createElement(Grid_1.default, { item: true, key: card.id, sm: 6, md: 4, lg: 3 },
+            react_1.default.createElement(Card_1.default, { className: classes.card },
+                react_1.default.createElement(CardMedia_1.default, { className: classes.cardMedia, image: "data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22288%22%20height%3D%22225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20288%20225%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_164edaf95ee%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_164edaf95ee%22%3E%3Crect%20width%3D%22288%22%20height%3D%22225%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2296.32500076293945%22%20y%3D%22118.8%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" // eslint-disable-line max-len
+                    , title: "Image title" }),
+                react_1.default.createElement(CardContent_1.default, { className: classes.cardContent },
+                    react_1.default.createElement(Typography_1.default, { gutterBottom: true, variant: "h5", component: "h2" }, card.title),
+                    react_1.default.createElement(Typography_1.default, null, card.description)),
+                react_1.default.createElement(CardActions_1.default, null,
+                    react_1.default.createElement(Button_1.default, { size: "small", color: "primary" }, "View"),
+                    react_1.default.createElement(Button_1.default, { size: "small", color: "primary" }, "Edit")))))))));
 }
 exports.default = styles_1.withStyles(styles)(Album);
 
@@ -64406,11 +64383,18 @@ exports.Navigation = navigation_1.default;
 
 "use strict";
 
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const redux_react_hook_1 = __webpack_require__(/*! redux-react-hook */ "./node_modules/redux-react-hook/dist/index.es.js");
 const styles_1 = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
 const Drawer_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Drawer */ "./node_modules/@material-ui/core/esm/Drawer/index.js"));
@@ -64418,6 +64402,9 @@ const List_1 = __importDefault(__webpack_require__(/*! @material-ui/core/List */
 const Divider_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Divider */ "./node_modules/@material-ui/core/esm/Divider/index.js"));
 const ListItem_1 = __importDefault(__webpack_require__(/*! @material-ui/core/ListItem */ "./node_modules/@material-ui/core/esm/ListItem/index.js"));
 const ListItemText_1 = __importDefault(__webpack_require__(/*! @material-ui/core/ListItemText */ "./node_modules/@material-ui/core/esm/ListItemText/index.js"));
+const path_1 = __importDefault(__webpack_require__(/*! ../../../const/path */ "./resources/react/const/path.ts"));
+const use_fetch_api_1 = __importDefault(__webpack_require__(/*! ../../../hooks/use-fetch-api */ "./resources/react/hooks/use-fetch-api.ts"));
+const auth_1 = __webpack_require__(/*! ../../../redux/modules/auth */ "./resources/react/redux/modules/auth.ts");
 const ui_1 = __webpack_require__(/*! ../../../redux/modules/ui */ "./resources/react/redux/modules/ui.ts");
 const styles = styles_1.createStyles({
     list: {
@@ -64429,8 +64416,26 @@ const styles = styles_1.createStyles({
 });
 function Navigation(props) {
     const { classes, history } = props;
-    const isOpenNav = redux_react_hook_1.useMappedState(react_1.default.useCallback(state => state.ui.isOpenNav, []));
+    const { auth, ui } = redux_react_hook_1.useMappedState(react_1.default.useCallback(state => state, []));
     const dispatch = redux_react_hook_1.useDispatch();
+    const [axiosConfig, setAxiosConfig] = react_1.useState({});
+    const [isStartFetch, setStartFetch] = react_1.useState(false);
+    const { isLoading, response, error } = use_fetch_api_1.default(axiosConfig, isStartFetch);
+    react_1.useEffect(() => {
+        if (response) {
+            console.log('成功！', response);
+            dispatch(auth_1.resetAuth());
+            dispatch(ui_1.clearLoader());
+            dispatch(ui_1.setSnackbar({ message: 'ログアウトしました' }));
+            history.push('/');
+        }
+    }, [response]);
+    react_1.useEffect(() => {
+        if (error) {
+            console.log('エラー！');
+            dispatch(ui_1.clearLoader());
+        }
+    }, [error]);
     const toggleDrawer = () => {
         dispatch(ui_1.toggleNav());
     };
@@ -64438,13 +64443,30 @@ function Navigation(props) {
         dispatch(ui_1.toggleNav());
         history.push(path);
     };
+    const handleLogout = () => {
+        dispatch(ui_1.setLoader());
+        setAxiosConfig({
+            method: 'DELETE',
+            url: `${path_1.default}/api/me`,
+            data: {
+                token: auth.token,
+            },
+        });
+        setStartFetch(true);
+    };
     return (react_1.default.createElement("div", null,
-        react_1.default.createElement(Drawer_1.default, { open: isOpenNav, onClose: toggleDrawer },
+        react_1.default.createElement(Drawer_1.default, { open: ui.isOpenNav, onClose: toggleDrawer },
             react_1.default.createElement("div", { className: classes.list },
-                react_1.default.createElement(List_1.default, null, [{ name: 'top', path: '/' }].map((item, index) => (react_1.default.createElement(ListItem_1.default, { key: item.path, button: true, onClick: () => {
-                        changePage(item.path);
-                    } },
-                    react_1.default.createElement(ListItemText_1.default, { primary: item.name }))))),
+                react_1.default.createElement(List_1.default, null,
+                    react_1.default.createElement(ListItem_1.default, { button: true, onClick: () => {
+                            changePage('/');
+                        } },
+                        react_1.default.createElement(ListItemText_1.default, { primary: "top" })),
+                    auth.isLoggedin && (react_1.default.createElement(react_1.default.Fragment, null,
+                        react_1.default.createElement(ListItem_1.default, { button: true, onClick: () => {
+                                handleLogout();
+                            } },
+                            react_1.default.createElement(ListItemText_1.default, { primary: "\u30ED\u30B0\u30A2\u30A6\u30C8" }))))),
                 react_1.default.createElement(Divider_1.default, null)))));
 }
 exports.default = styles_1.withStyles(styles)(Navigation);
@@ -64509,9 +64531,7 @@ function SimpleSnackbar() {
         react_1.default.createElement(Snackbar_1.default, { anchorOrigin: {
                 vertical: 'bottom',
                 horizontal: 'left',
-            }, open: isOpen, autoHideDuration: 6000, 
-            // onClose={handleClose}
-            ContentProps: {
+            }, open: isOpen, autoHideDuration: 6000, onClose: handleClose, ContentProps: {
                 'aria-describedby': 'message-id',
             }, message: react_1.default.createElement("span", { id: "message-id" }, message), action: [
                 react_1.default.createElement(IconButton_1.default, { key: "close", "aria-label": "Close", color: "inherit", className: classes.close, onClick: handleClose },
@@ -64519,29 +64539,6 @@ function SimpleSnackbar() {
             ] })));
 }
 exports.default = SimpleSnackbar;
-
-
-/***/ }),
-
-/***/ "./resources/react/components/pages/category/category.tsx":
-/*!****************************************************************!*\
-  !*** ./resources/react/components/pages/category/category.tsx ***!
-  \****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-const react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-const Category = (props) => {
-    return react_1.default.createElement(react_router_dom_1.Redirect, { to: "/" });
-};
-exports.default = Category;
 
 
 /***/ }),
@@ -64583,22 +64580,6 @@ exports.default = react_router_dom_1.withRouter(Detail);
 Object.defineProperty(exports, "__esModule", { value: true });
 var detail_1 = __webpack_require__(/*! ./detail */ "./resources/react/components/pages/category/detail/detail.tsx");
 exports.Detail = detail_1.default;
-
-
-/***/ }),
-
-/***/ "./resources/react/components/pages/category/index.ts":
-/*!************************************************************!*\
-  !*** ./resources/react/components/pages/category/index.ts ***!
-  \************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var category_1 = __webpack_require__(/*! ./category */ "./resources/react/components/pages/category/category.tsx");
-exports.Category = category_1.default;
 
 
 /***/ }),
@@ -64727,23 +64708,28 @@ const styles = (theme) => ({
     },
 });
 const Login = (props) => {
-    const { classes } = props;
+    const { classes, history } = props;
+    console.log(props);
     const dispatch = redux_react_hook_1.useDispatch();
     const [axiosConfig, setAxiosConfig] = react_1.useState({});
     const [isStartFetch, setStartFetch] = react_1.useState(false);
-    const { isLoading, data, error } = use_fetch_api_1.default(axiosConfig, isStartFetch);
-    if (!isLoading && data) {
-        console.log('成功！', data);
-        dispatch(auth_1.initAuth({
-            token: data.access_token,
-            user: data.user,
-        }));
-        dispatch(ui_1.clearLoader());
-    }
-    if (!isLoading && error) {
-        console.log('エラー！');
-        dispatch(ui_1.clearLoader());
-    }
+    const { isLoading, response, error } = use_fetch_api_1.default(axiosConfig, isStartFetch);
+    react_1.useEffect(() => {
+        if (response) {
+            console.log('成功！', response);
+            dispatch(auth_1.initAuth({
+                token: response.access_token,
+                user: response.user.user,
+            }));
+            dispatch(ui_1.clearLoader());
+            dispatch(ui_1.setSnackbar({ message: 'ログインしました' }));
+            history.push('/');
+        }
+        if (error) {
+            console.log('エラー！');
+            dispatch(ui_1.clearLoader());
+        }
+    }, [response, error]);
     const handleSubmit = form => {
         dispatch(ui_1.setLoader());
         setAxiosConfig({
@@ -64858,19 +64844,19 @@ const Register = (props) => {
     const dispatch = redux_react_hook_1.useDispatch();
     const [axiosConfig, setAxiosConfig] = react_1.useState({});
     const [isStartFetch, setStartFetch] = react_1.useState(false);
-    const { isLoading, data, error } = use_fetch_api_1.default(axiosConfig, isStartFetch);
-    if (!isLoading && data) {
-        console.log('成功！', data);
+    const { isLoading, response, error } = use_fetch_api_1.default(axiosConfig, isStartFetch);
+    react_1.useEffect(() => {
+        console.log('成功！', response);
         dispatch(auth_1.initAuth({
-            token: data.access_token,
-            user: data.user,
+            token: response.data.access_token,
+            user: response.data.user,
         }));
         dispatch(ui_1.clearLoader());
-    }
-    if (!isLoading && error) {
+    }, [response]);
+    react_1.useEffect(() => {
         console.log('エラー！');
         dispatch(ui_1.clearLoader());
-    }
+    }, [error]);
     const handleSubmit = form => {
         dispatch(ui_1.setLoader());
         setAxiosConfig({
@@ -64900,6 +64886,89 @@ const Register = (props) => {
                     react_1.default.createElement(Button_1.default, { type: "submit", fullWidth: true, variant: "contained", color: "primary", className: classes.submit }, "\u9001\u4FE1"))) }))));
 };
 exports.default = react_router_dom_1.withRouter(withStyles_1.default(styles)(Register));
+
+
+/***/ }),
+
+/***/ "./resources/react/components/pages/salons/index.ts":
+/*!**********************************************************!*\
+  !*** ./resources/react/components/pages/salons/index.ts ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var salons_1 = __webpack_require__(/*! ./salons */ "./resources/react/components/pages/salons/salons.tsx");
+exports.Salons = salons_1.default;
+
+
+/***/ }),
+
+/***/ "./resources/react/components/pages/salons/salons.tsx":
+/*!************************************************************!*\
+  !*** ./resources/react/components/pages/salons/salons.tsx ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+const redux_react_hook_1 = __webpack_require__(/*! redux-react-hook */ "./node_modules/redux-react-hook/dist/index.es.js");
+const withStyles_1 = __importDefault(__webpack_require__(/*! @material-ui/core/styles/withStyles */ "./node_modules/@material-ui/core/styles/withStyles.js"));
+const Typography_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js"));
+const path_1 = __importDefault(__webpack_require__(/*! ../../../const/path */ "./resources/react/const/path.ts"));
+const use_fetch_api_1 = __importDefault(__webpack_require__(/*! ../../../hooks/use-fetch-api */ "./resources/react/hooks/use-fetch-api.ts"));
+const default_template_1 = __webpack_require__(/*! ../../templates/default-template */ "./resources/react/components/templates/default-template/index.ts");
+const album_1 = __webpack_require__(/*! ../../molecules/album */ "./resources/react/components/molecules/album/index.ts");
+const styles = (theme) => ({
+    heroUnit: {
+        backgroundColor: theme.palette.background.paper,
+    },
+    heroContent: {
+        maxWidth: 600,
+        margin: '0 auto',
+        padding: 20,
+    },
+});
+const Salons = (props) => {
+    const { classes } = props;
+    const { salons } = redux_react_hook_1.useMappedState(react_1.useCallback(state => state.salons, []));
+    const dispatch = redux_react_hook_1.useDispatch();
+    const axiosConfig = {
+        method: 'GET',
+        url: `${path_1.default}/api/salon`,
+    };
+    const { isLoading, response, error } = use_fetch_api_1.default(axiosConfig, true);
+    react_1.useEffect(() => {
+        // dispatch(
+        //   initSalons({
+        //     salons: data.salons,
+        //   })
+        // )
+    }, [response]);
+    return (react_1.default.createElement(default_template_1.DefaultTemplate, Object.assign({}, props),
+        react_1.default.createElement("div", { className: classes.heroUnit },
+            react_1.default.createElement("div", { className: classes.heroContent },
+                react_1.default.createElement(Typography_1.default, { component: "h1", variant: "h2", align: "center", color: "textPrimary", gutterBottom: true }, "\u7D4C\u55B6\u8005\u30B3\u30FC\u30B9"),
+                react_1.default.createElement(Typography_1.default, { variant: "h6", align: "center", color: "textSecondary", paragraph: true }, "Something short and leading about the collection below\u2014its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely."))),
+        react_1.default.createElement(album_1.Album, { cards: salons })));
+};
+exports.default = react_router_dom_1.withRouter(withStyles_1.default(styles)(Salons));
 
 
 /***/ }),
@@ -64977,15 +65046,17 @@ const Signup = (props) => {
     const dispatch = redux_react_hook_1.useDispatch();
     const [axiosConfig, setAxiosConfig] = react_1.useState({});
     const [isStartFetch, setStartFetch] = react_1.useState(false);
-    const { isLoading, data, error } = use_fetch_api_1.default(axiosConfig, isStartFetch);
-    if (!isLoading && data) {
-        console.log('成功！', data);
-        dispatch(ui_1.clearLoader());
-    }
-    if (!isLoading && error) {
-        console.log('エラー！');
-        dispatch(ui_1.clearLoader());
-    }
+    const { isLoading, response, error } = use_fetch_api_1.default(axiosConfig, isStartFetch);
+    react_1.useEffect(() => {
+        if (response) {
+            console.log('成功！', response);
+            dispatch(ui_1.clearLoader());
+        }
+        if (error) {
+            console.log('エラー！');
+            dispatch(ui_1.clearLoader());
+        }
+    }, [response, error]);
     const handleSubmit = form => {
         dispatch(ui_1.setLoader());
         setAxiosConfig({
@@ -65282,32 +65353,25 @@ exports.DefaultTemplate = default_template_1.default;
 
 "use strict";
 
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const redux_react_hook_1 = __webpack_require__(/*! redux-react-hook */ "./node_modules/redux-react-hook/dist/index.es.js");
 const path_1 = __importDefault(__webpack_require__(/*! ../../../const/path */ "./resources/react/const/path.ts"));
 const use_fetch_api_1 = __importDefault(__webpack_require__(/*! ../../../hooks/use-fetch-api */ "./resources/react/hooks/use-fetch-api.ts"));
 const auth_1 = __webpack_require__(/*! ../../../redux/modules/auth */ "./resources/react/redux/modules/auth.ts");
 const ui_1 = __webpack_require__(/*! ../../../redux/modules/ui */ "./resources/react/redux/modules/ui.ts");
 const Auth = (props) => {
-    const { token } = redux_react_hook_1.useMappedState(react_1.default.useCallback(state => state.auth, []));
+    const { token } = redux_react_hook_1.useMappedState(react_1.useCallback(state => state.auth, []));
     const dispatch = redux_react_hook_1.useDispatch();
     const axiosConfig = {
         method: 'GET',
         url: `${path_1.default}/api/me`,
         headers: { Authorization: `Bearer ${token}` },
     };
-    const { isLoading, data, error } = use_fetch_api_1.default(axiosConfig, true);
+    const { isLoading, response, error } = use_fetch_api_1.default(axiosConfig, true);
     react_1.useEffect(() => {
         if (!token) {
             return;
@@ -65319,13 +65383,13 @@ const Auth = (props) => {
             dispatch(ui_1.clearLoader());
             return;
         }
-        if (data) {
+        if (response) {
             dispatch(auth_1.loginAuth({
-                user: data.user,
+                user: response.data.user,
             }));
             dispatch(ui_1.clearLoader());
         }
-    }, [data]);
+    }, [response, error]);
     return null;
 };
 exports.default = Auth;
@@ -65473,12 +65537,12 @@ const axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules
 exports.default = (axiosConfig, isStartFetch) => {
     const [isLoading, setLoading] = react_1.useState(false);
     const [error, setError] = react_1.useState(false);
-    const [data, setdData] = react_1.useState(undefined);
+    const [response, setResponse] = react_1.useState(undefined);
     const request = () => __awaiter(this, void 0, void 0, function* () {
         setLoading(true);
         try {
             const { data } = yield axios_1.default(axiosConfig);
-            setdData(data);
+            setResponse(data);
         }
         catch (e) {
             console.log('Error getting document', e);
@@ -65487,13 +65551,14 @@ exports.default = (axiosConfig, isStartFetch) => {
         finally {
             setLoading(false);
         }
+        return () => { };
     });
     react_1.useEffect(() => {
         if (isStartFetch) {
             request();
         }
     }, [isStartFetch]);
-    return { isLoading, data, error };
+    return { isLoading, response, error };
 };
 
 
@@ -65548,7 +65613,7 @@ const reducer_1 = __importDefault(__webpack_require__(/*! ./reducer */ "./resour
 const persistConfig = {
     key: 'root',
     storage: storage_1.default,
-    blacklist: ['auth', 'ui', 'categories'],
+    blacklist: ['auth', 'ui', 'categories', 'salons'],
 };
 const persistedReducer = redux_persist_1.persistReducer(persistConfig, reducer_1.default);
 const middlewares = [];
@@ -65585,6 +65650,8 @@ function reducer(state = initialState, action) {
             return Object.assign({}, state, { isLoggedin: true, token: action.payload.token, user: action.payload.user });
         case 'auth/loginAuth':
             return Object.assign({}, state, { isLoggedin: true, user: action.payload.user });
+        case 'auth/resetAuth':
+            return Object.assign({}, state, { isLoggedin: false, token: undefined, user: undefined });
         default:
             return state;
     }
@@ -65592,6 +65659,7 @@ function reducer(state = initialState, action) {
 exports.default = reducer;
 exports.initAuth = (payload) => ({ type: 'auth/initAuth', payload });
 exports.loginAuth = (payload) => ({ type: 'auth/loginAuth', payload });
+exports.resetAuth = () => ({ type: 'auth/resetAuth' });
 
 
 /***/ }),
@@ -65619,6 +65687,48 @@ function reducer(state = initialState, action) {
 }
 exports.default = reducer;
 exports.initCategories = () => ({ type: 'categories/init' });
+
+
+/***/ }),
+
+/***/ "./resources/react/redux/modules/salons.ts":
+/*!*************************************************!*\
+  !*** ./resources/react/redux/modules/salons.ts ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const initialState = {
+    salons: [
+        {
+            id: 1,
+            title: 'サロンタイトル1',
+            description: 'サロン詳細1',
+            image: 'https://hayaokuri.com/image.png',
+            owner: 'サロンオーナー名1',
+        },
+        {
+            id: 2,
+            title: 'サロンタイトル2',
+            description: 'サロン詳細2',
+            image: 'https://hayaokuri.com/image.png',
+            owner: 'サロンオーナー名2',
+        },
+    ],
+};
+function reducer(state = initialState, action) {
+    switch (action.type) {
+        case 'salons/init':
+            return Object.assign({}, state, { salons: action.payload.salons });
+        default:
+            return state;
+    }
+}
+exports.default = reducer;
+exports.initSalons = (payload) => ({ type: 'salons/init', payload });
 
 
 /***/ }),
@@ -65724,6 +65834,7 @@ const storage_1 = __importDefault(__webpack_require__(/*! redux-persist/lib/stor
 const auth_1 = __importDefault(__webpack_require__(/*! ./modules/auth */ "./resources/react/redux/modules/auth.ts"));
 const ui_1 = __importDefault(__webpack_require__(/*! ./modules/ui */ "./resources/react/redux/modules/ui.ts"));
 const categories_1 = __importDefault(__webpack_require__(/*! ./modules/categories */ "./resources/react/redux/modules/categories.ts"));
+const salons_1 = __importDefault(__webpack_require__(/*! ./modules/salons */ "./resources/react/redux/modules/salons.ts"));
 const authPersistConfig = {
     key: 'auth',
     storage: storage_1.default,
@@ -65733,6 +65844,7 @@ exports.default = redux_1.combineReducers({
     auth: redux_persist_1.persistReducer(authPersistConfig, auth_1.default),
     ui: ui_1.default,
     categories: categories_1.default,
+    salons: salons_1.default,
 });
 
 
@@ -65762,7 +65874,7 @@ const top_1 = __webpack_require__(/*! ./components/pages/top */ "./resources/rea
 const login_1 = __webpack_require__(/*! ./components/pages/login */ "./resources/react/components/pages/login/index.ts");
 const signup_1 = __webpack_require__(/*! ./components/pages/signup */ "./resources/react/components/pages/signup/index.ts");
 const register_1 = __webpack_require__(/*! ./components/pages/register */ "./resources/react/components/pages/register/index.ts");
-const category_1 = __webpack_require__(/*! ./components/pages/category */ "./resources/react/components/pages/category/index.ts");
+const salons_1 = __webpack_require__(/*! ./components/pages/salons */ "./resources/react/components/pages/salons/index.ts");
 const management_1 = __webpack_require__(/*! ./components/pages/category/management */ "./resources/react/components/pages/category/management/index.ts");
 const detail_1 = __webpack_require__(/*! ./components/pages/category/detail */ "./resources/react/components/pages/category/detail/index.ts");
 exports.default = () => {
@@ -65772,7 +65884,7 @@ exports.default = () => {
             React.createElement(react_router_dom_1.Route, { path: "/login", exact: true, component: login_1.Login }),
             React.createElement(react_router_dom_1.Route, { path: "/signup", exact: true, component: signup_1.Signup }),
             React.createElement(react_router_dom_1.Route, { path: "/register", exact: true, component: register_1.Register }),
-            React.createElement(react_router_dom_1.Route, { path: "/category", exact: true, component: category_1.Category }),
+            React.createElement(react_router_dom_1.Route, { path: "/salons", component: salons_1.Salons }),
             React.createElement(react_router_dom_1.Route, { path: "/category/management", exact: true, component: management_1.Management }),
             React.createElement(react_router_dom_1.Route, { path: "/category/detail/:salonId", component: detail_1.Detail }))));
 };

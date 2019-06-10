@@ -23,5 +23,8 @@ Route::get('/register', function () {
 Route::get('/login', function () {
     return view('index');
 });
+Route::get('/salons', function () {
+    return view('index');
+});
 
 Route::get('/home', 'HomeController@index')->name('home');
