@@ -107,7 +107,7 @@ class CreateRepositoryFileCommand extends Command
      */
     private function createInterFaceFile(): void
     {
-        $content = "<?phpn\nnamespace App\\Repositories\\$this->dirName;\n\ninterface $this->fileName" . "Interface\n{\n}\n";
+        $content = "<?php\nnamespace App\\Repositories\\$this->dirName;\n\ninterface $this->fileName" . "Interface\n{\n}\n";
         file_put_contents($this->interfaceFileName, $content);
     }
 
