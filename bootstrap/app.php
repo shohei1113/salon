@@ -22,13 +22,13 @@ $app = new Illuminate\Foundation\Application(
 */
 switch ($_SERVER['SERVER_NAME'] ?? 'localhost') {
     case 'localhost':
-        $app->loadEnvironmentFrom('.env.dev.dev');
+        $app->loadEnvironmentFrom('.env.dev');
         break;
     case 'stg.hayaokuri.com':
-        $app->loadEnvironmentFrom('.env.dev.stg');
+        $app->loadEnvironmentFrom('.env.stg');
         break;
     case 'hayaokuri.com':
-        $app->loadEnvironmentFrom('.env.dev.prod');
+        $app->loadEnvironmentFrom('.env.prod');
         break;
 }
 
