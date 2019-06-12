@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Mail;
 use Laravel\Socialite\Facades\Socialite;
 use Tymon\JWTAuth\JWTAuth;
 
-
 class AuthService
 {
     /**
@@ -74,7 +73,7 @@ class AuthService
             throw new Exception('registerd user');
         }
 
-        $this->user->updateUser($user, $data);
+        $this->user->updateUser($user->id, $data);
         $user->token = $this->auth->fromUser($user);
 
         return $user;

@@ -15,8 +15,7 @@ use Illuminate\Http\Request;
 
 Route::group(['namespace' => 'API'], function() {
 
-//
-//    Auth::routes(['verify' => true]);
+    Route::apiResource('user', 'UserController');
 
     Route::post('signup', 'AuthController@signup')->name('api.signup');
     Route::post('register', 'AuthController@register')->name('api.register');

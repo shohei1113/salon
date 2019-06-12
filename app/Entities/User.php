@@ -51,6 +51,14 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
+
+    /**
      * @return mixed
      */
     public function getJWTIdentifier()
