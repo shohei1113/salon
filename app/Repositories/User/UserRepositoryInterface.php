@@ -15,11 +15,11 @@ interface UserRepositoryInterface
     public function createUser($attribute);
 
     /**
-     * @param $user
+     * @param $id
      * @param $attribute
      * @return mixed
      */
-    public function updateUser($user, $attribute);
+    public function updateUser($id, $attribute);
 
     /**
      * @param $id

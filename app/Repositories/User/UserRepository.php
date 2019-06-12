@@ -44,10 +44,12 @@ class UserRepository implements UserRepositoryInterface
      * @param $attribute
      * @return bool
      */
-    public function updateUser($user, $attribute)
+    public function updateUser($id, $attribute)
     {
+        $user = $this->user->find($id);
         return $user->update([
             'name' => $attribute['name'] ?? NULL,
+            'image' => $attribute['image'] ?? NULL,
             'email_verified' => User::REGISTERED_USER,
         ]);
     }
