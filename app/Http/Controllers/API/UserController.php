@@ -4,23 +4,40 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserInfoResource;
-use App\Http\Resources\UserResource;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Class UserController
+ * @package App\Http\Controllers\API
+ */
 class UserController extends Controller
 {
+    /**
+     * @var UserService
+     */
     private $userService;
 
+    /**
+     * UserController constructor.
+     * @param UserService $userService
+     */
     public function __construct(UserService $userService)
     {
         $this->userService = $userService;
     }
 
+    /**
+     * @param Request $request
+     * @param $id
+     * @return string
+     * @throws \Exception
+     */
     public function update(Request $request, $id)
     {
-        $this->userService->updateUser($id, $request);
+        $user = $this->userService->updateUser($id, $request);
+        return new UserInfoResource($user);
     }
 
     /**

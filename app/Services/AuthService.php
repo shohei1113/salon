@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Mail;
 use Laravel\Socialite\Facades\Socialite;
 use Tymon\JWTAuth\JWTAuth;
 
-
 class AuthService
 {
     /**
