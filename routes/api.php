@@ -30,5 +30,6 @@ Route::group(['namespace' => 'API'], function() {
     Route::group(['middleware' => ['jwt.auth']], function () {
         Route::get('me', 'UserController@loginUserInfo');
         Route::apiResource('category', 'CategoryController');
+        Route::apiResource('salon', 'SalonController');
     });
 });

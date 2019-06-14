@@ -16,7 +16,7 @@ class PaymentController extends Controller
     /**
      * @var PaymentService
      */
-    private $payment;
+    private $paymentService;
 
     /**
      * @var
@@ -27,10 +27,10 @@ class PaymentController extends Controller
      * PaymentController constructor.
      * @param PaymentService $payment
      */
-    public function __construct(PaymentService $payment)
+    public function __construct(PaymentService $paymentService)
     {
-        $this->payment = $payment;
-        $this->user = User::find(3);
+        $this->paymentService = $paymentService;
+//        $this->user = User::find(3);
     }
 
     /**
@@ -38,7 +38,7 @@ class PaymentController extends Controller
      */
     public function paymentByCard(Request $request)
     {
-        $this->payment->paymentByCard($this->user, $request);
+        $this->paymentService->paymentByCard($this->user, $request);
     }
 
     /**
@@ -46,6 +46,6 @@ class PaymentController extends Controller
      */
     public function cancelPaymentByCard()
     {
-        return $this->payment->cancelPaymentByCard($this->user);
+        return $this->paymentService->cancelPaymentByCard($this->user);
     }
 }
