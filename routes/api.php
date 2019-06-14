@@ -16,6 +16,8 @@ use Illuminate\Http\Request;
 Route::group(['namespace' => 'API'], function() {
 
     Route::apiResource('user', 'UserController');
+    Route::post('payment/card', 'PaymentController@paymentByCard')->name('api.payment.card');
+    Route::post('payment/card/cancel', 'PaymentController@cancelPaymentByCard')->name('api.payment.card.cancel');
 
     Route::post('signup', 'AuthController@signup')->name('api.signup');
     Route::post('register', 'AuthController@register')->name('api.register');
