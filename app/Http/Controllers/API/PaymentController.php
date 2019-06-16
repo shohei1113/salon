@@ -4,8 +4,10 @@ namespace App\Http\Controllers\API;
 
 use App\Entities\User;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\SubscriptionResource;
 use App\Services\PaymentService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class PaymentController
@@ -30,15 +32,16 @@ class PaymentController extends Controller
     public function __construct(PaymentService $paymentService)
     {
         $this->paymentService = $paymentService;
-//        $this->user = User::find(3);
+        $this->user = Auth::user();
     }
 
     /**
      * @param Request $request
      */
-    public function paymentByCard(Request $request)
+    public function paymentByCard(Request $request, $salonId)
     {
-        $this->paymentService->paymentByCard($this->user, $request);
+        $subscription = $this->paymentService->paymentByCard($this->user, $salonId, $request->all());
+        return new SubscriptionResource($subscription);
     }
 
     /**
