@@ -6,6 +6,14 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class SalonResource extends JsonResource
 {
+    private $message;
+
+    public function __construct($resource, $message)
+    {
+        parent::__construct($resource);
+        $this->message = $message;
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -14,6 +22,25 @@ class SalonResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+                'salon' => [
+                    'id' => $this->id,
+                    'owner' => new UserResource($this->owner),
+                    'category' => new CategoryResource($this->category),
+                    'title' => $this->title,
+                    'description' => $this->description,
+                    'price' => $this->price,
+                    'plan_id' => $this->plan_id,
+                    'product_id' => $this->product_id,
+                    'salon_detail' => new SalonDetailResource($this->salon_detail),
+                ],
+        ];
+    }
+
+    public function with($request)
+    {
+        return [
+            'message' => $this->message,
+        ];
     }
 }

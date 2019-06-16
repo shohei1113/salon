@@ -14,6 +14,12 @@ class SalonDetailResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'salon_id' => $this->salon_id,
+            'contents' => $this->contents,
+            'message' => $this->message,
+            'target' => $this->target,
+        ];
     }
 }
