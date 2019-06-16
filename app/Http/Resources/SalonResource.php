@@ -23,17 +23,17 @@ class SalonResource extends JsonResource
     public function toArray($request)
     {
         return [
-                'salon' => [
-                    'id' => $this->id,
-                    'owner' => new UserResource($this->owner),
-                    'category' => new CategoryResource($this->category),
-                    'title' => $this->title,
-                    'description' => $this->description,
-                    'price' => $this->price,
-                    'plan_id' => $this->plan_id,
-                    'product_id' => $this->product_id,
-                    'salon_detail' => new SalonDetailResource($this->salon_detail),
-                ],
+            'salon' => [
+                'id' => $this->id,
+                'owner' => new UserResource($this->owner),
+                'category' => new CategoryResource($this->category),
+                'title' => $this->title,
+                'description' => $this->description,
+                'price' => $this->price,
+                'plan_id' => $this->plan_id,
+                'product_id' => $this->product_id,
+                'salon_detail' => new SalonDetailResource($this->salon_detail),
+            ],
         ];
     }
 

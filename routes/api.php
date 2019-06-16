@@ -16,8 +16,14 @@ use Illuminate\Http\Request;
 Route::group(['namespace' => 'API'], function() {
 
     Route::apiResource('user', 'UserController');
-    Route::post('payment/card', 'PaymentController@paymentByCard')->name('api.payment.card');
-    Route::post('payment/card/cancel', 'PaymentController@cancelPaymentByCard')->name('api.payment.card.cancel');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Payment Routes
+    |--------------------------------------------------------------------------
+    */
+        Route::post('salon/{salon}/payment/card', 'PaymentController@paymentByCard')->name('api.payment.card');
+        Route::post('salon/{salon}/payment/card/cancel', 'PaymentController@cancelPaymentByCard')->name('api.payment.card.cancel');
 
     /*
     |--------------------------------------------------------------------------
@@ -53,5 +59,6 @@ Route::group(['namespace' => 'API'], function() {
         */
         Route::get('category/{category}/salon', 'SalonController@index');
         Route::apiResource('salon', 'SalonController');
+
     });
 });
