@@ -35,7 +35,7 @@ class UserRepository implements UserRepositoryInterface
             'name' => $attribute['name'] ?? NULL,
             'email' => $attribute['email'],
             'password' => Hash::make($attribute['password']),
-            'email_verify_token' => sha1(uniqid( $attribute['email'] , true)),
+            'email_verify_token' => sha1(uniqid($attribute['email'] , true)),
         ]);
     }
 
