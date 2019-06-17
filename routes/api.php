@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,16 +15,6 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['namespace' => 'API'], function() {
-
-    Route::apiResource('user', 'UserController');
-
-    /*
-    |--------------------------------------------------------------------------
-    | Payment Routes
-    |--------------------------------------------------------------------------
-    */
-        Route::post('salon/{salon}/payment/card', 'PaymentController@paymentByCard')->name('api.payment.card');
-        Route::post('salon/{salon}/payment/card/cancel', 'PaymentController@cancelPaymentByCard')->name('api.payment.card.cancel');
 
     /*
     |--------------------------------------------------------------------------
@@ -44,13 +35,14 @@ Route::group(['namespace' => 'API'], function() {
     |--------------------------------------------------------------------------
     */
     Route::group(['middleware' => ['jwt.auth']], function () {
+
         /*
         |--------------------------------------------------------------------------
         | User Routes
         |--------------------------------------------------------------------------
         */
         Route::get('me', 'UserController@loginUserInfo');
-        Route::apiResource('category', 'CategoryController');
+        Route::apiResource('user', 'UserController');
 
         /*
         |--------------------------------------------------------------------------
@@ -59,6 +51,21 @@ Route::group(['namespace' => 'API'], function() {
         */
         Route::get('category/{category}/salon', 'SalonController@index');
         Route::apiResource('salon', 'SalonController');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Payment Routes
+        |--------------------------------------------------------------------------
+        */
+        Route::post('salon/{salon}/payment/card', 'PaymentController@paymentByCard')->name('api.payment.card');
+        Route::post('salon/{salon}/payment/card/cancel', 'PaymentController@cancelPaymentByCard')->name('api.payment.card.cancel');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Category Routes
+        |--------------------------------------------------------------------------
+        */
+        Route::apiResource('category', 'CategoryController');
 
     });
 });
