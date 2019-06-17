@@ -55,7 +55,7 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-        $user = $this->authService->registerUser($request->all());
+        $user = $this->authService->registerUser($request->all(), $request->image);
         return new AuthResource($user, config('const.auth.register'));
     }
 
@@ -79,6 +79,12 @@ class AuthController extends Controller
             'message' => config('const.auth.logout')
         ]);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | 以下、facebookログイン用(実装保留)
+    |--------------------------------------------------------------------------
+    */
 
     /**
      * @param $socialite

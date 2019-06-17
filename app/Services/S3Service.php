@@ -16,7 +16,8 @@ class S3Service
      */
     public function uploadImage($image)
     {
-        return Storage::disk('s3')->putFile(env('APP_ENV').'/user', $image, 'public');
+        return Storage::disk('s3')
+            ->putFile(env('APP_ENV').'/user', $image, 'public');
     }
 
 }

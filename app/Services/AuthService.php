@@ -25,26 +25,32 @@ class AuthService
     private $user;
 
     /**
+     * @var
+     */
+    private $userService;
+
+    /**
      * AuthService constructor.
      * @param JWTAuth $auth
      * @param UserRepository $user
      */
-    public function __construct(JWTAuth $auth, UserRepository $user)
+    public function __construct(JWTAuth $auth, UserService $userService, UserRepository $user)
     {
         $this->auth = $auth;
         $this->user = $user;
+        $this->userService = $userService;
     }
 
     /**
-     * @param $data
+     * @param $attribute
      * @return mixed
      * @throws Exception
      */
-    public function signupUser($data)
+    public function signupUser($attribute)
     {
         DB::beginTransaction();
         try {
-            $user = $this->user->createUser($data);
+            $user = $this->user->createUser($attribute);
             $this->sendPreRegisterMail($user);
             DB::commit();
         } catch (Exception $e) {
@@ -56,13 +62,13 @@ class AuthService
     }
 
     /**
-     * @param $data
+     * @param $attribute
      * @return mixed
      * @throws Exception
      */
-    public function registerUser($data)
+    public function registerUser($attribute, $image)
     {
-        $user = $this->user->fetchUserByToken($data['token']);
+        $user = $this->user->fetchUserByToken($attribute['token']);
 
         if (!isset($user)) {
             throw new Exception('invalid token', 401);
@@ -72,7 +78,7 @@ class AuthService
             throw new Exception('registerd user');
         }
 
-        $this->user->updateUser($user->id, $data);
+        $this->userService->updateUser($user->id, $attribute, $image);
         $user->token = $this->auth->fromUser($user);
 
         return $user;
@@ -88,19 +94,25 @@ class AuthService
     }
 
     /**
-     * @param $data
+     * @param $attribute
      * @return mixed
      * @throws Exception
      */
-    public function login($data)
+    public function login($attribute)
     {
-        if (!$token = $this->auth->attempt($data)) {
+        if (!$token = $this->auth->attempt($attribute)) {
             throw new Exception('Unauthorized', 401);
         }
-        $user = $this->user->fetchUserByEmail($data['email']);
+        $user = $this->user->fetchUserByEmail($attribute['email']);
         $user->token = $token;
         return $user;
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | 以下、facebookログイン用(実装保留)
+    |--------------------------------------------------------------------------
+    */
 
     /**
      * @param $socialite
