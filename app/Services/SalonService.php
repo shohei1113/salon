@@ -34,7 +34,7 @@ class SalonService
     /**
      * @return Collection
      */
-    public function fetchSalonList(?int $categoryId = NULL): Collection
+    public function fetchSalonList(?int $categoryId): Collection
     {
         return $this->salon->fetchSalonList($categoryId);
     }

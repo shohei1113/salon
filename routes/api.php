@@ -67,5 +67,12 @@ Route::group(['namespace' => 'API'], function() {
         */
         Route::apiResource('category', 'CategoryController');
 
+        /*
+        |--------------------------------------------------------------------------
+        | Category Routes
+        |--------------------------------------------------------------------------
+        */
+        Route::get('salon/{salon}/post', 'PostController@index');
+        Route::apiResource('post', 'PostController');
     });
 });
