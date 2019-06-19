@@ -15,10 +15,10 @@ use Stripe\Plan;
 interface SalonRepositoryInterface
 {
     /**
-     * @param $categoryId
-     * @return mixed
+     * @param int|null $categoryId
+     * @return Collection
      */
-    public function fetchSalonList(int $categoryId): Collection;
+    public function fetchSalonList(?int $categoryId): Collection;
 
     /**
      * @param int $id

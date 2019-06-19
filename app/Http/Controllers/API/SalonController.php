@@ -32,10 +32,10 @@ class SalonController extends Controller
     }
 
     /**
-     * @param int|NULL $categoryId
+     * @param int|null $categoryId
      * @return BaseResource
      */
-    public function index(int $categoryId = NULL): BaseResource
+    public function index(?int $categoryId): BaseResource
     {
         $salons = $this->salonService->fetchSalonList($categoryId);
         return new BaseResource(SalonResource::collection($salons), config('const.salon.index'));

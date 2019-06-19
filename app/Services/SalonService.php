@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Entities\Salon;
 use App\Repositories\Salon\SalonRepository;
+use Illuminate\Database\Eloquent\Collection;
 use Stripe\Plan;
 use Stripe\Stripe;
 use Exception;
@@ -31,10 +32,9 @@ class SalonService
     }
 
     /**
-     * @param int $categoryId
-     * @return Salon
+     * @return Collection
      */
-    public function fetchSalonList(int $categoryId): Salon
+    public function fetchSalonList(?int $categoryId = NULL): Collection
     {
         return $this->salon->fetchSalonList($categoryId);
     }
@@ -63,9 +63,9 @@ class SalonService
 
     /**
      * @param int $id
-     * @return Plan
+     * @return Salon
      */
-    public function fetchSalonById(int $id): Plan
+    public function fetchSalonById(int $id): Salon
     {
         return $this->salon->fetchSalonById($id);
     }

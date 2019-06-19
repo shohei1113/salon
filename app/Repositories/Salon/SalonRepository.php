@@ -30,10 +30,10 @@ class SalonRepository implements SalonRepositoryInterface
     }
 
     /**
-     * @param int $categoryId
+     * @param int|null $categoryId
      * @return Collection
      */
-    public function fetchSalonList(int $categoryId): Collection
+    public function fetchSalonList(?int $categoryId): Collection
     {
         if (!empty($categoryId)) {
             return $this->salon->searchCategory($categoryId)->get();
