@@ -1,12 +1,14 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Services;
 
 use App\Entities\Image;
+use App\Entities\User;
 use App\Repositories\Image\ImageRepository;
 use App\Repositories\User\UserRepository;
 use Exception;
-use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -26,7 +28,7 @@ class UserService
     private $user;
 
     /**
-     * @var
+     * @var S3Service
      */
     private $s3Service;
 
@@ -47,16 +49,17 @@ class UserService
     }
 
     /**
-     * @param $id
-     * @param Request $request
-     * @return mixed
+     * @param int $id
+     * @param array $attribute
+     * @param UploadedFile $image
+     * @return User
      * @throws Exception
      */
-    public function updateUser($id, $attribute, $image)
+    public function updateUser(int $id, array $attribute, UploadedFile $image): User
     {
         DB::beginTransaction();
         try {
-            $user = $this->user->updateUser($id, $attribute);
+            $user = $this->user->update($id, $attribute);
             if (!empty($image)) {
                 $imagePath = $this->s3Service->uploadImage($image);
                 $this->image->updateImage($user, $imagePath, Image::TYPE_USER);
@@ -71,10 +74,10 @@ class UserService
     }
 
     /**
-     * @param $id
-     * @return mixed
+     * @param int $id
+     * @return User
      */
-    public function fetchUserById($id)
+    public function fetchUserById(int $id): User
     {
         return $this->user->fetchUserById($id);
     }

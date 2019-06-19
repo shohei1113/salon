@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Controllers\API;
 
@@ -21,7 +22,7 @@ class PaymentController extends Controller
     private $paymentService;
 
     /**
-     * @var
+     * @var User
      */
     private $user;
 
@@ -37,8 +38,10 @@ class PaymentController extends Controller
 
     /**
      * @param Request $request
+     * @param int $salonId
+     * @return SubscriptionResource
      */
-    public function paymentByCard(Request $request, $salonId)
+    public function paymentByCard(Request $request, int $salonId): SubscriptionResource
     {
         $subscription = $this->paymentService->paymentByCard($this->user, $salonId, $request->all());
         return new SubscriptionResource($subscription);
@@ -47,7 +50,7 @@ class PaymentController extends Controller
     /**
      * @return string
      */
-    public function cancelPaymentByCard()
+    public function cancelPaymentByCard(): string
     {
         return $this->paymentService->cancelPaymentByCard($this->user);
     }

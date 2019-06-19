@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Services;
 
@@ -30,20 +31,21 @@ class SalonService
     }
 
     /**
-     * @return Salon[]|\Illuminate\Database\Eloquent\Collection
+     * @param int $categoryId
+     * @return Salon
      */
-    public function fetchSalonList($categoryId)
+    public function fetchSalonList(int $categoryId): Salon
     {
         return $this->salon->fetchSalonList($categoryId);
     }
 
     /**
-     * @param $id
-     * @param $attribute
-     * @return mixed
+     * @param int $id
+     * @param array $attribute
+     * @return Salon
      * @throws Exception
      */
-    public function createSalon($id, $attribute)
+    public function createSalon(int $id, array $attribute): Salon
     {
         DB::beginTransaction();
         try {
@@ -60,10 +62,10 @@ class SalonService
     }
 
     /**
-     * @param $id
-     * @return mixed
+     * @param int $id
+     * @return Plan
      */
-    public function fetchSalonById($id)
+    public function fetchSalonById(int $id): Plan
     {
         return $this->salon->fetchSalonById($id);
     }
@@ -88,11 +90,12 @@ class SalonService
     }
 
     /**
-     * @param $id
-     * @param $attribute
+     * @param int $id
+     * @param array $attribute
+     * @return Salon
      * @throws Exception
      */
-    public function updateSalon($id, $attribute)
+    public function updateSalon(int $id, array $attribute): Salon
     {
         DB::beginTransaction();
         try {
@@ -109,11 +112,11 @@ class SalonService
     }
 
     /**
-     * @param $salon
-     * @param $attribute
+     * @param Salon $salon
+     * @param array $attribute
      * @return Plan
      */
-    public function updateStripePlan($salon, $attribute)
+    public function updateStripePlan(Salon $salon, array $attribute): Plan
     {
         Stripe::setApiKey(env('STRIPE_SECRET'));
         return Plan::update(

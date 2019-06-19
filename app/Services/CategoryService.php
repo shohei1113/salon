@@ -1,30 +1,36 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Services;
 
 use App\Repositories\Category\CategoryRepository;
+use Illuminate\Database\Eloquent\Collection;
 
+/**
+ * Class CategoryService
+ * @package App\Services
+ */
 class CategoryService
 {
     /**
      * @var CategoryRepository
      */
-    private $category;
+    private $categoryRepository;
 
     /**
      * CategoryService constructor.
-     * @param CategoryRepository $category
+     * @param CategoryRepository $categoryRepository
      */
-    public function __construct(CategoryRepository $category)
+    public function __construct(CategoryRepository $categoryRepository)
     {
-        $this->category = $category;
+        $this->category = $categoryRepository;
     }
 
     /**
-     * @return \App\Entities\User[]|\Illuminate\Database\Eloquent\Collection
+     * @return Collection
      */
-    public function fetchCategoryList()
+    public function fetchCategoryList(): Collection
     {
-        return $this->category->fetchCategoryList();
+        return $this->categoryRepository->fetchCategoryList();
     }
 }

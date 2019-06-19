@@ -1,6 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Repositories\User;
+
+use App\Entities\User;
 
 /**
  * Interface UserRepositoryInterface
@@ -9,33 +12,33 @@ namespace App\Repositories\User;
 interface UserRepositoryInterface
 {
     /**
-     * @param $attribute
-     * @return mixed
+     * @param array $attribute
+     * @return User
      */
-    public function createUser($attribute);
+    public function create(array $attribute): User;
 
     /**
-     * @param $id
-     * @param $attribute
-     * @return mixed
+     * @param int $id
+     * @param array $attribute
+     * @return User
      */
-    public function updateUser($id, $attribute);
+    public function update(int $id, array $attribute): User;
 
     /**
-     * @param $id
-     * @return mixed
+     * @param int $id
+     * @return User
      */
-    public function fetchUserById($id);
+    public function fetchUserById(int $id): User;
 
     /**
-     * @param $token
-     * @return mixed
+     * @param string $token
+     * @return User
      */
-    public function fetchUserByToken($token);
+    public function fetchUserByToken(string $token): User;
 
     /**
-     * @param $email
-     * @return mixed
+     * @param string $email
+     * @return User
      */
-    public function fetchUserByEmail($email);
+    public function fetchUserByEmail(string $email): User;
 }

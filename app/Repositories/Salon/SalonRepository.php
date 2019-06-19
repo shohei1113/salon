@@ -1,8 +1,13 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Repositories\Salon;
 
 use App\Entities\Salon;
+use App\Entities\SalonDetail;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Stripe\Plan;
 
 /**
  * Class SalonRepository
@@ -25,10 +30,10 @@ class SalonRepository implements SalonRepositoryInterface
     }
 
     /**
-     * @param $categoryId
-     * @return Salon[]|\Illuminate\Database\Eloquent\Collection|mixed
+     * @param int $categoryId
+     * @return Collection
      */
-    public function fetchSalonList($categoryId)
+    public function fetchSalonList(int $categoryId): Collection
     {
         if (!empty($categoryId)) {
             return $this->salon->searchCategory($categoryId)->get();
@@ -38,12 +43,12 @@ class SalonRepository implements SalonRepositoryInterface
     }
 
     /**
-     * @param $user
-     * @param $attribute
-     * @param $stripePlan
-     * @return mixed
+     * @param int $id
+     * @param array $attribute
+     * @param Plan $stripePlan
+     * @return Salon
      */
-    public function createSalon($id, $attribute, $stripePlan)
+    public function createSalon(int $id, array $attribute, Plan $stripePlan): Salon
     {
         return $this->salon->create([
             'owner_id' => $id,
@@ -57,30 +62,30 @@ class SalonRepository implements SalonRepositoryInterface
     }
 
     /**
-     * @param $salon
-     * @param $attribute
-     * @return mixed
+     * @param Salon $salon
+     * @param array $attribute
+     * @return Model
      */
-    public function createSalonDetail(Salon $salon, $attribute)
+    public function createSalonDetail(Salon $salon, array $attribute): Model
     {
         return $salon->salon_detail()->create($attribute);
     }
 
     /**
-     * @param $id
-     * @return mixed
+     * @param int $id
+     * @return Salon
      */
-    public function fetchSalonById($id)
+    public function fetchSalonById(int $id): Salon
     {
         return $this->salon->find($id);
     }
 
     /**
-     * @param $id
-     * @param $attribute
-     * @return mixed
+     * @param int $id
+     * @param array $attribute
+     * @return Salon
      */
-    public function updateSalon($id, $attribute)
+    public function updateSalon(int $id, array $attribute): Salon
     {
         $salon = $this->salon->find($id);
         $this->salon->update($attribute);
@@ -89,10 +94,10 @@ class SalonRepository implements SalonRepositoryInterface
 
     /**
      * @param Salon $salon
-     * @param $attribute
-     * @return int|mixed
+     * @param array $attribute
+     * @return int
      */
-    public function updateSalonDetail(Salon $salon, $attribute)
+    public function updateSalonDetail(Salon $salon, array $attribute): int
     {
         return $salon->salon_detail()->update([
             'contents' => $attribute['contents'],
