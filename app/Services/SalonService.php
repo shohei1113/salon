@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Entities\Salon;
 use App\Repositories\Salon\SalonRepository;
+use function GuzzleHttp\Psr7\str;
 use Illuminate\Database\Eloquent\Collection;
 use Stripe\Plan;
 use Stripe\Stripe;
@@ -78,7 +79,7 @@ class SalonService
     {
         Stripe::setApiKey(env('STRIPE_SECRET'));
         return Plan::create([
-            'id' => uniqid(mt_rand()),
+            'id' => uniqid(strval(mt_rand())),
             'amount' => $attribute['price'],
             'interval' => Salon::PAYMENT_INTERVAL,
             'product' => [
