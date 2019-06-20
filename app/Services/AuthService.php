@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Services;
 
@@ -7,12 +8,16 @@ use App\Mail\EmailVerification;
 use App\Repositories\User\UserRepository;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Socialite\Facades\Socialite;
 use Tymon\JWTAuth\JWTAuth;
 
+/**
+ * Class AuthService
+ * @package App\Services
+ */
 class AuthService
 {
     /**
@@ -23,29 +28,36 @@ class AuthService
     /**
      * @var UserRepository
      */
-    private $user;
+    private $userRepository;
+
+    /**
+     * @var UserService
+     */
+    private $userService;
 
     /**
      * AuthService constructor.
      * @param JWTAuth $auth
-     * @param UserRepository $user
+     * @param UserService $userService
+     * @param UserRepository $userRepository
      */
-    public function __construct(JWTAuth $auth, UserRepository $user)
+    public function __construct(JWTAuth $auth, UserService $userService, UserRepository $userRepository)
     {
         $this->auth = $auth;
-        $this->user = $user;
+        $this->userRepository = $userRepository;
+        $this->userService = $userService;
     }
 
     /**
-     * @param $data
-     * @return mixed
+     * @param array $attribute
+     * @return User
      * @throws Exception
      */
-    public function signupUser($data)
+    public function signupUser(array $attribute): User
     {
         DB::beginTransaction();
         try {
-            $user = $this->user->createUser($data);
+            $user = $this->userRepository->create($attribute);
             $this->sendPreRegisterMail($user);
             DB::commit();
         } catch (Exception $e) {
@@ -57,13 +69,14 @@ class AuthService
     }
 
     /**
-     * @param $data
-     * @return mixed
+     * @param array $attribute
+     * @param UploadedFile $image
+     * @return User
      * @throws Exception
      */
-    public function registerUser($data)
+    public function registerUser(array $attribute, UploadedFile $image): User
     {
-        $user = $this->user->fetchUserByToken($data['token']);
+        $user = $this->userRepository->fetchUserByToken($attribute['token']);
 
         if (!isset($user)) {
             throw new Exception('invalid token', 401);
@@ -73,35 +86,41 @@ class AuthService
             throw new Exception('registerd user');
         }
 
-        $this->user->updateUser($user->id, $data);
+        $this->userService->updateUser($user->id, $attribute, $image);
         $user->token = $this->auth->fromUser($user);
 
         return $user;
     }
 
     /**
-     * @param $user
+     * @param User $user
      */
-    public function sendPreRegisterMail($user)
+    public function sendPreRegisterMail(User $user)
     {
         $email = new EmailVerification($user);
         Mail::to($user->email)->send($email);
     }
 
     /**
-     * @param $data
-     * @return mixed
+     * @param array $attribute
+     * @return User
      * @throws Exception
      */
-    public function login($data)
+    public function login(array $attribute): User
     {
-        if (!$token = $this->auth->attempt($data)) {
+        if (!$token = $this->auth->attempt($attribute)) {
             throw new Exception('Unauthorized', 401);
         }
-        $user = $this->user->fetchUserByEmail($data['email']);
+        $user = $this->userRepository->fetchUserByEmail($attribute['email']);
         $user->token = $token;
         return $user;
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | 以下、facebookログイン用(実装保留)
+    |--------------------------------------------------------------------------
+    */
 
     /**
      * @param $socialite

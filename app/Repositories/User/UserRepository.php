@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Repositories\User;
 
 use App\Entities\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 
 /**
@@ -26,25 +28,25 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
-     * @param $attribute
-     * @return mixed
+     * @param array $attribute
+     * @return User
      */
-    public function createUser($attribute)
+    public function create(array $attribute): User
     {
         return $this->user->create([
             'name' => $attribute['name'] ?? NULL,
             'email' => $attribute['email'],
             'password' => Hash::make($attribute['password']),
-            'email_verify_token' => sha1(uniqid( $attribute['email'] , true)),
+            'email_verify_token' => sha1(uniqid($attribute['email'] , true)),
         ]);
     }
 
     /**
-     * @param $id
-     * @param $attribute
-     * @return mixed
+     * @param int $id
+     * @param array $attribute
+     * @return User
      */
-    public function updateUser($id, $attribute)
+    public function update(int $id, array $attribute): User
     {
         $user = $this->user->find($id);
         $user->update([
@@ -56,28 +58,28 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
-     * @param $id
-     * @return mixed
+     * @param int $id
+     * @return User
      */
-    public function fetchUserById($id)
+    public function fetchUserById(int $id): User
     {
         return $this->user->find($id);
     }
 
     /**
-     * @param $token
-     * @return mixed
+     * @param string $token
+     * @return Model
      */
-    public function fetchUserByToken($token)
+    public function fetchUserByToken(string $token): Model
     {
         return $this->user->where('email_verify_token', $token)->first();
     }
 
     /**
-     * @param $email
-     * @return mixed
+     * @param string $email
+     * @return Model
      */
-    public function fetchUserByEmail($email)
+    public function fetchUserByEmail(string $email): Model
     {
         return $this->user->where('email', $email)->first();
     }

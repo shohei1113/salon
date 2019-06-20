@@ -1,12 +1,15 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Repositories\Category;
 
 use App\Entities\Category;
+use Illuminate\Database\Eloquent\Collection;
 
 class CategoryRepository implements CategoryRepositoryInterface
 {
     /**
-     * @var
+     * @var Category
      */
     private $category;
 
@@ -20,9 +23,9 @@ class CategoryRepository implements CategoryRepositoryInterface
     }
 
     /**
-     * @return Category[]|\Illuminate\Database\Eloquent\Collection
+     * @return Collection
      */
-    public function fetchCategoryList()
+    public function fetchCategoryList(): Collection
     {
         return $this->category->all();
     }

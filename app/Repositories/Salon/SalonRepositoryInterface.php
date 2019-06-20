@@ -1,8 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Repositories\Salon;
 
 use App\Entities\Salon;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Stripe\Plan;
 
 /**
  * Interface SalonRepositoryInterface
@@ -11,43 +15,43 @@ use App\Entities\Salon;
 interface SalonRepositoryInterface
 {
     /**
-     * @param $categoryId
-     * @return mixed
+     * @param int|null $categoryId
+     * @return Collection
      */
-    public function fetchSalonList($categoryId);
+    public function fetchSalonList(?int $categoryId): Collection;
 
     /**
-     * @param $id
-     * @param $attribute
-     * @param $stripePlan
-     * @return mixed
+     * @param int $id
+     * @param array $attribute
+     * @param Plan $stripePlan
+     * @return Salon
      */
-    public function createSalon($id, $attribute, $stripePlan);
+    public function createSalon(int $id, array $attribute, Plan $stripePlan): Salon;
 
     /**
-     * @param $salon
-     * @param $attribute
-     * @return mixed
+     * @param Salon $salon
+     * @param array $attribute
+     * @return Model
      */
-    public function createSalonDetail(Salon $salon, $attribute);
+    public function createSalonDetail(Salon $salon, array $attribute): Model;
 
     /**
-     * @param $id
-     * @return mixed
+     * @param int $id
+     * @return Salon
      */
-    public function fetchSalonById($id);
+    public function fetchSalonById(int $id): Salon;
 
     /**
-     * @param $id
-     * @param $attribute
-     * @return mixed
+     * @param int $id
+     * @param array $attribute
+     * @return Salon
      */
-    public function updateSalon($id, $attribute);
+    public function updateSalon(int $id, array $attribute): Salon;
 
     /**
-     * @param $salon
-     * @param $attribute
-     * @return mixed
+     * @param Salon $salon
+     * @param array $attribute
+     * @return int
      */
-    public function updateSalonDetail(Salon $salon, $attribute);
+    public function updateSalonDetail(Salon $salon, array $attribute): int;
 }

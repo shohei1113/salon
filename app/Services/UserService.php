@@ -1,14 +1,15 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Services;
 
 use App\Entities\Image;
+use App\Entities\User;
 use App\Repositories\Image\ImageRepository;
 use App\Repositories\User\UserRepository;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Exception;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class UserService
@@ -17,62 +18,66 @@ use Exception;
 class UserService
 {
     /**
+     * @var ImageRepository
+     */
+    private $image;
+
+    /**
      * @var UserRepository
      */
     private $user;
 
     /**
+     * @var S3Service
+     */
+    private $s3Service;
+
+    /**
      * UserService constructor.
      * @param ImageRepository $image
      * @param UserRepository $user
+     * @param S3Service $s3Service
      */
-    public function __construct(ImageRepository $image, UserRepository $user)
-    {
+    public function __construct(
+        ImageRepository $image,
+        UserRepository $user,
+        S3Service $s3Service
+    ) {
         $this->image = $image;
         $this->user = $user;
+        $this->s3Service = $s3Service;
     }
 
     /**
-     * @param $id
-     * @param Request $request
-     * @return mixed
+     * @param int $id
+     * @param array $attribute
+     * @param UploadedFile $image
+     * @return User
      * @throws Exception
      */
-    public function updateUser($id, Request $request)
+    public function updateUser(int $id, array $attribute, ?UploadedFile $image): User
     {
-        $data = $request->all();
-
         DB::beginTransaction();
         try {
-            $user = $this->user->updateUser($id, $data);
-            if ($request->hasFile('image')) {
-                $imagePath = $this->uploadImage($request->image);
-                $type = Image::TYPE_USER;
-                $this->image->updateImage($user, $imagePath, $type);
+            $user = $this->user->update($id, $attribute);
+            if (!empty($image)) {
+                $imagePath = $this->s3Service->uploadImage($image);
+                $this->image->updateImage($user->id, $imagePath, Image::TYPE_USER);
             }
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
-            throw new Exception($e->getMessage(), $e->getCode());
+            throw new Exception($e);
         }
 
         return $user;
     }
 
     /**
-     * @param $image
-     * @return false|string
+     * @param int $id
+     * @return User
      */
-    public function uploadImage($image)
-    {
-        return Storage::disk('s3')->putFile(env('APP_ENV').'/user', $image, 'public');
-    }
-
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function fetchUserById($id)
+    public function fetchUserById(int $id): User
     {
         return $this->user->fetchUserById($id);
     }

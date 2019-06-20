@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Controllers\API;
 
@@ -30,20 +31,20 @@ class UserController extends Controller
 
     /**
      * @param Request $request
-     * @param $id
-     * @return string
+     * @param int $id
+     * @return UserInfoResource
      * @throws \Exception
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): UserInfoResource
     {
-        $user = $this->userService->updateUser($id, $request);
+        $user = $this->userService->updateUser($id, $request->all(), $request->image);
         return new UserInfoResource($user);
     }
 
     /**
      * @return UserInfoResource
      */
-    public function loginUserInfo()
+    public function loginUserInfo(): UserInfoResource
     {
         $user = $this->userService->fetchUserById(Auth::id());
         return new UserInfoResource($user);

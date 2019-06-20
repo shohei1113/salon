@@ -1,11 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Services;
 
 use App\Entities\User;
 use App\Repositories\Salon\SalonRepository;
 use Exception;
-use Illuminate\Http\Request;
+use Laravel\Cashier\Subscription;
 use Stripe\Stripe;
 use Stripe\Token;
 
@@ -15,19 +16,27 @@ use Stripe\Token;
  */
 class PaymentService
 {
-    private $salon;
+    /**
+     * @var SalonRepository
+     */
+    private $salonRepository;
 
-    public function __construct(SalonRepository $salon)
+    /**
+     * PaymentService constructor.
+     * @param SalonRepository $salon
+     */
+    public function __construct(SalonRepository $salonRepository)
     {
-        $this->salon = $salon;
+        $this->salonRepository = $salonRepository;
     }
 
     /**
-     * @param $user
-     * @param $request
-     * @return mixed
+     * @param User $user
+     * @param int $salonId
+     * @param array $attribute
+     * @return Subscription
      */
-    public function paymentByCard(User $user, $salonId, $attribute)
+    public function paymentByCard(User $user, int $salonId, array $attribute): Subscription
     {
         Stripe::setApiKey(env('STRIPE_KEY'));
         $stripeToken = Token::create([
@@ -36,20 +45,20 @@ class PaymentService
                 'exp_month' => $attribute['exp_month'],
                 'exp_year' => $attribute['exp_year'],
                 'cvc' => $attribute['cvc'],
-                'name' => $attribute['email'] ?? NULL,
+                'name' => $attribute['name'] ?? NULL,
             ],
         ]);
 
-        $salon = $this->salon->fetchSalonById($salonId);
+        $salon = $this->salonRepository->fetchSalonById($salonId);
         return $user->newSubscription('main', $salon->plan_id)
             ->create($stripeToken->id);
     }
 
     /**
-     * @param $user
+     * @param User $user
      * @return string
      */
-    public function cancelPaymentByCard(User $user)
+    public function cancelPaymentByCard(User $user): string
     {
         try {
             $user->subscription('main')->cancelNow();

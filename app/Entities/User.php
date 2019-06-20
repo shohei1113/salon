@@ -19,9 +19,9 @@ class User extends Authenticatable implements JWTSubject
     const REGISTERED_USER = 1;
 
     /**
-     * @var
+     * @var string
      */
-    private $token;
+    public $token;
 
     /**
      * The attributes that are mass assignable.

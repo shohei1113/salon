@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Controllers\API;
 
+use App\Entities\Salon;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BaseResource;
 use App\Http\Resources\SalonResource;
@@ -30,9 +32,10 @@ class SalonController extends Controller
     }
 
     /**
+     * @param int|null $categoryId
      * @return BaseResource
      */
-    public function index($categoryId = NULL)
+    public function index(?int $categoryId = NULL): BaseResource
     {
         $salons = $this->salonService->fetchSalonList($categoryId);
         return new BaseResource(SalonResource::collection($salons), config('const.salon.index'));
@@ -43,17 +46,17 @@ class SalonController extends Controller
      * @return SalonResource
      * @throws \Exception
      */
-    public function store(Request $request)
+    public function store(Request $request): SalonResource
     {
         $salon = $this->salonService->createSalon(Auth::id(), $request->all());
         return new SalonResource($salon, config('const.salon.store'));
     }
 
     /**
-     * @param $id
-     * @return SalonResource
+     * @param int $id
+     * @return Salon
      */
-    public function show($id)
+    public function show(int $id): SalonResource
     {
         $salon = $this->salonService->fetchSalonById($id);
         return new SalonResource($salon, config('const.salon.show'));
@@ -61,10 +64,11 @@ class SalonController extends Controller
 
     /**
      * @param Request $request
-     * @param $id
+     * @param int $id
+     * @return SalonResource
      * @throws \Exception
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): SalonResource
     {
         $salon = $this->salonService->updateSalon($id, $request->all());
         return new SalonResource($salon, config('const.salon.update'));

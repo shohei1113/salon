@@ -1,9 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Services;
 
 use App\Entities\Salon;
 use App\Repositories\Salon\SalonRepository;
+use Illuminate\Database\Eloquent\Collection;
 use Stripe\Plan;
 use Stripe\Stripe;
 use Exception;
@@ -30,20 +32,20 @@ class SalonService
     }
 
     /**
-     * @return Salon[]|\Illuminate\Database\Eloquent\Collection
+     * @return Collection
      */
-    public function fetchSalonList($categoryId)
+    public function fetchSalonList(?int $categoryId): Collection
     {
         return $this->salon->fetchSalonList($categoryId);
     }
 
     /**
-     * @param $id
-     * @param $attribute
-     * @return mixed
+     * @param int $id
+     * @param array $attribute
+     * @return Salon
      * @throws Exception
      */
-    public function createSalon($id, $attribute)
+    public function createSalon(int $id, array $attribute): Salon
     {
         DB::beginTransaction();
         try {
@@ -60,10 +62,10 @@ class SalonService
     }
 
     /**
-     * @param $id
-     * @return mixed
+     * @param int $id
+     * @return Salon
      */
-    public function fetchSalonById($id)
+    public function fetchSalonById(int $id): Salon
     {
         return $this->salon->fetchSalonById($id);
     }
@@ -88,11 +90,12 @@ class SalonService
     }
 
     /**
-     * @param $id
-     * @param $attribute
+     * @param int $id
+     * @param array $attribute
+     * @return Salon
      * @throws Exception
      */
-    public function updateSalon($id, $attribute)
+    public function updateSalon(int $id, array $attribute): Salon
     {
         DB::beginTransaction();
         try {
@@ -109,11 +112,11 @@ class SalonService
     }
 
     /**
-     * @param $salon
-     * @param $attribute
+     * @param Salon $salon
+     * @param array $attribute
      * @return Plan
      */
-    public function updateStripePlan($salon, $attribute)
+    public function updateStripePlan(Salon $salon, array $attribute): Plan
     {
         Stripe::setApiKey(env('STRIPE_SECRET'));
         return Plan::update(

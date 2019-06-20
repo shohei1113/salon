@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 class Image extends Model
 {
     const TYPE_USER = 'App\Entities\User';
+    const TYPE_POST = 'App\Entities\Post';
 
     /**
      * @var array
