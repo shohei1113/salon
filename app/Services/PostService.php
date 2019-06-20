@@ -64,7 +64,7 @@ class PostService
      * @return Post
      * @throws Exception
      */
-    public function createPost(array $attribute, UploadedFile $image): Post
+    public function createPost(array $attribute, ?UploadedFile $image): Post
     {
         DB::beginTransaction();
         try {
@@ -72,8 +72,8 @@ class PostService
             if (!empty($image)) {
                 $imagePath = $this->s3Service->uploadImage($image);
                 $this->image->updateImage($post->id, $imagePath, Image::TYPE_POST);
-                DB::commit();
             }
+            DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
             throw new Exception($e);
@@ -85,7 +85,7 @@ class PostService
     /**
      * @param int $id
      * @param array $attribute
-     * @param UploadedFile $image
+     * @param UploadedFile|null $image
      * @return Post
      * @throws Exception
      */
@@ -94,14 +94,14 @@ class PostService
         DB::beginTransaction();
         try {
             $post = $this->postRepository->update($id, $attribute);
-            if (!empty($image)) {
+            if (isset($image)) {
                 $imagePath = $this->s3Service->uploadImage($image);
-                $this->image->updateImage($post->id, $imagePath, Image::TYPE_USER);
+                $this->image->updateImage($post->id, $imagePath, Image::TYPE_POST);
             }
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
-            throw new Exception($e);
+            throw new Exception('error');
         }
         return $post;
     }
