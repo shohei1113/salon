@@ -18,7 +18,7 @@ class PostRepository implements PostRepositoryInterface
     public function fetchPostList(?int $postId): Collection
     {
         if (!empty($postId)) {
-            return $this->post->searchPost($postId);
+            return $this->post->searchPost($postId)->get();
         }
 
         return $this->post->all();
@@ -31,8 +31,15 @@ class PostRepository implements PostRepositoryInterface
 
     public function update(int $id, array $attribute): Post
     {
-        $post = $this->post->find($id);
+        $post = $this->post->findOrFail($id);
         $post->update($attribute);
+        return $post;
+    }
+
+    public function delete(int $id): Post
+    {
+        $post = $this->post->findOrFail($id);
+        $post->delete();
         return $post;
     }
 }

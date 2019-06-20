@@ -27,10 +27,15 @@ class PostResource extends JsonResource
                 'salon_id' => $this->salon_id,
                 'title' => $this->title,
                 'content' => $this->content,
+                'image_url' => $this->image->image_path ?? NULL,
             ],
         ];
     }
 
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return array
+     */
     public function with($request)
     {
         return [

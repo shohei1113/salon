@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Repositories\User;
 
 use App\Entities\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 
 /**
@@ -67,18 +68,18 @@ class UserRepository implements UserRepositoryInterface
 
     /**
      * @param string $token
-     * @return User
+     * @return Model
      */
-    public function fetchUserByToken(string $token): User
+    public function fetchUserByToken(string $token): Model
     {
         return $this->user->where('email_verify_token', $token)->first();
     }
 
     /**
      * @param string $email
-     * @return User
+     * @return Model
      */
-    public function fetchUserByEmail(string $email): User
+    public function fetchUserByEmail(string $email): Model
     {
         return $this->user->where('email', $email)->first();
     }

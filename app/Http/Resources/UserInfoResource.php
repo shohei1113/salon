@@ -26,9 +26,17 @@ class UserInfoResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'data' => [
-                'user' => new UserResource($this),
-            ],
+            'user' => new UserResource($this),
+        ];
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return array
+     */
+    public function with($request)
+    {
+        return [
             'message' => $this->message,
         ];
     }

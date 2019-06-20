@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Repositories\User;
 
 use App\Entities\User;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Interface UserRepositoryInterface
@@ -32,13 +33,13 @@ interface UserRepositoryInterface
 
     /**
      * @param string $token
-     * @return User
+     * @return Model
      */
-    public function fetchUserByToken(string $token): User;
+    public function fetchUserByToken(string $token): Model;
 
     /**
      * @param string $email
-     * @return User
+     * @return Model
      */
-    public function fetchUserByEmail(string $email): User;
+    public function fetchUserByEmail(string $email): Model;
 }

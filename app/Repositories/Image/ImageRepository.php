@@ -28,15 +28,15 @@ class ImageRepository implements ImageRepositoryInterface
     }
 
     /**
-     * @param $user
-     * @param $path
-     * @param $type
-     * @return mixed
+     * @param int $id
+     * @param string $path
+     * @param string $type
+     * @return Model
      */
-    public function updateImage(User $user, string $path, int $type): Model
+    public function updateImage(int $id, string $path, string $type): Model
     {
         return $this->image->updateOrCreate(
-            ['imageable_id' => $user->id, 'imageable_type' => $type],
+            ['imageable_id' => $id, 'imageable_type' => $type],
             ['image_path' => $path]
         );
     }

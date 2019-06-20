@@ -13,10 +13,10 @@ use Illuminate\Database\Eloquent\Model;
 interface ImageRepositoryInterface
 {
     /**
-     * @param User $user
+     * @param int $id
      * @param string $path
-     * @param int $type
+     * @param string $type
      * @return Model
      */
-    public function updateImage(User $user, string $path, int $type): Model;
+    public function updateImage(int $id, string $path, string $type): Model;
 }

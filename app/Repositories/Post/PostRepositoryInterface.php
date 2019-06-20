@@ -13,4 +13,6 @@ interface PostRepositoryInterface
     public function create(array $attribute): Post;
 
     public function update(int $id, array $attribute): Post;
+
+    public function delete(int $id): Post;
 }

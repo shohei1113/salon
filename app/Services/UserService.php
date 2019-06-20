@@ -55,19 +55,19 @@ class UserService
      * @return User
      * @throws Exception
      */
-    public function updateUser(int $id, array $attribute, UploadedFile $image): User
+    public function updateUser(int $id, array $attribute, ?UploadedFile $image): User
     {
         DB::beginTransaction();
         try {
             $user = $this->user->update($id, $attribute);
             if (!empty($image)) {
                 $imagePath = $this->s3Service->uploadImage($image);
-                $this->image->updateImage($user, $imagePath, Image::TYPE_USER);
+                $this->image->updateImage($user->id, $imagePath, Image::TYPE_USER);
             }
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
-            throw new Exception($e->getMessage(), $e->getCode());
+            throw new Exception($e);
         }
 
         return $user;
