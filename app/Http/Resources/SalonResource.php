@@ -34,7 +34,7 @@ class SalonResource extends JsonResource
                 'product_id' => $this->product_id,
                 'salon_detail' => new SalonDetailResource($this->salon_detail),
                 'image_url' => $this->image->image_path ?? NULL,
-                'is_payment' => $this->is_admin,
+                'is_admin' => $this->is_admin,
             ],
         ];
     }

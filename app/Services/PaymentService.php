@@ -72,9 +72,9 @@ class PaymentService
 
     /**
      * @param array $attribute
-     * @return object
+     * @return Token
      */
-    public function createStripeToken(array $attribute): object
+    public function createStripeToken(array $attribute): Token
     {
         Stripe::setApiKey(env('STRIPE_KEY'));
         return Token::create([

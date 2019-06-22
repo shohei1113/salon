@@ -8,6 +8,8 @@ class Salon extends Model
 {
     const PAYMENT_INTERVAL = 'month';
     const CURRENCY = 'jpy';
+    const IS_MEMBER= 1;
+    const IS_NOT_MEMBER = 0;
 
     protected $fillable = [
         'owner_id', 'category_id', 'title', 'description',
@@ -68,11 +70,6 @@ class Salon extends Model
 
     public function getIsAdminAttribute()
     {
-        var_dump($this->title);
-        if (isset($this->users)) {
-            return '1';
-        } else {
-            return '0';
-        }
+        return $this->users->count() ? self::IS_MEMBER : self::IS_NOT_MEMBER;
     }
 }
