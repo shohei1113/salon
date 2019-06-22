@@ -5,7 +5,6 @@ namespace App\Services;
 
 use App\Entities\Image;
 use App\Entities\User;
-use App\Repositories\Image\ImageRepository;
 use App\Repositories\User\UserRepository;
 use Exception;
 use Illuminate\Http\UploadedFile;
@@ -18,14 +17,14 @@ use Illuminate\Support\Facades\DB;
 class UserService
 {
     /**
-     * @var ImageRepository
-     */
-    private $image;
-
-    /**
      * @var UserRepository
      */
     private $user;
+
+    /**
+     * @var ImageService
+     */
+    private $imageService;
 
     /**
      * @var S3Service
@@ -34,17 +33,17 @@ class UserService
 
     /**
      * UserService constructor.
-     * @param ImageRepository $image
      * @param UserRepository $user
+     * @param ImageService $imageService
      * @param S3Service $s3Service
      */
     public function __construct(
-        ImageRepository $image,
         UserRepository $user,
+        ImageService $imageService,
         S3Service $s3Service
     ) {
-        $this->image = $image;
         $this->user = $user;
+        $this->imageService = $imageService;
         $this->s3Service = $s3Service;
     }
 
@@ -60,10 +59,7 @@ class UserService
         DB::beginTransaction();
         try {
             $user = $this->user->update($id, $attribute);
-            if (!empty($image)) {
-                $imagePath = $this->s3Service->uploadImage($image);
-                $this->image->updateImage($user->id, $imagePath, Image::TYPE_USER);
-            }
+            $this->imageService->upload($image, $user->id, Image::S3_DIR_USER, Image::TYPE_USER);
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();

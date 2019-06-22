@@ -13,12 +13,13 @@ class S3Service
 {
     /**
      * @param $image
+     * @param $dir
      * @return string
      */
-    public function uploadImage($image): string
+    public function uploadImage($image, $dir): string
     {
         return Storage::disk('s3')
-            ->putFile(env('APP_ENV').'/user', $image, 'public');
+            ->putFile(env('APP_ENV').$dir, $image, 'public');
     }
 
 }

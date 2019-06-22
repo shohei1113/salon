@@ -39,12 +39,40 @@ class Salon extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_salon');
+    }
+
+    /**
      * @param $query
      * @param $categoryId
      * @return mixed
      */
     public function scopeSearchCategory($query, $categoryId)
     {
-        return $query->where('category_id', $categoryId);
+        if (!empty($categoryId)) {
+            return $query->where('category_id', $categoryId);
+        }
+    }
+
+    public function getIsAdminAttribute()
+    {
+        var_dump($this->title);
+        if (isset($this->users)) {
+            return '1';
+        } else {
+            return '0';
+        }
     }
 }

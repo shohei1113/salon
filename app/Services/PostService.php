@@ -5,7 +5,6 @@ namespace App\Services;
 
 use App\Entities\Image;
 use App\Entities\Post;
-use App\Repositories\Image\ImageRepository;
 use App\Repositories\Post\PostRepository;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -34,18 +33,23 @@ class PostService
     private $s3Service;
 
     /**
+     * @var ImageService
+     */
+    private $imageService;
+
+    /**
      * PostService constructor.
-     * @param ImageRepository $imageRepository
      * @param PostRepository $postRepository
+     * @param ImageService $imageService
      * @param S3Service $s3Service
      */
     public function __construct(
-        ImageRepository $imageRepository,
         PostRepository $postRepository,
+        ImageService $imageService,
         S3Service $s3Service
     ) {
-        $this->image = $imageRepository;
         $this->postRepository = $postRepository;
+        $this->imageService = $imageService;
         $this->s3Service = $s3Service;
     }
 
@@ -69,10 +73,7 @@ class PostService
         DB::beginTransaction();
         try {
             $post = $this->postRepository->create($attribute);
-            if (!empty($image)) {
-                $imagePath = $this->s3Service->uploadImage($image);
-                $this->image->updateImage($post->id, $imagePath, Image::TYPE_POST);
-            }
+            $this->imageService->upload($image, $post->id, Image::S3_DIR_POST, Image::TYPE_POST);
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
@@ -94,15 +95,13 @@ class PostService
         DB::beginTransaction();
         try {
             $post = $this->postRepository->update($id, $attribute);
-            if (isset($image)) {
-                $imagePath = $this->s3Service->uploadImage($image);
-                $this->image->updateImage($post->id, $imagePath, Image::TYPE_POST);
-            }
+            $this->imageService->upload($image, $post->id, Image::S3_DIR_POST, Image::TYPE_POST);
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
-            throw new Exception('error');
+            throw new Exception($e);
         }
+
         return $post;
     }
 
