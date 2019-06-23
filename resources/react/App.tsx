@@ -29,6 +29,16 @@ const App: React.FC = () => {
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
+  * {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  input {
+    appearance: none;
+  }
 `
 
 export default App

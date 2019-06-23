@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 import { useDispatch } from 'redux-react-hook'
 import { Field, Formik } from 'formik'
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
+import { Theme, createStyles, makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Avatar from '@material-ui/core/Avatar'
@@ -22,28 +21,29 @@ import { setLoader, clearLoader, setSnackbar } from '../../../redux/modules/ui'
 import { DefaultTemplate } from '../../templates/default-template'
 import { TextField } from '../../atoms/text-field'
 
-interface Props extends WithStyles<typeof styles> {}
-
-const styles = (theme: Theme) => ({
-  paper: {
-    display: 'flex',
-    flexDirection: 'column' as any,
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: 20,
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: 300,
-  },
-  submit: {
-    marginTop: 60,
-  },
-})
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    paper: {
+      display: 'flex',
+      flexDirection: 'column' as any,
+      alignItems: 'center',
+    },
+    avatar: {
+      marginBottom: 20,
+      backgroundColor: theme.palette.secondary.main,
+    },
+    form: {
+      width: 300,
+    },
+    submit: {
+      marginTop: 60,
+    },
+  })
+)
 
 const Login: React.FC = (props: any) => {
-  const { classes, history } = props
+  const { history } = props
+  const classes = useStyles({})
   const dispatch = useDispatch()
   const [axiosConfig, setAxiosConfig] = useState({})
   const [isStartFetch, setStartFetch] = useState(false)
@@ -83,7 +83,7 @@ const Login: React.FC = (props: any) => {
   }
 
   return (
-    <DefaultTemplate {...props}>
+    <DefaultTemplate {...props} isDefaultSpace>
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -158,4 +158,4 @@ const Login: React.FC = (props: any) => {
   )
 }
 
-export default withRouter(withStyles(styles)(Login) as any)
+export default withRouter(Login as any)

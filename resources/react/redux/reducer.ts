@@ -5,18 +5,20 @@ import auth, { State as AuthState } from './modules/auth'
 import ui, { State as UiState } from './modules/ui'
 import categories, { State as CategoriesState } from './modules/categories'
 import salons, { State as Salons } from './modules/salons'
+import member, { State as Member } from './modules/member'
 
 export interface StoreState {
   auth: AuthState
   ui: UiState
   categories: CategoriesState
   salons: Salons
+  member: Member
 }
 
 const authPersistConfig = {
   key: 'auth',
   storage: storage,
-  blacklist: ['isLoggedin', 'user'],
+  blacklist: ['isPrepared', 'isLoggedin', 'user'],
 }
 
 export default combineReducers({
@@ -24,4 +26,5 @@ export default combineReducers({
   ui,
   categories,
   salons,
+  member,
 })

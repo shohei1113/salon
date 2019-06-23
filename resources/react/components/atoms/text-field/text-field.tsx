@@ -22,6 +22,7 @@ const TextField = props => {
 
 const StyledTextField = styled.div`
   margin-top: 16px;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
 `
 const LabelName = styled.div`
   font-size: 12px;

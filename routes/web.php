@@ -17,6 +17,9 @@ Route::get('/', function () {
 Route::get('/signup', function () {
     return view('index');
 });
+Route::get('/signup/complete', function () {
+    return view('index');
+});
 Route::get('/register', function () {
     return view('index');
 });
@@ -30,6 +33,9 @@ Route::get('/salon', function () {
     return view('index');
 });
 Route::get('/salon/register', function () {
+    return view('index');
+});
+Route::get('/salon/member', function () {
     return view('index');
 });
 

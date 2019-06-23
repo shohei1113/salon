@@ -1,9 +1,7 @@
 import React, { useEffect, useCallback } from 'react'
 import { withRouter } from 'react-router-dom'
 import { useMappedState, useDispatch } from 'redux-react-hook'
-import classNames from 'classnames'
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
+import { Theme, createStyles, makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import PATH from '../../../const/path'
 import useFetchApi from '../../../hooks/use-fetch-api'
@@ -11,44 +9,45 @@ import { initSalons } from '../../../redux/modules/salons'
 import { DefaultTemplate } from '../../templates/default-template'
 import { Album } from '../../molecules/album'
 
-interface Props extends WithStyles<typeof styles> {}
-
-const styles = (theme: Theme) => ({
-  heroUnit: {
-    backgroundColor: theme.palette.background.paper,
-  },
-  heroContent: {
-    maxWidth: 600,
-    margin: '0 auto',
-    padding: 20,
-  },
-})
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    heroUnit: {
+      backgroundColor: theme.palette.background.paper,
+    },
+    heroContent: {
+      maxWidth: 600,
+      margin: '0 auto',
+    },
+    salons: {
+      marginTop: 24,
+    },
+  })
+)
 
 const Salons: React.FC = (props: any) => {
-  const { classes } = props
-  const { salons } = useMappedState(useCallback(state => state.salons, []))
+  const classes = useStyles({})
+  const { auth, salons } = useMappedState(useCallback(state => state, []))
   const dispatch = useDispatch()
   const axiosConfig = {
     method: 'GET',
     url: `${PATH}/api/category/1/salon`,
+    headers: { Authorization: `Bearer ${auth.token}` },
   }
   // const { isLoading, response, error } = useFetchApi(axiosConfig, true)
 
   // useEffect(() => {
-  //   // dispatch(
-  //   //   initSalons({
-  //   //     salons: data.salons,
-  //   //   })
-  //   // )
+  //   if (response) {
+  //     dispatch(initSalons(response))
+  //   }
   // }, [response])
 
   return (
-    <DefaultTemplate {...props}>
+    <DefaultTemplate {...props} isDefaultSpace={true}>
       <div className={classes.heroUnit}>
         <div className={classes.heroContent}>
           <Typography
             component="h1"
-            variant="h2"
+            variant="h4"
             align="center"
             color="textPrimary"
             gutterBottom
@@ -56,7 +55,7 @@ const Salons: React.FC = (props: any) => {
             経営者コース
           </Typography>
           <Typography
-            variant="h6"
+            variant="body1"
             align="center"
             color="textSecondary"
             paragraph
@@ -67,9 +66,11 @@ const Salons: React.FC = (props: any) => {
           </Typography>
         </div>
       </div>
-      <Album cards={salons} />
+      <div className={classes.salons}>
+        <Album cards={salons.salons} />
+      </div>
     </DefaultTemplate>
   )
 }
 
-export default withRouter(withStyles(styles)(Salons) as any)
+export default withRouter(Salons as any)

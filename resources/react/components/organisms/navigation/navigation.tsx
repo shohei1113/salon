@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { useMappedState, useDispatch } from 'redux-react-hook'
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles'
+import { Theme, createStyles, makeStyles } from '@material-ui/core/styles'
 import Drawer from '@material-ui/core/Drawer'
 import List from '@material-ui/core/List'
 import Divider from '@material-ui/core/Divider'
@@ -18,21 +18,38 @@ import {
   setSnackbar,
 } from '../../../redux/modules/ui'
 
-const styles = createStyles({
-  list: {
-    width: 250,
-  },
-  fullList: {
-    width: 'auto',
-  },
-})
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    list: {
+      width: 250,
+    },
+    fullList: {
+      width: 'auto',
+    },
+  })
+)
 
-export interface Props extends WithStyles<typeof styles> {
-  history: any
+function NavItem(props) {
+  const { text, handleClick } = props
+  const dispatch = useDispatch()
+  const changePage = () => {
+    dispatch(toggleNav())
+    if (handleClick) {
+      console.log('0')
+      handleClick()
+    }
+  }
+
+  return (
+    <ListItem button onClick={changePage}>
+      <ListItemText primary={text} />
+    </ListItem>
+  )
 }
 
-function Navigation(props: Props) {
-  const { classes, history } = props
+function Navigation(props: any) {
+  const { history } = props
+  const classes = useStyles({})
   const { auth, ui } = useMappedState(React.useCallback(state => state, []))
   const dispatch = useDispatch()
   const [axiosConfig, setAxiosConfig] = useState({})
@@ -60,11 +77,6 @@ function Navigation(props: Props) {
     dispatch(toggleNav())
   }
 
-  const changePage = (path: string) => {
-    dispatch(toggleNav())
-    history.push(path)
-  }
-
   const handleLogout = () => {
     dispatch(setLoader())
     setAxiosConfig({
@@ -81,43 +93,32 @@ function Navigation(props: Props) {
     <div>
       <Drawer open={ui.isOpenNav} onClose={toggleDrawer}>
         <div className={classes.list}>
-          <List>
-            <ListItem
-              button
-              onClick={() => {
-                changePage('/')
-              }}
-            >
-              <ListItemText primary="top" />
-            </ListItem>
-          </List>
           <Divider />
-          {auth.isLoggedin && (
+          {auth.isLoggedin ? (
             <>
               <List>
                 <ListSubheader inset>サロン</ListSubheader>
                 <Link to="/">
-                  <ListItem button>
-                    <ListItemText primary="開講サロン" />
-                  </ListItem>
+                  <NavItem text="開講サロン" />
                 </Link>
-
-                <ListItem button>
-                  <ListItemText primary="受講サロン" />
-                </ListItem>
+                <Link to="/">
+                  <NavItem text="受講サロン" />
+                </Link>
               </List>
               <Divider />
               <List>
-                <ListItem
-                  button
-                  onClick={() => {
-                    handleLogout()
-                  }}
-                >
-                  <ListItemText primary="ログアウト" />
-                </ListItem>
+                <NavItem text="ログアウト" handleClick={handleLogout} />
               </List>
             </>
+          ) : (
+            <List>
+              <Link to="/login">
+                <NavItem text="ログイン" />
+              </Link>
+              <Link to="/signup">
+                <NavItem text="新規登録" />
+              </Link>
+            </List>
           )}
           <Divider />
         </div>
@@ -126,4 +127,4 @@ function Navigation(props: Props) {
   )
 }
 
-export default withStyles(styles)(Navigation)
+export default Navigation

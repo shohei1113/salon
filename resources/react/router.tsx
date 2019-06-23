@@ -8,7 +8,6 @@ import { Register } from './components/pages/register'
 import { Salons } from './components/pages/salons'
 import { Salon } from './components/pages/salon'
 import { Management } from './components/pages/category/management'
-import { Detail } from './components/pages/category/detail'
 
 export default () => {
   return (
@@ -16,12 +15,11 @@ export default () => {
       <ScrollToTop>
         <Route path="/" exact component={Top} />
         <Route path="/login" exact component={Login} />
-        <Route path="/signup" exact component={Signup} />
+        <Route path="/signup" component={Signup} />
         <Route path="/register" exact component={Register} />
         <Route path="/salons" component={Salons} />
         <Route path="/salon" component={Salon} />
         <Route path="/category/management" exact component={Management} />
-        <Route path="/category/detail/:salonId" component={Detail} />
       </ScrollToTop>
     </Router>
   )

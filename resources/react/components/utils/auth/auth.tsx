@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { useMappedState, useDispatch } from 'redux-react-hook'
 import PATH from '../../../const/path'
 import useFetchApi from '../../../hooks/use-fetch-api'
-import { loginAuth } from '../../../redux/modules/auth'
+import { loginAuth, resetAuth } from '../../../redux/modules/auth'
 import { setLoader, clearLoader } from '../../../redux/modules/ui'
 
 interface Props {
@@ -22,6 +22,7 @@ const Auth: React.FC = (props: Props) => {
 
   useEffect(() => {
     if (!token) {
+      dispatch(resetAuth())
       return
     }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { useMappedState, useDispatch } from 'redux-react-hook'
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles'
+import { Theme, createStyles, makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
@@ -10,23 +10,23 @@ import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import { toggleNav } from '../../../redux/modules/ui'
 
-const styles = createStyles({
-  root: {
-    flexGrow: 1,
-  },
-  grow: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
-  },
-})
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1,
+    },
+    grow: {
+      flexGrow: 1,
+    },
+    menuButton: {
+      marginLeft: -12,
+      marginRight: 20,
+    },
+  })
+)
 
-export interface Props extends WithStyles<typeof styles> {}
-
-function Header(props: Props) {
-  const { classes } = props
+function Header() {
+  const classes = useStyles({})
   const { isLoggedin, user } = useMappedState(
     React.useCallback(state => state.auth, [])
   )
@@ -57,9 +57,6 @@ function Header(props: Props) {
               <Button color="inherit">
                 <Link to="/login">LOGIN</Link>
               </Button>
-              <Button color="inherit">
-                <Link to="/signup">signup</Link>
-              </Button>
             </>
           )}
         </Toolbar>
@@ -68,4 +65,4 @@ function Header(props: Props) {
   )
 }
 
-export default withStyles(styles)(Header)
+export default Header

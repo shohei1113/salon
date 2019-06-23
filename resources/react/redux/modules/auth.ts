@@ -1,4 +1,5 @@
 const initialState = {
+  isPrepared: false,
   isLoggedin: false,
   token: undefined,
   user: undefined,
@@ -11,6 +12,7 @@ export default function reducer(state = initialState, action: any) {
     case 'auth/initAuth':
       return {
         ...state,
+        isPrepared: true,
         isLoggedin: true,
         token: action.payload.token,
         user: action.payload.user,
@@ -18,12 +20,14 @@ export default function reducer(state = initialState, action: any) {
     case 'auth/loginAuth':
       return {
         ...state,
+        isPrepared: true,
         isLoggedin: true,
         user: action.payload.user,
       }
     case 'auth/resetAuth':
       return {
         ...state,
+        isPrepared: true,
         isLoggedin: false,
         token: undefined,
         user: undefined,

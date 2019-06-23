@@ -9,29 +9,22 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import { setModal, clearModal } from '../../../redux/modules/ui'
 
 const Modal = () => {
-  const { isOpen, title, description } = useMappedState(
+  const { isOpen, title, description, callback } = useMappedState(
     React.useCallback(state => state.ui.modal, [])
   )
   const dispatch = useDispatch()
-
-  function handleOpen() {
-    dispatch(
-      setModal({
-        title: 'タイトル',
-        description: '説明',
-      })
-    )
-  }
 
   function handleClose() {
     dispatch(clearModal())
   }
 
+  function handleCallback() {
+    callback()
+    handleClose()
+  }
+
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleOpen}>
-        Open alert dialog
-      </Button>
       <Dialog
         open={isOpen}
         onClose={handleClose}
@@ -39,16 +32,18 @@ const Modal = () => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            {description}
-          </DialogContentText>
-        </DialogContent>
+        {description && (
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              {description}
+            </DialogContentText>
+          </DialogContent>
+        )}
         <DialogActions>
           <Button onClick={handleClose} color="primary">
-            いいえ
+            閉じる
           </Button>
-          <Button onClick={handleClose} color="primary" autoFocus>
+          <Button onClick={handleCallback} color="primary" autoFocus>
             はい
           </Button>
         </DialogActions>

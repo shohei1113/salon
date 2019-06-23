@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'redux-react-hook'
 import { withRouter } from 'react-router-dom'
 import { Field, Formik } from 'formik'
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
+import { Theme, createStyles, makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Avatar from '@material-ui/core/Avatar'
@@ -13,32 +12,33 @@ import { composeValidators, required } from '../../../utils/validator'
 import getUrlParam from '../../../utils/get-url-param'
 import useFetchApi from '../../../hooks/use-fetch-api'
 import { initAuth } from '../../../redux/modules/auth'
-import { setLoader, clearLoader } from '../../../redux/modules/ui'
+import { setLoader, clearLoader, setSnackbar } from '../../../redux/modules/ui'
 import { DefaultTemplate } from '../../templates/default-template'
 import { TextField } from '../../atoms/text-field'
 
-interface Props extends WithStyles<typeof styles> {}
-
-const styles = (theme: Theme) => ({
-  paper: {
-    display: 'flex',
-    flexDirection: 'column' as any,
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: 20,
-    backgroundColor: theme.palette.secondary.main,
-  },
-  submit: {
-    marginTop: 60,
-  },
-  form: {
-    width: 300,
-  },
-})
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    paper: {
+      display: 'flex',
+      flexDirection: 'column' as any,
+      alignItems: 'center',
+    },
+    avatar: {
+      marginBottom: 20,
+      backgroundColor: theme.palette.secondary.main,
+    },
+    submit: {
+      marginTop: 60,
+    },
+    form: {
+      width: 300,
+    },
+  })
+)
 
 const Register: React.FC = (props: any) => {
-  const { classes } = props
+  const { history } = props
+  const classes = useStyles({})
   const token = getUrlParam('token')
   const dispatch = useDispatch()
   const [axiosConfig, setAxiosConfig] = useState({})
@@ -55,6 +55,8 @@ const Register: React.FC = (props: any) => {
         })
       )
       dispatch(clearLoader())
+      dispatch(setSnackbar({ message: response.message }))
+      history.push('/')
     }
 
     if (error) {
@@ -77,7 +79,7 @@ const Register: React.FC = (props: any) => {
   }
 
   return (
-    <DefaultTemplate {...props}>
+    <DefaultTemplate {...props} isDefaultSpace>
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -131,4 +133,4 @@ const Register: React.FC = (props: any) => {
   )
 }
 
-export default withRouter(withStyles(styles)(Register) as any)
+export default withRouter(Register as any)

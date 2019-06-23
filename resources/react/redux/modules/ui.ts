@@ -5,6 +5,7 @@ const initialState = {
     isOpen: false,
     title: '',
     description: '',
+    callback: () => {},
   },
   snackbar: {
     isOpen: false,
@@ -29,7 +30,8 @@ export default function reducer(state = initialState, action: any) {
         modal: {
           isOpen: true,
           title: action.payload.title,
-          description: action.payload.title,
+          description: action.payload.description,
+          callback: action.payload.callback,
         },
       }
     case 'ui/clearModal':
@@ -39,6 +41,7 @@ export default function reducer(state = initialState, action: any) {
           isOpen: false,
           title: '',
           description: '',
+          callback: () => {},
         },
       }
     case 'ui/setSnackbar':
