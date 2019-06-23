@@ -53,7 +53,9 @@ class SalonService
      */
     public function fetchSalonList(?int $categoryId): Collection
     {
-        return $this->salonService->fetchSalonList($categoryId);
+        return $this->salonService
+            ->fetchSalonList($categoryId)
+            ->sortByDesc('created_at');
     }
 
     /**

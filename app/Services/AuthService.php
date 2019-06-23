@@ -74,7 +74,7 @@ class AuthService
      * @return User
      * @throws Exception
      */
-    public function registerUser(array $attribute, UploadedFile $image): User
+    public function registerUser(array $attribute, ?UploadedFile $image): User
     {
         $user = $this->userRepository->fetchUserByToken($attribute['token']);
 
@@ -108,10 +108,16 @@ class AuthService
      */
     public function login(array $attribute): User
     {
+        $user = $this->userRepository->fetchUserByEmail($attribute['email']);
+
+        if ($user->email_verified == User::NOT_REGISTERED_USER) {
+            throw new Exception('email not verified', 401);
+        }
+
         if (!$token = $this->auth->attempt($attribute)) {
             throw new Exception('Unauthorized', 401);
         }
-        $user = $this->userRepository->fetchUserByEmail($attribute['email']);
+
         $user->token = $token;
         return $user;
     }

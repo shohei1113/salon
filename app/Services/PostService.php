@@ -59,7 +59,9 @@ class PostService
      */
     public function fetchPostList(?int $postId = NULL): Collection
     {
-        return $this->postRepository->fetchPostList($postId);
+        return $this->postRepository
+            ->fetchPostList($postId)
+            ->sortByDesc('created_at');
     }
 
     /**
