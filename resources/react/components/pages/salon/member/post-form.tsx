@@ -30,9 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
     submit: {
       marginTop: 60,
     },
-    form: {
-      width: 300,
-    },
+    form: {},
     fileWrap: {
       marginTop: 24,
     },
@@ -81,10 +79,8 @@ const PostForm: React.FC = (props: any) => {
 
     const formData = new FormData()
     formData.append('salon_id', '3')
-    formData.append('title', 'a')
     formData.append('content', content)
-    formData.append('image', file)
-
+    if (file) formData.append('image', file)
     // dispatch(setLoader())
     setAxiosConfig({
       method: 'POST',
@@ -132,7 +128,7 @@ const PostForm: React.FC = (props: any) => {
                   form={form}
                   type="text"
                   label=""
-                  placeholder="投稿内容"
+                  placeholder="投稿内容を入力してください"
                 />
               )}
             />

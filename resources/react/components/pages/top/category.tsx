@@ -45,11 +45,11 @@ const featuredPosts = [
 
 function Category() {
   const classes = useStyles({})
+  const dispatch = useDispatch()
   const { token } = useMappedState(useCallback(state => state.auth, []))
   const axiosConfig = {
     method: 'GET',
     url: `${PATH}/api/category`,
-    headers: { Authorization: `Bearer ${token}` },
   }
   const { isLoading, response, error } = useFetchApi(axiosConfig, true)
 
