@@ -5,6 +5,7 @@ import { Theme, createStyles, makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import PATH from '../../../const/path'
 import useFetchApi from '../../../hooks/use-fetch-api'
+import getUrlParam from '../../../utils/get-url-param'
 import { initSalons } from '../../../redux/modules/salons'
 import { DefaultTemplate } from '../../templates/default-template'
 import { Album } from '../../molecules/album'
@@ -25,21 +26,31 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 const Salons: React.FC = (props: any) => {
+  const { history } = props
   const classes = useStyles({})
-  const { auth, salons } = useMappedState(useCallback(state => state, []))
+  const { salons } = useMappedState(useCallback(state => state, []))
   const dispatch = useDispatch()
+  const categoryId = getUrlParam('category-id')
   const axiosConfig = {
     method: 'GET',
-    url: `${PATH}/api/category/1/salon`,
-    headers: { Authorization: `Bearer ${auth.token}` },
+    url: `${PATH}/api/category/${categoryId}/salon`,
   }
-  // const { isLoading, response, error } = useFetchApi(axiosConfig, true)
+  const { isLoading, response, error } = useFetchApi(axiosConfig, true)
 
-  // useEffect(() => {
-  //   if (response) {
-  //     dispatch(initSalons(response))
-  //   }
-  // }, [response])
+  useEffect(() => {
+    if (!categoryId) {
+      history.push('/')
+    }
+  }, [])
+
+  useEffect(() => {
+    if (response) {
+      dispatch(initSalons(response))
+    }
+
+    if (error) {
+    }
+  }, [response, error])
 
   return (
     <DefaultTemplate {...props} isDefaultSpace={true}>

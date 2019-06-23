@@ -54,7 +54,7 @@ const Member: React.FC = (props: any) => {
 
   const axiosConfig = {
     method: 'GET',
-    url: `${PATH}/api/post`,
+    url: `${PATH}/api/salon/3/post`,
     headers: { Authorization: `Bearer ${auth.token}` },
   }
 

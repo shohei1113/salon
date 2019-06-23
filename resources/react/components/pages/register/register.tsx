@@ -15,6 +15,7 @@ import { initAuth } from '../../../redux/modules/auth'
 import { setLoader, clearLoader, setSnackbar } from '../../../redux/modules/ui'
 import { DefaultTemplate } from '../../templates/default-template'
 import { TextField } from '../../atoms/text-field'
+import { Thumbnail } from '../../atoms/thumbnail'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,6 +34,18 @@ const useStyles = makeStyles((theme: Theme) =>
     form: {
       width: 300,
     },
+    fileWrap: {
+      marginTop: 24,
+    },
+    inputFile: {
+      display: 'none',
+    },
+    inputLabel: {
+      display: 'block',
+    },
+    inputButton: {
+      width: '100%',
+    },
   })
 )
 
@@ -44,6 +57,12 @@ const Register: React.FC = (props: any) => {
   const [axiosConfig, setAxiosConfig] = useState({})
   const [isStartFetch, setStartFetch] = useState(false)
   const { isLoading, response, error } = useFetchApi(axiosConfig, isStartFetch)
+
+  useEffect(() => {
+    if (!token) {
+      history.push('/')
+    }
+  }, [])
 
   useEffect(() => {
     if (response) {
@@ -65,15 +84,22 @@ const Register: React.FC = (props: any) => {
     }
   }, [response, error])
 
-  const handleSubmit = form => {
+  const handleSubmit = (form, { resetForm }) => {
+    const { name, image } = form
     dispatch(setLoader())
+    const formData = new FormData()
+    formData.append('name', name)
+    formData.append('token', token)
+    if (image) formData.append('image', image)
+
     setAxiosConfig({
       method: 'POST',
       url: `${PATH}/api/register`,
-      data: {
-        token,
-        name: form.name,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
       },
+      data: formData,
     })
     setStartFetch(true)
   }
@@ -88,7 +114,7 @@ const Register: React.FC = (props: any) => {
           本登録
         </Typography>
         <Formik
-          initialValues={{ name: '' }}
+          initialValues={{ name: '', image: null }}
           onSubmit={handleSubmit}
           validate={(values: any) => {
             const errors: any = {}
@@ -102,7 +128,7 @@ const Register: React.FC = (props: any) => {
 
             return errors
           }}
-          render={({ handleSubmit }) => (
+          render={({ values, handleSubmit, setFieldValue }) => (
             <form onSubmit={handleSubmit} className={classes.form}>
               <Field
                 name="name"
@@ -114,6 +140,33 @@ const Register: React.FC = (props: any) => {
                     label="名前"
                     placeholder="田中 太郎"
                   />
+                )}
+              />
+              <Field
+                name="image"
+                render={({ field, form }) => (
+                  <div className={classes.fileWrap}>
+                    <input
+                      id="image"
+                      name="image"
+                      type="file"
+                      onChange={event => {
+                        setFieldValue('image', event.currentTarget.files[0])
+                      }}
+                      className={classes.inputFile}
+                    />
+                    <label htmlFor="image" className={classes.inputLabel}>
+                      <Button
+                        variant="outlined"
+                        component="span"
+                        className={classes.inputButton}
+                      >
+                        プロフィール画像を選択
+                      </Button>
+                    </label>
+
+                    <Thumbnail file={values.image} />
+                  </div>
                 )}
               />
               <Button

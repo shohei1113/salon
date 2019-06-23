@@ -58,7 +58,7 @@ const Signup: React.FC = (props: any) => {
     }
 
     if (error) {
-      console.log('エラー！')
+      dispatch(setSnackbar({ message: error.message }))
       dispatch(clearLoader())
     }
   }, [response, error])
@@ -74,6 +74,7 @@ const Signup: React.FC = (props: any) => {
       },
     })
     setStartFetch(true)
+    setStartFetch(false)
   }
 
   return (
