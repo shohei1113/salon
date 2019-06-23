@@ -12,6 +12,11 @@ class Image extends Model
 {
     const TYPE_USER = 'App\Entities\User';
     const TYPE_POST = 'App\Entities\Post';
+    const TYPE_SALON = 'App\Entities\Salon';
+    const S3_DIR_USER = '/user';
+    const S3_DIR_POST = '/post';
+    const S3_DIR_SALON = '/salon';
+
 
     /**
      * @var array

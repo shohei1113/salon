@@ -48,7 +48,7 @@ class SalonController extends Controller
      */
     public function store(Request $request): SalonResource
     {
-        $salon = $this->salonService->createSalon(Auth::id(), $request->all());
+        $salon = $this->salonService->createSalon(Auth::id(), $request->all(), $request->image);
         return new SalonResource($salon, config('const.salon.store'));
     }
 
@@ -70,7 +70,7 @@ class SalonController extends Controller
      */
     public function update(Request $request, int $id): SalonResource
     {
-        $salon = $this->salonService->updateSalon($id, $request->all());
+        $salon = $this->salonService->updateSalon($id, $request->all(), $request->image);
         return new SalonResource($salon, config('const.salon.update'));
     }
 }

@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Repositories\User;
 
+use App\Entities\Salon;
 use App\Entities\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -33,13 +35,20 @@ interface UserRepositoryInterface
 
     /**
      * @param string $token
-     * @return Model
+     * @return User
      */
-    public function fetchUserByToken(string $token): Model;
+    public function fetchUserByToken(string $token): User;
 
     /**
      * @param string $email
-     * @return Model
+     * @return User
      */
-    public function fetchUserByEmail(string $email): Model;
+    public function fetchUserByEmail(string $email): User;
+
+    /**
+     * @param User $user
+     * @param Salon $salon
+     * @return mixed
+     */
+    public function createUserSalon(User $user, Salon $salon);
 }

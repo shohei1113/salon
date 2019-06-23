@@ -35,11 +35,7 @@ class SalonRepository implements SalonRepositoryInterface
      */
     public function fetchSalonList(?int $categoryId): Collection
     {
-        if (!empty($categoryId)) {
-            return $this->salon->searchCategory($categoryId)->get();
-        }
-
-        return $this->salon->all();
+        return $this->salon->searchCategory($categoryId)->get();
     }
 
     /**

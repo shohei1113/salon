@@ -3,10 +3,11 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Entities\Image;
 use App\Entities\Salon;
 use App\Repositories\Salon\SalonRepository;
-use function GuzzleHttp\Psr7\str;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\UploadedFile;
 use Stripe\Plan;
 use Stripe\Stripe;
 use Exception;
@@ -21,15 +22,30 @@ class SalonService
     /**
      * @var SalonRepository
      */
-    private $salon;
+    private $salonService;
+
+    /**
+     * @var ImageService
+     */
+    private $imageService;
+    /**
+     * @var S3Service
+     */
+    private $s3Service;
 
     /**
      * SalonService constructor.
      * @param SalonRepository $salon
+     * @param S3Service $s3Service
      */
-    public function __construct(SalonRepository $salon)
-    {
-        $this->salon = $salon;
+    public function __construct(
+        SalonRepository $salonService,
+        ImageService $imageService,
+        S3Service $s3Service
+    ) {
+        $this->salonService = $salonService;
+        $this->imageService = $imageService;
+        $this->s3Service = $s3Service;
     }
 
     /**
@@ -37,26 +53,28 @@ class SalonService
      */
     public function fetchSalonList(?int $categoryId): Collection
     {
-        return $this->salon->fetchSalonList($categoryId);
+        return $this->salonService->fetchSalonList($categoryId);
     }
 
     /**
      * @param int $id
      * @param array $attribute
+     * @param UploadedFile|null $image
      * @return Salon
      * @throws Exception
      */
-    public function createSalon(int $id, array $attribute): Salon
+    public function createSalon(int $id, array $attribute, ?UploadedFile $image): Salon
     {
         DB::beginTransaction();
         try {
             $stripePlan = $this->createStripePlan($attribute);
-            $salon = $this->salon->createSalon($id, $attribute, $stripePlan);
-            $this->salon->createSalonDetail($salon, $attribute);
+            $salon = $this->salonService->createSalon($id, $attribute, $stripePlan);
+            $this->salonService->createSalonDetail($salon, $attribute);
+            $this->imageService->upload($image, $salon->id, Image::S3_DIR_SALON, Image::TYPE_SALON);
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
-            //
+            throw new Exception('error');
         }
 
         return $salon;
@@ -68,7 +86,7 @@ class SalonService
      */
     public function fetchSalonById(int $id): Salon
     {
-        return $this->salon->fetchSalonById($id);
+        return $this->salonService->fetchSalonById($id);
     }
 
     /**
@@ -96,17 +114,18 @@ class SalonService
      * @return Salon
      * @throws Exception
      */
-    public function updateSalon(int $id, array $attribute): Salon
+    public function updateSalon(int $id, array $attribute, ?UploadedFile $image): Salon
     {
         DB::beginTransaction();
         try {
-            $salon = $this->salon->updateSalon($id, $attribute);
-            $this->salon->updateSalonDetail($salon, $attribute);
+            $salon = $this->salonService->updateSalon($id, $attribute);
+            $this->salonService->updateSalonDetail($salon, $attribute);
             $this->updateStripePlan($salon, $attribute);
+            $this->imageService->upload($image, $salon->id, Image::S3_DIR_SALON, Image::TYPE_SALON);
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
-            //
+            throw new Exception('error');
         }
 
         return $salon;

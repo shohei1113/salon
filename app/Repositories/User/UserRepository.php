@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace App\Repositories\User;
 
+use App\Entities\Salon;
 use App\Entities\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Class UserRepository
@@ -68,19 +70,29 @@ class UserRepository implements UserRepositoryInterface
 
     /**
      * @param string $token
-     * @return Model
+     * @return User
      */
-    public function fetchUserByToken(string $token): Model
+    public function fetchUserByToken(string $token): User
     {
-        return $this->user->where('email_verify_token', $token)->first();
+        return $this->user->searchEmailVerifyToken($token)->first();
     }
 
     /**
      * @param string $email
-     * @return Model
+     * @return User
      */
-    public function fetchUserByEmail(string $email): Model
+    public function fetchUserByEmail(string $email): User
     {
-        return $this->user->where('email', $email)->first();
+        return $this->user->searchEmail($email)->first();
+    }
+
+    /**
+     * @param User $user
+     * @param Salon $salon
+     * @return mixed|void
+     */
+    public function createUserSalon(User $user, Salon $salon)
+    {
+        return $user->salons()->save($salon);
     }
 }
