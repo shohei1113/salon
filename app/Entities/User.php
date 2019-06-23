@@ -5,6 +5,7 @@ namespace App\Entities;
 use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Cashier\Billable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
@@ -13,14 +14,14 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  */
 class User extends Authenticatable implements JWTSubject
 {
-    use MustVerifyEmail, Notifiable;
+    use Billable, MustVerifyEmail, Notifiable;
 
     const REGISTERED_USER = 1;
 
     /**
-     * @var
+     * @var string
      */
-    private $token;
+    public $token;
 
     /**
      * The attributes that are mass assignable.
@@ -49,6 +50,14 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
 
     /**
      * @return mixed

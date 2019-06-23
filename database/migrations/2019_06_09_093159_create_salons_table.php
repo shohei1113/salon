@@ -19,6 +19,9 @@ class CreateSalonsTable extends Migration
             $table->bigInteger('category_id')->unsigned();
             $table->string('title');
             $table->text('description');
+            $table->integer('price');
+            $table->string('plan_id');
+            $table->string('product_id');
             $table->timestamps();
             $table->softDeletes();
 

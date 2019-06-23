@@ -4,8 +4,16 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class BaseResource extends JsonResource
 {
+    private $message;
+
+    public function __construct($resource, $message)
+    {
+        parent::__construct($resource);
+        $this->message = $message;
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -15,10 +23,8 @@ class UserResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
-            'image_url' => $this->image->image_path ?? NULL,
+            'data' => $this->resource,
+            'message' => $this->message,
         ];
     }
 }

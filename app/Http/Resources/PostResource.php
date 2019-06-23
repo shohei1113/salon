@@ -4,14 +4,11 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserInfoResource extends JsonResource
+class PostResource extends JsonResource
 {
-    /**
-     * @var
-     */
     private $message;
 
-    public function __construct($resource, $message = '')
+    public function __construct($resource, $message)
     {
         parent::__construct($resource);
         $this->message = $message;
@@ -26,7 +23,12 @@ class UserInfoResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'user' => new UserResource($this),
+            'post' => [
+                'salon_id' => $this->salon_id,
+                'title' => $this->title,
+                'content' => $this->content,
+                'image_url' => $this->image->image_path ?? NULL,
+            ],
         ];
     }
 

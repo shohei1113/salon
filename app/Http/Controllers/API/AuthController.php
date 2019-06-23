@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Controllers\API;
 
@@ -7,6 +8,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\AuthResource;
 use App\Http\Resources\UserInfoResource;
 use App\Services\AuthService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\JWTAuth;
 
@@ -17,23 +19,16 @@ use Tymon\JWTAuth\JWTAuth;
 class AuthController extends Controller
 {
     /**
-     * @var JWTAuth
-     */
-    private $auth;
-
-    /**
      * @var AuthService
      */
     private $authService;
 
     /**
      * AuthController constructor.
-     * @param JWTAuth $auth
      * @param AuthService $authService
      */
-    public function __construct(JWTAuth $auth, AuthService $authService)
+    public function __construct(AuthService $authService)
     {
-        $this->auth = $auth;
         $this->authService = $authService;
     }
 
@@ -42,7 +37,7 @@ class AuthController extends Controller
      * @return UserInfoResource
      * @throws \Exception
      */
-    public function signup(RegisterRequest $request)
+    public function signup(RegisterRequest $request): UserInfoResource
     {
         $registerUser = $this->authService->signupUser($request->all());
         return new UserInfoResource($registerUser, config('const.auth.signup'));
@@ -53,9 +48,9 @@ class AuthController extends Controller
      * @return AuthResource
      * @throws \Exception
      */
-    public function register(Request $request)
+    public function register(Request $request): AuthResource
     {
-        $user = $this->authService->registerUser($request->all());
+        $user = $this->authService->registerUser($request->all(), $request->image);
         return new AuthResource($user, config('const.auth.register'));
     }
 
@@ -64,21 +59,27 @@ class AuthController extends Controller
      * @return AuthResource
      * @throws \Exception
      */
-    public function login(Request $request)
+    public function login(Request $request): AuthResource
     {
         $user = $this->authService->login($request->all());
         return new AuthResource($user, config('const.auth.login'));
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function logout()
+    public function logout(): JsonResponse
     {
         return response()->json([
             'message' => config('const.auth.logout')
         ]);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | 以下、facebookログイン用(実装保留)
+    |--------------------------------------------------------------------------
+    */
 
     /**
      * @param $socialite
