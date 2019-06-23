@@ -31,6 +31,7 @@ Route::group(['namespace' => 'API', 'as' => 'api.'], function() {
 
     Route::get('category/{category}/salon', 'SalonController@index')->name('category.salon.index');
     Route::get('salon', 'SalonController@index')->name('salon.index');
+    Route::get('category', 'CategoryController@index')->name('category.index');
 
     /*
     |--------------------------------------------------------------------------
@@ -74,7 +75,7 @@ Route::group(['namespace' => 'API', 'as' => 'api.'], function() {
         | Category Routes
         |--------------------------------------------------------------------------
         */
-        Route::apiResource('category', 'CategoryController');
+//        Route::apiResource('category', 'CategoryController');
 
         /*
         |--------------------------------------------------------------------------
