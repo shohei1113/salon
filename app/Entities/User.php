@@ -17,6 +17,7 @@ class User extends Authenticatable implements JWTSubject
     use Billable, MustVerifyEmail, Notifiable;
 
     const REGISTERED_USER = 1;
+    const NOT_REGISTERED_USER = 0;
 
     /**
      * @var string
