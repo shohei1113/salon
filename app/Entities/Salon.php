@@ -68,7 +68,7 @@ class Salon extends Model
         }
     }
 
-    public function getIsAdminAttribute()
+    public function getIsMemberAttribute()
     {
         return $this->users->count() ? self::IS_MEMBER : self::IS_NOT_MEMBER;
     }
