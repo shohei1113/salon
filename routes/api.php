@@ -14,20 +14,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['namespace' => 'API'], function() {
+Route::group(['namespace' => 'API', 'as' => 'api.'], function() {
 
     /*
     |--------------------------------------------------------------------------
     | Auth Routes
     |--------------------------------------------------------------------------
     */
-    Route::post('signup', 'AuthController@signup')->name('api.signup');
-    Route::post('register', 'AuthController@register')->name('api.register');
+    Route::post('signup', 'AuthController@signup')->name('signup');
+    Route::post('register', 'AuthController@register')->name('register');
     Route::post('me', 'AuthController@login')->name('auth.login');
-    Route::delete('me', 'AuthController@logout')->middleware('jwt.refresh');
+    Route::delete('me', 'AuthController@logout')->middleware('jwt.refresh')->name('auth.logout');
 
-    Route::get('auth/login/{socialite}', 'AuthController@redirectToSocialiteProvider');
-    Route::get('auth/{socialite}/callback', 'AuthController@socialiteCallback');
+//    Route::get('auth/login/{socialite}', 'AuthController@redirectToSocialiteProvider');
+//    Route::get('auth/{socialite}/callback', 'AuthController@socialiteCallback');
+
+    Route::get('category/{category}/salon', 'SalonController@index')->name('category.salon.index');
+    Route::get('salon', 'SalonController@index')->name('salon.index');
 
     /*
     |--------------------------------------------------------------------------
@@ -41,24 +44,30 @@ Route::group(['namespace' => 'API'], function() {
         | User Routes
         |--------------------------------------------------------------------------
         */
-        Route::get('me', 'UserController@loginUserInfo');
-        Route::apiResource('user', 'UserController');
+        Route::get('me', 'UserController@loginUserInfo')->name('user');
+        Route::get('user', 'UserController@index')->name('user.index');
+        Route::post('user', 'UserController@store')->name('user.store');
+        Route::get('user/{user}', 'UserController@show')->name('user.show');
+        Route::put('user/{user}', 'UserController@update')->name('user.update');
+        Route::delete('user/{user}', 'UserController@delete')->name('user.delete');
 
         /*
         |--------------------------------------------------------------------------
-        | Category Routes
+        | Salon Routes
         |--------------------------------------------------------------------------
         */
-        Route::get('category/{category}/salon', 'SalonController@index');
-        Route::apiResource('salon', 'SalonController');
+        Route::post('salon', 'SalonController@store')->name('salon.store');
+        Route::get('salon/{salon}', 'SalonController@show')->name('salon.show');
+        Route::put('salon/{salon}', 'SalonController@update')->name('salon.update');
+        Route::delete('salon/{salon}', 'SalonController@delete')->name('salon.delete');
 
         /*
         |--------------------------------------------------------------------------
         | Payment Routes
         |--------------------------------------------------------------------------
         */
-        Route::post('salon/{salon}/payment/card', 'PaymentController@paymentByCard')->name('api.payment.card');
-        Route::post('salon/{salon}/payment/card/cancel', 'PaymentController@cancelPaymentByCard')->name('api.payment.card.cancel');
+        Route::post('salon/{salon}/payment/card', 'PaymentController@paymentByCard')->name('payment.card');
+        Route::post('salon/{salon}/payment/card/cancel', 'PaymentController@cancelPaymentByCard')->name('payment.card.cancel');
 
         /*
         |--------------------------------------------------------------------------
@@ -72,7 +81,11 @@ Route::group(['namespace' => 'API'], function() {
         | Category Routes
         |--------------------------------------------------------------------------
         */
-        Route::get('salon/{salon}/post', 'PostController@index');
-        Route::apiResource('post', 'PostController');
+        Route::get('salon/{salon}/post', 'PostController@index')->name('salon.post.index');
+        Route::get('post', 'PostController@index')->name('post.index');
+        Route::post('post', 'PostController@store')->name('post.store');
+        Route::get('post/{post}', 'PostController@show')->name('post.show');
+        Route::put('post/{post}', 'PostController@update')->name('post.update');
+        Route::delete('post/{post}', 'PostController@delete')->name('post.delete');
     });
 });
