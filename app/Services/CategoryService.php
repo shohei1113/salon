@@ -23,7 +23,7 @@ class CategoryService
      */
     public function __construct(CategoryRepository $categoryRepository)
     {
-        $this->category = $categoryRepository;
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**
