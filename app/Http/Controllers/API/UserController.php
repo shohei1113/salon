@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API;
 
+use App\Entities\User;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserInfoResource;
 use App\Services\UserService;

@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Entities\User;
 use App\Repositories\Salon\SalonRepository;
+use App\Repositories\User\UserRepository;
 use Exception;
 use Laravel\Cashier\Subscription;
 use Stripe\Stripe;
@@ -17,16 +18,25 @@ use Stripe\Token;
 class PaymentService
 {
     /**
+     * @var UserRepository
+     */
+    private $userRepository;
+
+    /**
      * @var SalonRepository
      */
     private $salonRepository;
 
     /**
      * PaymentService constructor.
-     * @param SalonRepository $salon
+     * @param UserRepository $userRepository
+     * @param SalonRepository $salonRepository
      */
-    public function __construct(SalonRepository $salonRepository)
-    {
+    public function __construct(
+        UserRepository $userRepository,
+        SalonRepository $salonRepository
+    ) {
+        $this->userRepository = $userRepository;
         $this->salonRepository = $salonRepository;
     }
 
@@ -38,18 +48,10 @@ class PaymentService
      */
     public function paymentByCard(User $user, int $salonId, array $attribute): Subscription
     {
-        Stripe::setApiKey(env('STRIPE_KEY'));
-        $stripeToken = Token::create([
-            'card' => [
-                'number' => $attribute['number'],
-                'exp_month' => $attribute['exp_month'],
-                'exp_year' => $attribute['exp_year'],
-                'cvc' => $attribute['cvc'],
-                'name' => $attribute['name'] ?? NULL,
-            ],
-        ]);
-
+        $stripeToken = $this->createStripeToken($attribute);
         $salon = $this->salonRepository->fetchSalonById($salonId);
+        $this->userRepository->createUserSalon($user, $salon);
+
         return $user->newSubscription('main', $salon->plan_id)
             ->create($stripeToken->id);
     }
@@ -66,5 +68,23 @@ class PaymentService
         } catch (Exception $e) {
             return $e->getMessage();
         }
+    }
+
+    /**
+     * @param array $attribute
+     * @return Token
+     */
+    public function createStripeToken(array $attribute): Token
+    {
+        Stripe::setApiKey(env('STRIPE_KEY'));
+        return Token::create([
+            'card' => [
+                'number' => $attribute['number'],
+                'exp_month' => $attribute['exp_month'],
+                'exp_year' => $attribute['exp_year'],
+                'cvc' => $attribute['cvc'],
+                'name' => $attribute['name'] ?? NULL,
+            ],
+        ]);
     }
 }

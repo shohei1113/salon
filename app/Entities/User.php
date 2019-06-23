@@ -60,6 +60,38 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function salons()
+    {
+        return $this->belongsToMany(Salon::class, 'user_salon');
+    }
+
+    /**
+     * @param $query
+     * @param $token
+     * @return mixed
+     */
+    public function scopeSearchEmailVerifyToken($query, $token)
+    {
+        if (!empty($token)) {
+            return $query->where('email_verify_token', $token);
+        }
+    }
+
+    /**
+     * @param $query
+     * @param $email
+     * @return mixed
+     */
+    public function scopeSearchEmail($query, $email)
+    {
+        if (!empty($email)) {
+            return $query->where('email', $email);
+        }
+    }
+
+    /**
      * @return mixed
      */
     public function getJWTIdentifier()
