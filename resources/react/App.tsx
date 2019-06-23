@@ -31,6 +31,7 @@ const GlobalStyle = createGlobalStyle`
   ${reset}
   * {
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    box-sizing: border-box;
   }
   a {
     color: inherit;

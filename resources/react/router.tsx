@@ -7,7 +7,6 @@ import { Signup } from './components/pages/signup'
 import { Register } from './components/pages/register'
 import { Salons } from './components/pages/salons'
 import { Salon } from './components/pages/salon'
-import { Management } from './components/pages/category/management'
 
 export default () => {
   return (
@@ -19,7 +18,6 @@ export default () => {
         <Route path="/register" exact component={Register} />
         <Route path="/salons" component={Salons} />
         <Route path="/salon" component={Salon} />
-        <Route path="/category/management" exact component={Management} />
       </ScrollToTop>
     </Router>
   )

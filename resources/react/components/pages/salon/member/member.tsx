@@ -81,7 +81,7 @@ const Member: React.FC = (props: any) => {
   }, [response, error])
 
   return (
-    <DefaultTemplate {...props}>
+    <DefaultTemplate {...props} isDefaultSpace>
       <RequireAuth {...props}>
         <div className={classes.wrap}>
           <PostForm />

@@ -18,8 +18,9 @@ import {
   setSnackbar,
 } from '../../../../redux/modules/ui'
 import { addPost } from '../../../../redux/modules/member'
-
 import { TextField } from '../../../atoms/text-field'
+import { TextArea } from '../../../atoms/text-area'
+import Thumbnail from './thumbnail'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,54 +33,20 @@ const useStyles = makeStyles((theme: Theme) =>
     form: {
       width: 300,
     },
+    fileWrap: {
+      marginTop: 24,
+    },
+    inputFile: {
+      display: 'none',
+    },
+    inputLabel: {
+      display: 'block',
+    },
+    inputButton: {
+      width: '100%',
+    },
   })
 )
-
-class Thumb extends React.Component<{ file: any }> {
-  state = {
-    loading: false,
-    thumb: undefined,
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (!nextProps.file) {
-      return
-    }
-
-    this.setState({ loading: true }, () => {
-      let reader = new FileReader()
-
-      reader.onloadend = () => {
-        this.setState({ loading: false, thumb: reader.result })
-      }
-
-      reader.readAsDataURL(nextProps.file)
-    })
-  }
-
-  render() {
-    const { file } = this.props
-    const { loading, thumb } = this.state
-
-    if (!file) {
-      return null
-    }
-
-    if (loading) {
-      return <p>loading...</p>
-    }
-
-    return (
-      <img
-        src={thumb}
-        alt={file.name}
-        className="img-thumbnail mt-2"
-        height={200}
-        width={200}
-      />
-    )
-  }
-}
 
 const PostForm: React.FC = (props: any) => {
   const classes = useStyles({})
@@ -129,19 +96,24 @@ const PostForm: React.FC = (props: any) => {
       data: formData,
     })
     resetForm({ content: '', file: null })
+    const obj = document.getElementById('image')
+    obj.value = ''
 
     setStartFetch(true)
   }
 
   return (
     <Paper className={classes.root}>
+      <Typography variant="body1" component="p">
+        投稿を作成
+      </Typography>
       <Formik
         initialValues={{ content: '', file: null }}
         onSubmit={handleSubmit}
         validate={(values: any) => {
           const errors: any = {}
           const contentError = composeValidators(
-            required('テキストを入力してください')
+            required('投稿内容を入力してください')
           )(values.content)
 
           if (contentError) {
@@ -155,19 +127,19 @@ const PostForm: React.FC = (props: any) => {
             <Field
               name="content"
               render={({ field, form }) => (
-                <TextField
+                <TextArea
                   field={field}
                   form={form}
                   type="text"
-                  label="名前"
-                  placeholder="田中 太郎"
+                  label=""
+                  placeholder="投稿内容"
                 />
               )}
             />
             <Field
               name="image"
               render={({ field, form }) => (
-                <div>
+                <div className={classes.fileWrap}>
                   <input
                     id="image"
                     name="image"
@@ -175,15 +147,19 @@ const PostForm: React.FC = (props: any) => {
                     onChange={event => {
                       setFieldValue('file', event.currentTarget.files[0])
                     }}
-                    className="form-control"
+                    className={classes.inputFile}
                   />
-                  <label htmlFor="image">
-                    <Button variant="outlined" component="span">
-                      ファイルを選択
+                  <label htmlFor="image" className={classes.inputLabel}>
+                    <Button
+                      variant="outlined"
+                      component="span"
+                      className={classes.inputButton}
+                    >
+                      画像を選択
                     </Button>
                   </label>
 
-                  <Thumb file={values.file} />
+                  <Thumbnail file={values.file} />
                 </div>
               )}
             />

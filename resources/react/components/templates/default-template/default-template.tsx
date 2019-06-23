@@ -33,7 +33,7 @@ const DefaultTemplate: React.FC = (props: Props) => {
 
 const Content = styled.div<{ isDefaultSpace: boolean }>`
   padding: ${({ isDefaultSpace }) =>
-    isDefaultSpace ? '40px 0 80px' : '0 0 80px'};
+    isDefaultSpace ? '40px 16px 80px' : '0 0 80px'};
 `
 
 export default DefaultTemplate
