@@ -96,7 +96,7 @@ const PostForm: React.FC = (props: any) => {
       data: formData,
     })
     resetForm({ content: '', file: null })
-    const obj = document.getElementById('image')
+    const obj = document.getElementById('image') as any
     obj.value = ''
 
     setStartFetch(true)
