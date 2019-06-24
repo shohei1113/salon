@@ -50,7 +50,7 @@ Route::group(['namespace' => 'API', 'as' => 'api.'], function() {
         Route::post('user', 'UserController@store')->name('user.store');
         Route::get('user/{user}', 'UserController@show')->name('user.show');
         Route::put('user/{user}', 'UserController@update')->name('user.update');
-        Route::delete('user/{user}', 'UserController@delete')->name('user.delete');
+        Route::delete('user/{user}', 'UserController@destroy')->name('user.delete');
 
         /*
         |--------------------------------------------------------------------------
@@ -58,9 +58,8 @@ Route::group(['namespace' => 'API', 'as' => 'api.'], function() {
         |--------------------------------------------------------------------------
         */
         Route::post('salon', 'SalonController@store')->name('salon.store');
-        Route::get('salon/{salon}', 'SalonController@show')->name('salon.show');
         Route::put('salon/{salon}', 'SalonController@update')->name('salon.update');
-        Route::delete('salon/{salon}', 'SalonController@delete')->name('salon.delete');
+        Route::delete('salon/{salon}', 'SalonController@destroy')->name('salon.delete');
 
         /*
         |--------------------------------------------------------------------------
@@ -79,7 +78,7 @@ Route::group(['namespace' => 'API', 'as' => 'api.'], function() {
 
         /*
         |--------------------------------------------------------------------------
-        | Category Routes
+        | Post Routes
         |--------------------------------------------------------------------------
         */
         Route::get('salon/{salon}/post', 'PostController@index')->name('salon.post.index');
@@ -88,5 +87,16 @@ Route::group(['namespace' => 'API', 'as' => 'api.'], function() {
         Route::get('post/{post}', 'PostController@show')->name('post.show');
         Route::put('post/{post}', 'PostController@update')->name('post.update');
         Route::delete('post/{post}', 'PostController@delete')->name('post.delete');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Comment Routes
+        |--------------------------------------------------------------------------
+        */
+        Route::post('comment', 'CommentController@store')->name('comment.store');
+        Route::get('comment/{comment}', 'CommentController@show')->name('comment.show');
+        Route::put('comment/{comment}', 'CommentController@update')->name('comment.update');
+        Route::delete('comment/{comment}', 'CommentController@delete')->name('comment.delete');
+
     });
 });

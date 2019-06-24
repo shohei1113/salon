@@ -57,6 +57,14 @@ class Salon extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function post()
+    {
+        return $this->hasMany(Post::class)->orderBy('created_at', 'desc');
+    }
+
+    /**
      * @param $query
      * @param $categoryId
      * @return mixed
@@ -68,6 +76,9 @@ class Salon extends Model
         }
     }
 
+    /**
+     * @return int
+     */
     public function getIsMemberAttribute()
     {
         return $this->users->count() ? self::IS_MEMBER : self::IS_NOT_MEMBER;

@@ -7,6 +7,7 @@ use App\Entities\Salon;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BaseResource;
 use App\Http\Resources\SalonResource;
+use App\Http\Resources\SalonSimpleResource;
 use App\Services\SalonService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -56,10 +57,10 @@ class SalonController extends Controller
      * @param int $id
      * @return Salon
      */
-    public function show(int $id): SalonResource
+    public function show(int $id): SalonSimpleResource
     {
         $salon = $this->salonService->fetchSalonById($id);
-        return new SalonResource($salon, config('const.salon.show'));
+        return new SalonSimpleResource($salon, config('const.salon.show'));
     }
 
     /**
