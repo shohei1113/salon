@@ -38,8 +38,8 @@ class SalonController extends Controller
      */
     public function index(?int $categoryId = NULL): BaseResource
     {
-        $salons = $this->salonService->fetchSalonList($categoryId);
-        return new BaseResource(SalonResource::collection($salons), config('const.salon.index'));
+        $salonList = $this->salonService->fetchSalonList($categoryId);
+        return new BaseResource(SalonResource::collection($salonList), config('const.salon.index'));
     }
 
     /**
@@ -49,8 +49,8 @@ class SalonController extends Controller
      */
     public function store(Request $request): SalonResource
     {
-        $salon = $this->salonService->createSalon(Auth::id(), $request->all(), $request->image);
-        return new SalonResource($salon, config('const.salon.store'));
+        $createSalon = $this->salonService->createSalon(Auth::id(), $request->all(), $request->image);
+        return new SalonResource($createSalon, config('const.salon.store'));
     }
 
     /**
@@ -71,7 +71,7 @@ class SalonController extends Controller
      */
     public function update(Request $request, int $id): SalonResource
     {
-        $salon = $this->salonService->updateSalon($id, $request->all(), $request->image);
-        return new SalonResource($salon, config('const.salon.update'));
+        $updateSalon = $this->salonService->updateSalon($id, $request->all(), $request->image);
+        return new SalonResource($updateSalon, config('const.salon.update'));
     }
 }

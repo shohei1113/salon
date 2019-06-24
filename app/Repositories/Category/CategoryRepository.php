@@ -5,6 +5,7 @@ namespace App\Repositories\Category;
 
 use App\Entities\Category;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\UploadedFile;
 
 class CategoryRepository implements CategoryRepositoryInterface
 {
@@ -29,4 +30,37 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         return $this->category->all();
     }
+
+    /**
+     * @param array $attribute
+     * @return Category
+     */
+    public function create(array $attribute): Category
+    {
+        return $this->category->create($attribute);
+    }
+
+    /**
+     * @param int $id
+     * @param array $attribute
+     * @return Category
+     */
+    public function update(int $id, array $attribute): Category
+    {
+        $category = $this->category->findOrFail($id);
+        $category->update($attribute);
+        return $category;
+    }
+
+    /**
+     * @param int $id
+     * @return Category
+     * @throws \Exception
+     */
+//    public function delete(int $id): Category
+//    {
+//        $category = $this->category->findOrFail($id);
+//        $category->delete();
+//        return $category;
+//    }
 }

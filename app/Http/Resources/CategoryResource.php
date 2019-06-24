@@ -6,6 +6,14 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class CategoryResource extends JsonResource
 {
+    private $message;
+
+    public function __construct($resource, $message='')
+    {
+        parent::__construct($resource);
+        $this->message = $message;
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -18,7 +26,16 @@ class CategoryResource extends JsonResource
             'category' => [
                 'id' => $this->id,
                 'name' => $this->name,
+                'description' => $this->description,
+                'image_url' => $this->image->image_path ?? NULL,
             ],
+        ];
+    }
+
+    public function with($request)
+    {
+        return [
+            'message' => $this->message,
         ];
     }
 }
