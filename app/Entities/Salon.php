@@ -57,6 +57,14 @@ class Salon extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function post()
+    {
+        return $this->hasMany(Post::class)->orderBy('created_at', 'desc');
+    }
+
+    /**
      * @param $query
      * @param $categoryId
      * @return mixed

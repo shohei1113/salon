@@ -36,6 +36,7 @@ class AuthResource extends JsonResource
     {
         return [
             'data' => [
+                'id' => $this->id,
                 'user' => new UserResource($this),
                 'access_token' => $this->token,
                 'token_type' => 'bearer',
