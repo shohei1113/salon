@@ -31,6 +31,8 @@ Route::group(['namespace' => 'API', 'as' => 'api.'], function() {
 
     Route::get('category/{category}/salon', 'SalonController@index')->name('category.salon.index');
     Route::get('salon', 'SalonController@index')->name('salon.index');
+    Route::get('salon/{salon}', 'SalonController@show')->name('salon.show');
+
     Route::get('category', 'CategoryController@index')->name('category.index');
 
     /*
@@ -86,7 +88,7 @@ Route::group(['namespace' => 'API', 'as' => 'api.'], function() {
         Route::post('post', 'PostController@store')->name('post.store');
         Route::get('post/{post}', 'PostController@show')->name('post.show');
         Route::put('post/{post}', 'PostController@update')->name('post.update');
-        Route::delete('post/{post}', 'PostController@delete')->name('post.delete');
+        Route::delete('post/{post}', 'PostController@destroy')->name('post.delete');
 
         /*
         |--------------------------------------------------------------------------
@@ -96,7 +98,7 @@ Route::group(['namespace' => 'API', 'as' => 'api.'], function() {
         Route::post('comment', 'CommentController@store')->name('comment.store');
         Route::get('comment/{comment}', 'CommentController@show')->name('comment.show');
         Route::put('comment/{comment}', 'CommentController@update')->name('comment.update');
-        Route::delete('comment/{comment}', 'CommentController@delete')->name('comment.delete');
+        Route::delete('comment/{comment}', 'CommentController@destroy')->name('comment.delete');
 
     });
 });
