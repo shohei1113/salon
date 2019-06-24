@@ -8,8 +8,8 @@ class Salon extends Model
 {
     const PAYMENT_INTERVAL = 'month';
     const CURRENCY = 'jpy';
-    const IS_MEMBER= 1;
-    const IS_NOT_MEMBER = 0;
+    const IS_MEMBER= true;
+    const IS_NOT_MEMBER = false;
 
     protected $fillable = [
         'owner_id', 'category_id', 'title', 'description',
