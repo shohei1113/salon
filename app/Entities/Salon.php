@@ -3,9 +3,12 @@
 namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Salon extends Model
 {
+    use SoftDeletes;
+
     const PAYMENT_INTERVAL = 'month';
     const CURRENCY = 'jpy';
     const IS_MEMBER= true;
