@@ -5,6 +5,7 @@ namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Comment
@@ -12,6 +13,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Comment extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'user_id', 'post_id', 'content',
     ];
