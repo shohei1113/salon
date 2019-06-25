@@ -48,6 +48,6 @@ class UserController extends Controller
     public function loginUserInfo(): UserInfoResource
     {
         $user = $this->userService->fetchUserById(Auth::id());
-        return new UserInfoResource($user);
+        return new UserInfoResource($user, config('const.auth.loginUserInfo'));
     }
 }

@@ -11,7 +11,7 @@ class UserInfoResource extends JsonResource
      */
     private $message;
 
-    public function __construct($resource, $message = '')
+    public function __construct($resource, $message='')
     {
         parent::__construct($resource);
         $this->message = $message;

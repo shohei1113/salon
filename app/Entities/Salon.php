@@ -3,13 +3,16 @@
 namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Salon extends Model
 {
+    use SoftDeletes;
+
     const PAYMENT_INTERVAL = 'month';
     const CURRENCY = 'jpy';
-    const IS_MEMBER= 1;
-    const IS_NOT_MEMBER = 0;
+    const IS_MEMBER= true;
+    const IS_NOT_MEMBER = false;
 
     protected $fillable = [
         'owner_id', 'category_id', 'title', 'description',
@@ -57,6 +60,14 @@ class Salon extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function post()
+    {
+        return $this->hasMany(Post::class)->orderBy('created_at', 'desc');
+    }
+
+    /**
      * @param $query
      * @param $categoryId
      * @return mixed
@@ -68,6 +79,9 @@ class Salon extends Model
         }
     }
 
+    /**
+     * @return int
+     */
     public function getIsMemberAttribute()
     {
         return $this->users->count() ? self::IS_MEMBER : self::IS_NOT_MEMBER;

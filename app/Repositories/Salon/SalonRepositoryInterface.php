@@ -18,15 +18,15 @@ interface SalonRepositoryInterface
      * @param int|null $categoryId
      * @return Collection
      */
-    public function fetchSalonList(?int $categoryId): Collection;
+    public function fetchSalonList(int $categoryId): Collection;
 
     /**
-     * @param int $id
+     * @param int $userId
      * @param array $attribute
      * @param Plan $stripePlan
      * @return Salon
      */
-    public function createSalon(int $id, array $attribute, Plan $stripePlan): Salon;
+    public function createSalon(int $userId, array $attribute, Plan $stripePlan): Salon;
 
     /**
      * @param Salon $salon

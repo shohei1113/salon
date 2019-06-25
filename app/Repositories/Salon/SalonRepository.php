@@ -39,15 +39,15 @@ class SalonRepository implements SalonRepositoryInterface
     }
 
     /**
-     * @param int $id
+     * @param int $userId
      * @param array $attribute
      * @param Plan $stripePlan
      * @return Salon
      */
-    public function createSalon(int $id, array $attribute, Plan $stripePlan): Salon
+    public function createSalon(int $userId, array $attribute, Plan $stripePlan): Salon
     {
         return $this->salon->create([
-            'owner_id' => $id,
+            'owner_id' => $userId,
             'category_id' => $attribute['category_id'],
             'title' => $attribute['title'],
             'description' => $attribute['description'],
@@ -84,7 +84,7 @@ class SalonRepository implements SalonRepositoryInterface
     public function updateSalon(int $id, array $attribute): Salon
     {
         $salon = $this->salon->find($id);
-        $this->salon->update($attribute);
+        $salon->update($attribute);
         return $salon;
     }
 
