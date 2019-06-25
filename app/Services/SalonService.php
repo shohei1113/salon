@@ -59,24 +59,24 @@ class SalonService
     }
 
     /**
-     * @param int $id
+     * @param int $userId
      * @param array $attribute
      * @param UploadedFile|null $image
      * @return Salon
      * @throws Exception
      */
-    public function createSalon(int $id, array $attribute, ?UploadedFile $image): Salon
+    public function createSalon(int $userId, array $attribute, ?UploadedFile $image): Salon
     {
         DB::beginTransaction();
         try {
             $stripePlan = $this->createStripePlan($attribute);
-            $salon = $this->salonService->createSalon($id, $attribute, $stripePlan);
+            $salon = $this->salonService->createSalon($userId, $attribute, $stripePlan);
             $this->salonService->createSalonDetail($salon, $attribute);
             $this->imageService->upload($image, $salon->id, Image::S3_DIR_SALON, Image::TYPE_SALON);
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
-            throw new Exception('error');
+            throw new Exception($e);
         }
 
         return $salon;

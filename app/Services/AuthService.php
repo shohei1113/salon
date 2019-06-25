@@ -108,14 +108,14 @@ class AuthService
      */
     public function login(array $attribute): User
     {
+        if (!$token = $this->auth->attempt($attribute)) {
+            throw new Exception('Unauthorized', 401);
+        }
+
         $user = $this->userRepository->fetchUserByEmail($attribute['email']);
 
         if ($user->email_verified == User::NOT_REGISTERED_USER) {
             throw new Exception('email not verified', 401);
-        }
-
-        if (!$token = $this->auth->attempt($attribute)) {
-            throw new Exception('Unauthorized', 401);
         }
 
         $user->token = $token;

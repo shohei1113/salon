@@ -17,6 +17,14 @@ class Post extends Model
     ];
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comment()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
     public function image()

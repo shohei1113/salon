@@ -76,7 +76,10 @@ Route::group(['namespace' => 'API', 'as' => 'api.'], function() {
         | Category Routes
         |--------------------------------------------------------------------------
         */
-//        Route::apiResource('category', 'CategoryController');
+        Route::post('category', 'CategoryController@store')->name('category.store');
+        Route::put('category/{category}', 'CategoryController@update')->name('category.update');
+//        Route::delete('category/{category}', 'CategoryController@destroy')->name('category.delete');
+
 
         /*
         |--------------------------------------------------------------------------
