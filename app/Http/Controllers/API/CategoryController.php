@@ -5,10 +5,12 @@ namespace App\Http\Controllers\API;
 
 use App\Entities\Category;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BaseResource;
 use App\Http\Resources\CategoryResource;
 use App\Services\CategoryService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
  * Class CategoryController
@@ -31,12 +33,12 @@ class CategoryController extends Controller
     }
 
     /**
-     * @return AnonymousResourceCollection
+     * @return BaseResource
      */
-    public function index(): AnonymousResourceCollection
+    public function index(): BaseResource
     {
         $categoryList = $this->categoryService->fetchCategoryList();
-        return CategoryResource::collection($categoryList);
+        return new BaseResource(CategoryResource::collection($categoryList), config('const.category.index'));
     }
 
     /**
@@ -47,7 +49,7 @@ class CategoryController extends Controller
     public function store(Request $request): CategoryResource
     {
         $createCategory = $this->categoryService->createCategory($request->all(), $request->image);
-        return new CategoryResource($createCategory);
+        return new CategoryResource($createCategory, config('const.category.store'));
     }
 
     /**
@@ -59,7 +61,7 @@ class CategoryController extends Controller
     public function update(Request $request, int $id): CategoryResource
     {
         $updateCategory = $this->categoryService->updateCategory($id, $request->all(), $request->image);
-        return new CategoryResource($updateCategory);
+        return new CategoryResource($updateCategory, config('const.category.update'));
     }
 
     /**
@@ -70,6 +72,6 @@ class CategoryController extends Controller
     public function destroy(int $id): CategoryResource
     {
         $deleteCategory = $this->categoryService->deleteCategory($id);
-        return new CategoryResource($deleteCategory);
+        return new CategoryResource($deleteCategory, config('const.category.delete'));
     }
 }

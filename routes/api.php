@@ -78,7 +78,7 @@ Route::group(['namespace' => 'API', 'as' => 'api.'], function() {
         */
         Route::post('category', 'CategoryController@store')->name('category.store');
         Route::put('category/{category}', 'CategoryController@update')->name('category.update');
-        Route::delete('category/{category}', 'CategoryController@destroy')->name('category.delete');
+//        Route::delete('category/{category}', 'CategoryController@destroy')->name('category.delete');
 
 
         /*

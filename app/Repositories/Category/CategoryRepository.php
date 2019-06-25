@@ -57,10 +57,10 @@ class CategoryRepository implements CategoryRepositoryInterface
      * @return Category
      * @throws \Exception
      */
-//    public function delete(int $id): Category
-//    {
-//        $category = $this->category->findOrFail($id);
-//        $category->delete();
-//        return $category;
-//    }
+    public function delete(int $id): Category
+    {
+        $category = $this->category->findOrFail($id);
+        $category->delete();
+        return $category;
+    }
 }
