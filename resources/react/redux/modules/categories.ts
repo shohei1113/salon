@@ -7,7 +7,7 @@ export type State = typeof initialState
 export default function reducer(state = initialState, action: any) {
   switch (action.type) {
     case 'categories/init':
-      return { ...state, categories: action.payload }
+      return { ...state, categories: action.payload.data }
     default:
       return state
   }

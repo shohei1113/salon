@@ -13,7 +13,7 @@ const styles = (theme: Theme) => ({
     left: 0,
     width: '100%',
     height: '100vh',
-    backgroundColor: 'rbga(0,0,0.5)',
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
   contents: {
     position: 'absolute' as 'absolute',
@@ -24,7 +24,7 @@ const styles = (theme: Theme) => ({
     transform: 'translate(-50%, -50%)',
   },
   loader: {
-    marginBottom: 20,
+    // marginBottom: 20,
   },
 })
 
@@ -35,14 +35,14 @@ const Loader = (props: any) => {
     <div className={classes.wrap}>
       <div className={classes.contents}>
         <CircularProgress className={classes.loader} />
-        <Typography
+        {/* <Typography
           component="p"
           variant="subtitle2"
           align="center"
           color="textPrimary"
         >
           now loading...
-        </Typography>
+        </Typography> */}
       </div>
     </div>
   )

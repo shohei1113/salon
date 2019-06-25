@@ -43,9 +43,20 @@ const Salon: React.FC = (props: any) => {
   const dispatch = useDispatch()
   const axiosConfig = {
     method: 'GET',
-    url: `${PATH}/api/category/1/salon`,
+    url: `${PATH}/api/salon/2`,
+    headers: { Authorization: `Bearer ${auth.token}` },
   }
-  // const { isLoading, response, error } = useFetchApi(axiosConfig, true)
+  const { isLoading, response, error } = useFetchApi(axiosConfig, true)
+
+  useEffect(() => {
+    if (response) {
+      console.log(response)
+      // dispatch(initSalons(response))
+    }
+
+    if (error) {
+    }
+  }, [response, error])
 
   const handleRegister = () => {
     console.log(auth)

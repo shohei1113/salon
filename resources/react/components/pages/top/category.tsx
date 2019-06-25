@@ -82,8 +82,15 @@ function Category() {
             <Card className={classes.card}>
               <div className={classes.cardDetails}>
                 <CardContent>
-                  <Typography component="h2" variant="h6">
+                  <Typography component="h3" variant="h6">
                     {item.category.name}
+                  </Typography>
+                  <Typography
+                    component="p"
+                    variant="caption"
+                    color="textSecondary"
+                  >
+                    {item.category.description}
                   </Typography>
                   <Typography variant="body2" color="primary">
                     <Link to={`/salons?category-id=${item.category.id}`}>

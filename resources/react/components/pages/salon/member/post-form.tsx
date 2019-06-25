@@ -11,13 +11,12 @@ import PATH from '../../../../const/path'
 import { composeValidators, required } from '../../../../utils/validator'
 import getUrlParam from '../../../../utils/get-url-param'
 import useFetchApi from '../../../../hooks/use-fetch-api'
-import { initAuth } from '../../../../redux/modules/auth'
+import { setSnackbar } from '../../../../redux/modules/ui'
 import {
-  setLoader,
-  clearLoader,
-  setSnackbar,
-} from '../../../../redux/modules/ui'
-import { addPost } from '../../../../redux/modules/member'
+  setLoading,
+  clearLoading,
+  addPost,
+} from '../../../../redux/modules/member'
 import { TextField } from '../../../atoms/text-field'
 import { TextArea } from '../../../atoms/text-area'
 import Thumbnail from './thumbnail'
@@ -57,31 +56,26 @@ const PostForm: React.FC = (props: any) => {
   useEffect(() => {
     if (response) {
       console.log('成功！', response)
-      // dispatch(
-      //   initAuth({
-      //     token: response.data.access_token,
-      //     user: response.data.user,
-      //   })
-      // )
-      // dispatch(clearLoader())
       dispatch(addPost(response))
+      dispatch(clearLoading())
       dispatch(setSnackbar({ message: response.message }))
     }
 
     if (error) {
       console.log('エラー！')
-      dispatch(clearLoader())
+      dispatch(clearLoading())
     }
   }, [response, error])
 
   const handleSubmit = (form, { resetForm }) => {
     const { content, file } = form
+    dispatch(setLoading())
 
     const formData = new FormData()
     formData.append('salon_id', '3')
     formData.append('content', content)
     if (file) formData.append('image', file)
-    // dispatch(setLoader())
+
     setAxiosConfig({
       method: 'POST',
       url: `${PATH}/api/post`,
