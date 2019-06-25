@@ -61,7 +61,7 @@ class CommentController extends Controller
      * @return CommentResource
      * @throws \Exception
      */
-    public function destroy($id): CommentResource
+    public function destroy(int $id): CommentResource
     {
         $deleteComment = $this->commentService->deleteComment($id);
         return new CommentResource($deleteComment);
