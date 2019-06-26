@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers\API;
 
 use App\Http\Resources\CommentResource;
+use App\Http\Resources\PostResource;
+use App\Http\Resources\PostSimpleResource;
 use App\Services\CommentService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -37,33 +39,33 @@ class CommentController extends Controller
 
     /**
      * @param Request $request
-     * @return CommentResource
+     * @return PostSimpleResource
      */
-    public function store(Request $request): CommentResource
+    public function store(Request $request): PostSimpleResource
     {
-        $createComment = $this->commentService->createComment($request->all(), $this->user->id);
-        return new CommentResource($createComment);
+        $post = $this->commentService->createComment($request->all(), $this->user->id);
+        return new PostSimpleResource($post, config('const.comment.store'));
     }
 
     /**
      * @param Request $request
      * @param int $id
-     * @return CommentResource
+     * @return PostSimpleResource
      */
-    public function update(Request $request, int $id): CommentResource
+    public function update(Request $request, int $id): PostSimpleResource
     {
-        $updateComment = $this->commentService->updateComment($id, $request->all());
-        return new CommentResource($updateComment);
+        $post = $this->commentService->updateComment($id, $request->all());
+        return new PostSimpleResource($post, config('const.comment.update'));
     }
 
     /**
-     * @param $id
-     * @return CommentResource
+     * @param int $id
+     * @return PostSimpleResource
      * @throws \Exception
      */
-    public function destroy(int $id): CommentResource
+    public function destroy(int $id): PostSimpleResource
     {
-        $deleteComment = $this->commentService->deleteComment($id);
-        return new CommentResource($deleteComment);
+        $post = $this->commentService->deleteComment($id);
+        return new PostSimpleResource($post, config('const.comment.delete'));
     }
 }

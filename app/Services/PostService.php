@@ -57,10 +57,10 @@ class PostService
      * @param int|null $postId
      * @return Collection
      */
-    public function fetchPostList(?int $postId = NULL): Collection
+    public function fetchPostList(?int $salonId = NULL): Collection
     {
         return $this->postRepository
-            ->fetchPostList($postId)
+            ->fetchPostList($salonId)
             ->sortByDesc('created_at');
     }
 
@@ -72,6 +72,7 @@ class PostService
      */
     public function createPost(array $attribute, ?UploadedFile $image): Post
     {
+
         DB::beginTransaction();
         try {
             $post = $this->postRepository->create($attribute);
@@ -103,7 +104,6 @@ class PostService
             DB::rollBack();
             throw new Exception($e);
         }
-
         return $post;
     }
 

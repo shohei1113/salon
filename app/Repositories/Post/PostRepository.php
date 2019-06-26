@@ -30,13 +30,22 @@ class PostRepository implements PostRepositoryInterface
      * @param int|null $postId
      * @return Collection
      */
-    public function fetchPostList(?int $postId): Collection
+    public function fetchPostList(?int $salonId): Collection
     {
-        if (!empty($postId)) {
-            return $this->post->searchPost($postId)->get();
+        if (!empty($salonId)) {
+            return $this->post->searchPost($salonId)->get();
         }
 
         return $this->post->all();
+    }
+
+    /**
+     * @param int $id
+     * @return Post
+     */
+    public function fetchPostById(int $id): Post
+    {
+        return $this->post->find($id);
     }
 
     /**

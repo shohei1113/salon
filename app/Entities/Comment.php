@@ -19,6 +19,10 @@ class Comment extends Model
         'user_id', 'post_id', 'content',
     ];
 
+    protected $casts = [
+        'post_id' => 'integer',
+    ];
+
     /**
      * @return BelongsTo
      */
