@@ -1,13 +1,26 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Class SalonSimpleResource
+ * @package App\Http\Resources
+ */
 class SalonSimpleResource extends JsonResource
 {
+    /**
+     * @var
+     */
     private $message;
 
+    /**
+     * SalonSimpleResource constructor.
+     * @param $resource
+     * @param $message
+     */
     public function __construct($resource, $message)
     {
         parent::__construct($resource);
@@ -40,6 +53,10 @@ class SalonSimpleResource extends JsonResource
         ];
     }
 
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return array
+     */
     public function with($request)
     {
         return [

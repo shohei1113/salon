@@ -4,6 +4,7 @@ namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Salon extends Model
 {
@@ -84,6 +85,6 @@ class Salon extends Model
      */
     public function getIsMemberAttribute()
     {
-        return $this->users->count() ? self::IS_MEMBER : self::IS_NOT_MEMBER;
+        return $this->users->find(Auth::id()) ? self::IS_MEMBER : self::IS_NOT_MEMBER;
     }
 }

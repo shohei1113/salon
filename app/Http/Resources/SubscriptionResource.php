@@ -1,11 +1,32 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Class SubscriptionResource
+ * @package App\Http\Resources
+ */
 class SubscriptionResource extends JsonResource
 {
+    /**
+     * @var
+     */
+    private $message;
+
+    /**
+     * AuthResource constructor.
+     * @param $resource
+     * @param $message
+     */
+    public function __construct($resource, $message = '')
+    {
+        parent::__construct($resource);
+        $this->message = $message;
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -28,6 +49,10 @@ class SubscriptionResource extends JsonResource
         ];
     }
 
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return array
+     */
     public function with($request)
     {
         return [
