@@ -7,8 +7,10 @@ import useFetchApi from '../../../../hooks/use-fetch-api'
 import { DefaultTemplate } from '../../../templates/default-template'
 import { RequireAuth } from '../../../utils/require-auth'
 import getUrlParam from '../../../../utils/get-url-param'
-import { setLoader, clearLoader } from '../../../../redux/modules/ui'
+import { setSnackbar } from '../../../../redux/modules/ui'
 import {
+  init,
+  reset,
   setLoading,
   clearLoading,
   fetchPosts,
@@ -23,16 +25,18 @@ const useStyles = makeStyles((theme: Theme) =>
       maxWidth: 500,
       margin: '0 auto',
     },
-    posts: {
-      marginTop: 80,
+    postForm: {
+      marginBottom: 80,
     },
+    posts: {},
     post: {
-      marginTop: 40,
+      marginBottom: 40,
     },
   })
 )
 
 const Member: React.FC = (props: any) => {
+  const { history } = props
   const classes = useStyles({})
   const { auth, member } = useMappedState(useCallback(state => state, []))
   const dispatch = useDispatch()
@@ -46,18 +50,42 @@ const Member: React.FC = (props: any) => {
 
   const { isLoading, response, error } = useFetchApi(axiosConfig, true)
 
+  const getRole = (ownerId: number, isMember: boolean) => {
+    // 1: オーナー, 2: メンバー, 3: 権限なし
+    if (auth.user.id === ownerId) return 1
+    if (isMember) return 2
+    return 3
+  }
+
   useEffect(() => {
     if (response) {
       console.log('成功！', response)
-      dispatch(fetchPosts(response))
+      const role = getRole(
+        response.data.salon.owner.id,
+        response.data.salon.is_member
+      )
+      if (role === 3) {
+        history.push('/')
+        dispatch(setSnackbar({ message: '権限がありません' }))
+        return
+      }
 
-      dispatch(clearLoading())
-      // dispatch(setSnackbar({ message: response.message }))
+      dispatch(fetchPosts(response))
+      dispatch(
+        init({
+          role,
+          owner: response.data.salon.owner,
+        })
+      )
     }
 
     if (error) {
       console.log('エラー！')
       dispatch(clearLoading())
+    }
+
+    return () => {
+      dispatch(reset())
     }
   }, [response, error])
 
@@ -65,16 +93,30 @@ const Member: React.FC = (props: any) => {
     <DefaultTemplate {...props} isDefaultSpace>
       <RequireAuth {...props}>
         <>
-          <div className={classes.wrap}>
-            <PostForm />
-            <div className={classes.posts}>
-              {member.posts.map((post, i) => (
-                <div key={i} className={classes.post}>
-                  <Post {...post} />
+          {member.isPrepared ? (
+            <div className={classes.wrap}>
+              {member.role === 1 && (
+                <div className={classes.postForm}>
+                  <PostForm />
                 </div>
-              ))}
+              )}
+              <div className={classes.posts}>
+                {member.posts.map((post, i) => (
+                  <div key={i} className={classes.post}>
+                    <Post
+                      owner={member.owner}
+                      role={member.role}
+                      auth={auth}
+                      {...post}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          ) : (
+            <LoaderPage />
+          )}
+
           {member.isLoading && <LoaderPage />}
         </>
       </RequireAuth>

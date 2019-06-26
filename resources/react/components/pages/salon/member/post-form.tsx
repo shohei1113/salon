@@ -6,18 +6,15 @@ import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button'
 import Avatar from '@material-ui/core/Avatar'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import PATH from '../../../../const/path'
 import { composeValidators, required } from '../../../../utils/validator'
-import getUrlParam from '../../../../utils/get-url-param'
 import useFetchApi from '../../../../hooks/use-fetch-api'
 import { setSnackbar } from '../../../../redux/modules/ui'
 import {
   setLoading,
   clearLoading,
-  addPost,
+  createPost,
 } from '../../../../redux/modules/member'
-import { TextField } from '../../../atoms/text-field'
 import { TextArea } from '../../../atoms/text-area'
 import Thumbnail from './thumbnail'
 
@@ -56,14 +53,16 @@ const PostForm: React.FC = (props: any) => {
   useEffect(() => {
     if (response) {
       console.log('成功！', response)
-      dispatch(addPost(response))
+      dispatch(createPost(response.data.post))
       dispatch(clearLoading())
       dispatch(setSnackbar({ message: response.message }))
+      setStartFetch(false)
     }
 
     if (error) {
       console.log('エラー！')
       dispatch(clearLoading())
+      setStartFetch(false)
     }
   }, [response, error])
 

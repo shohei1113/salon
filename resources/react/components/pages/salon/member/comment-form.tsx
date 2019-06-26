@@ -6,12 +6,12 @@ import Button from '@material-ui/core/Button'
 import PATH from '../../../../const/path'
 import { composeValidators, required } from '../../../../utils/validator'
 import useFetchApi from '../../../../hooks/use-fetch-api'
-import { initAuth } from '../../../../redux/modules/auth'
+import { setSnackbar } from '../../../../redux/modules/ui'
 import {
-  setLoader,
-  clearLoader,
-  setSnackbar,
-} from '../../../../redux/modules/ui'
+  editPost,
+  setLoading,
+  clearLoading,
+} from '../../../../redux/modules/member'
 import { TextField } from '../../../atoms/text-field'
 
 interface Props {
@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
     form: {
       display: 'flex',
       alignItems: 'flex-start',
+      padding: '0 8px 8px',
     },
     formItem: {
       flex: 1,
@@ -44,24 +45,21 @@ function CommentForm(props: Props) {
   useEffect(() => {
     if (response) {
       console.log('成功！', response)
-      // dispatch(
-      //   initAuth({
-      //     token: response.data.access_token,
-      //     user: response.data.user,
-      //   })
-      // )
-      dispatch(clearLoader())
+      dispatch(editPost(response.data.post))
+      dispatch(clearLoading())
       dispatch(setSnackbar({ message: response.message }))
+      setStartFetch(false)
     }
 
     if (error) {
       console.log('エラー！')
-      dispatch(clearLoader())
+      dispatch(clearLoading())
+      setStartFetch(false)
     }
   }, [response, error])
 
   const handleSubmit = (form, { resetForm }) => {
-    dispatch(setLoader())
+    dispatch(setLoading())
     setAxiosConfig({
       method: 'POST',
       url: `${PATH}/api/comment`,

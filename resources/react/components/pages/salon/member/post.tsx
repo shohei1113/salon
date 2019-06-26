@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { useDispatch } from 'redux-react-hook'
 import dateFns from 'date-fns'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
 import clsx from 'clsx'
@@ -11,19 +12,29 @@ import Collapse from '@material-ui/core/Collapse'
 import Avatar from '@material-ui/core/Avatar'
 import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
-import { red } from '@material-ui/core/colors'
-import FavoriteIcon from '@material-ui/icons/Favorite'
-import ShareIcon from '@material-ui/icons/Share'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import MoreVertIcon from '@material-ui/icons/MoreVert'
+import AccountCircle from '@material-ui/icons/AccountCircle'
+import DeleteIcon from '@material-ui/icons/Delete'
+import PATH from '../../../../const/path'
+import useFetchApi from '../../../../hooks/use-fetch-api'
+import {
+  deletePost,
+  setLoading,
+  clearLoading,
+} from '../../../../redux/modules/member'
+import { setSnackbar, setModal } from '../../../../redux/modules/ui'
 import CommentForm from './comment-form'
 import Comment from './comment'
 
 interface Props {
+  auth: any
+  owner: any
+  role: 1 | 2
   id: number
   content: string
   image_url: string | null
-  comment: any[]
+  created_at: Date
+  comments: any[]
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -46,35 +57,76 @@ const useStyles = makeStyles((theme: Theme) =>
       transform: 'rotate(180deg)',
     },
     avatar: {
-      backgroundColor: red[500],
+      backgroundColor: '#bbb',
     },
   })
 )
 
 function Post(props: Props) {
   const classes = useStyles({})
-  const [expanded, setExpanded] = React.useState(false)
+  const [expanded, setExpanded] = useState(false)
+  const dispatch = useDispatch()
+  const [isStartFetch, setStartFetch] = useState(false)
+  const axiosConfig = {
+    method: 'DELETE',
+    url: `${PATH}/api/post/${props.id}`,
+    headers: { Authorization: `Bearer ${props.auth.token}` },
+  }
+  const { isLoading, response, error } = useFetchApi(axiosConfig, isStartFetch)
 
   function handleExpandClick() {
     setExpanded(!expanded)
   }
 
+  function handleDelete() {
+    dispatch(
+      setModal({
+        title: '投稿を削除しますか？',
+        description: '',
+        callback: () => {
+          dispatch(setLoading())
+          setStartFetch(true)
+        },
+      })
+    )
+  }
+
+  useEffect(() => {
+    if (response) {
+      console.log('成功！', response)
+      dispatch(deletePost(response.data.post))
+      dispatch(clearLoading())
+      dispatch(setSnackbar({ message: response.message }))
+      setStartFetch(false)
+    }
+
+    if (error) {
+      console.log('エラー！')
+      dispatch(clearLoading())
+      setStartFetch(false)
+    }
+  }, [response, error])
+
   return (
     <Card className={classes.card}>
       <CardHeader
         avatar={
-          <Avatar aria-label="Recipe" className={classes.avatar}>
-            R
-          </Avatar>
+          props.owner.image_url ? (
+            <Avatar alt="" src={props.owner.image_url} />
+          ) : (
+            <Avatar className={classes.avatar}>
+              <AccountCircle color="inherit" style={{ fontSize: 40 }} />
+            </Avatar>
+          )
         }
         action={
-          <IconButton aria-label="Settings">
-            <MoreVertIcon />
-          </IconButton>
+          props.role === 1 && (
+            <IconButton aria-label="Delete" onClick={handleDelete}>
+              <DeleteIcon fontSize="small" />
+            </IconButton>
+          )
         }
-        // title={props.author.name}
-        title="test"
-        // subheader={dateFns.format(props.author.created_at, 'YYYY-MM-DD')}
+        subheader={dateFns.format(props.created_at, 'YYYY-MM-DD hh:mm')}
       />
 
       {props.image_url && (
@@ -108,8 +160,8 @@ function Post(props: Props) {
       <CommentForm postId={props.id} />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          {props.comment.map(comment => (
-            <Comment key={comment.id} {...comment} />
+          {props.comments.map(comment => (
+            <Comment key={comment.id} auth={props.auth} {...comment} />
           ))}
         </CardContent>
       </Collapse>
