@@ -4,7 +4,10 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Entities\Comment;
+use App\Entities\Post;
 use App\Repositories\Comment\CommentRepository;
+use App\Repositories\Post\PostRepository;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Class CommentService
@@ -18,41 +21,54 @@ class CommentService
     private $commentRepository;
 
     /**
+     * @var PostRepository
+     */
+    private $postRepository;
+
+    /**
      * CommentService constructor.
      * @param CommentRepository $commentRepository
+     * @param PostRepository $postRepository
      */
-    public function __construct(CommentRepository $commentRepository)
-    {
+    public function __construct(
+        CommentRepository $commentRepository,
+        PostRepository $postRepository
+    ) {
         $this->commentRepository = $commentRepository;
+        $this->postRepository = $postRepository;
     }
 
     /**
      * @param array $attribute
      * @param int $userId
-     * @return Comment
+     * @return Post
      */
-    public function createComment(array $attribute, int $userId): Comment
+    public function createComment(array $attribute, int $userId): Post
     {
-        return $this->commentRepository->create($attribute, $userId);
+        $createComment = $this->commentRepository->create($attribute, $userId);
+        return $this->postRepository->fetchPostById($createComment->post_id);
+
     }
 
     /**
      * @param int $id
      * @param array $attribute
-     * @return Comment
+     * @return Post
      */
-    public function updateComment(int $id, array $attribute): Comment
+    public function updateComment(int $id, array $attribute): Post
     {
-        return $this->commentRepository->update($id, $attribute);
+        $updateComment = $this->commentRepository->update($id, $attribute);
+        return $this->postRepository->fetchPostById($updateComment->post_id);
     }
 
     /**
      * @param int $id
-     * @return Comment
+     * @return Post
      * @throws \Exception
      */
-    public function deleteComment(int $id): Comment
+    public function deleteComment(int $id): Post
     {
-        return $this->commentRepository->delete($id);
+        $deleteComment = $this->commentRepository->delete($id);
+        return $this->postRepository->fetchPostById($deleteComment->post_id);
     }
 }

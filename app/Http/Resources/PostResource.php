@@ -8,7 +8,7 @@ class PostResource extends JsonResource
 {
     private $message;
 
-    public function __construct($resource, $message)
+    public function __construct($resource, $message='')
     {
         parent::__construct($resource);
         $this->message = $message;
@@ -28,6 +28,7 @@ class PostResource extends JsonResource
             'content' => $this->content,
             'image_url' => $this->image->image_path ?? NULL,
             'comment' => CommentResource::collection($this->comment),
+            'created_at' => $this->created_at,
         ];
     }
 

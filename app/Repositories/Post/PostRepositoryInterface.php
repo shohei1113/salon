@@ -19,6 +19,12 @@ interface PostRepositoryInterface
     public function fetchPostList(?int $salonId): Collection;
 
     /**
+     * @param int $id
+     * @return Post
+     */
+    public function fetchPostById(int $id): Post;
+
+    /**
      * @param array $attribute
      * @return Post
      */

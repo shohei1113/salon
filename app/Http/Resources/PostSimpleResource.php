@@ -6,6 +6,14 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class PostSimpleResource extends JsonResource
 {
+    private $message;
+
+    public function __construct($resource, $message)
+    {
+        parent::__construct($resource);
+        $this->message = $message;
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -14,6 +22,19 @@ class PostSimpleResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'post' => new PostResource($this),
+        ];
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return array
+     */
+    public function with($request)
+    {
+        return [
+            'message' => $this->message,
+        ];
     }
 }
