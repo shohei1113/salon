@@ -16,7 +16,7 @@ class CommentResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => $this->user->name,
+            'user' => new UserResource($this->user),
             'content' => $this->content,
         ];
     }
