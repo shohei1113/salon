@@ -35,7 +35,7 @@ class SalonSimpleResource extends JsonResource
                 'salon_detail' => new SalonDetailResource($this->salon_detail),
                 'image_url' => $this->image->image_path ?? NULL,
                 'is_member' => $this->is_member,
-                'post' => PostResource::collection($this->post) ?? NULL,
+                'posts' => PostResource::collection($this->post) ?? NULL,
             ],
         ];
     }

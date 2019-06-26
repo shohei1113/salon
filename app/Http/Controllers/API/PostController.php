@@ -6,6 +6,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BaseResource;
 use App\Http\Resources\PostResource;
+use App\Http\Resources\PostSimpleResource;
 use App\Services\PostService;
 use Illuminate\Http\Request;
 
@@ -41,34 +42,34 @@ class PostController extends Controller
 
     /**
      * @param Request $request
-     * @return PostResource
+     * @return PostSimpleResource
      * @throws \Exception
      */
-    public function store(Request $request): PostResource
+    public function store(Request $request): PostSimpleResource
     {
         $createPost = $this->postService->createPost($request->all(), $request->image);
-        return new PostResource($createPost, config('const.post.store'));
+        return new PostSimpleResource($createPost, config('const.post.store'));
     }
 
     /**
      * @param Request $request
      * @param int $id
-     * @return PostResource
+     * @return PostSimpleResource
      * @throws \Exception
      */
-    public function update(Request $request, int $id): PostResource
+    public function update(Request $request, int $id): PostSimpleResource
     {
         $updatePost = $this->postService->updatePost($id, $request->all(), $request->image);
-        return new PostResource($updatePost, config('const.post.update'));
+        return new PostSimpleResource($updatePost, config('const.post.update'));
     }
 
     /**
      * @param int $id
-     * @return PostResource
+     * @return PostSimpleResource
      */
-    public function destroy(int $id): PostResource
+    public function destroy(int $id): PostSimpleResource
     {
         $deletePost = $this->postService->deletePost($id);
-        return new PostResource($deletePost, config('const.post.delete'));
+        return new PostSimpleResource($deletePost, config('const.post.delete'));
     }
 }
