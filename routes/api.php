@@ -31,7 +31,7 @@ Route::group(['namespace' => 'API', 'as' => 'api.'], function() {
 
     Route::get('category/{category}/salon', 'SalonController@index')->name('category.salon.index');
     Route::get('salon', 'SalonController@index')->name('salon.index');
-    Route::get('salon/{salon}', 'SalonController@show')->name('salon.show');
+    Route::get('salon/preview/{salon}', 'SalonController@preview')->name('salon.preview');
 
     Route::get('category', 'CategoryController@index')->name('category.index');
 
@@ -47,7 +47,7 @@ Route::group(['namespace' => 'API', 'as' => 'api.'], function() {
         | User Routes
         |--------------------------------------------------------------------------
         */
-        Route::get('me', 'UserController@loginUserInfo')->name('user');
+        Route::get('me', 'UserController@info')->name('user');
         Route::get('user', 'UserController@index')->name('user.index');
         Route::post('user', 'UserController@store')->name('user.store');
         Route::get('user/{user}', 'UserController@show')->name('user.show');
@@ -62,6 +62,7 @@ Route::group(['namespace' => 'API', 'as' => 'api.'], function() {
         Route::post('salon', 'SalonController@store')->name('salon.store');
         Route::put('salon/{salon}', 'SalonController@update')->name('salon.update');
         Route::delete('salon/{salon}', 'SalonController@destroy')->name('salon.delete');
+        Route::get('salon/{post}', 'SalonController@show')->name('salon.show');
 
         /*
         |--------------------------------------------------------------------------

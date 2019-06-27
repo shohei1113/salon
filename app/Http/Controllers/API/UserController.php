@@ -39,15 +39,15 @@ class UserController extends Controller
     public function update(Request $request, int $id): UserInfoResource
     {
         $user = $this->userService->updateUser($id, $request->all(), $request->image);
-        return new UserInfoResource($user);
+        return new UserInfoResource($user, config('const.user.update'));
     }
 
     /**
      * @return UserInfoResource
      */
-    public function loginUserInfo(): UserInfoResource
+    public function info(): UserInfoResource
     {
         $user = $this->userService->fetchUserById(Auth::id());
-        return new UserInfoResource($user, config('const.auth.loginUserInfo'));
+        return new UserInfoResource($user, config('const.user.info'));
     }
 }
