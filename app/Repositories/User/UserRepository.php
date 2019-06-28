@@ -51,7 +51,9 @@ class UserRepository implements UserRepositoryInterface
     public function update(int $id, array $attribute): User
     {
         $user = $this->user->find($id);
-        $attribute['password'] = Hash::make($attribute['password']);
+        if (isset($attribute['password'])) {
+            $attribute['password'] = Hash::make($attribute['password']);
+        }
         $user->update($attribute);
 
         return $user;
