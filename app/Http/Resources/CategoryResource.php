@@ -1,13 +1,26 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Class CategoryResource
+ * @package App\Http\Resources
+ */
 class CategoryResource extends JsonResource
 {
+    /**
+     * @var string
+     */
     private $message;
 
+    /**
+     * CategoryResource constructor.
+     * @param $resource
+     * @param string $message
+     */
     public function __construct($resource, $message='')
     {
         parent::__construct($resource);
@@ -32,6 +45,10 @@ class CategoryResource extends JsonResource
         ];
     }
 
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return array
+     */
     public function with($request)
     {
         return [
