@@ -35,6 +35,9 @@ const useStyles = makeStyles((theme: Theme) =>
     form: {
       width: 300,
     },
+    formItem: {
+      marginTop: 16,
+    },
     submit: {
       marginTop: 60,
     },
@@ -119,42 +122,48 @@ const Signup: React.FC = (props: any) => {
           }}
           render={({ handleSubmit }) => (
             <form onSubmit={handleSubmit} className={classes.form}>
-              <Field
-                name="email"
-                render={({ field, form }) => (
-                  <TextField
-                    field={field}
-                    form={form}
-                    type="email"
-                    label="メールアドレス"
-                    placeholder="example.com"
-                  />
-                )}
-              />
-              <Field
-                name="password"
-                render={({ field, form }) => (
-                  <TextField
-                    field={field}
-                    form={form}
-                    type="password"
-                    label="パスワード"
-                    placeholder="半角英数6文字以上"
-                  />
-                )}
-              />
-              <Field
-                name="passwordConfirm"
-                render={({ field, form }) => (
-                  <TextField
-                    field={field}
-                    form={form}
-                    type="password"
-                    label="パスワード確認"
-                    placeholder="半角英数6文字以上"
-                  />
-                )}
-              />
+              <div className={classes.formItem}>
+                <Field
+                  name="email"
+                  render={({ field, form }) => (
+                    <TextField
+                      field={field}
+                      form={form}
+                      type="email"
+                      label="メールアドレス"
+                      placeholder="example.com"
+                    />
+                  )}
+                />
+              </div>
+              <div className={classes.formItem}>
+                <Field
+                  name="password"
+                  render={({ field, form }) => (
+                    <TextField
+                      field={field}
+                      form={form}
+                      type="password"
+                      label="パスワード"
+                      placeholder="半角英数6文字以上"
+                    />
+                  )}
+                />
+              </div>
+              <div className={classes.formItem}>
+                <Field
+                  name="passwordConfirm"
+                  render={({ field, form }) => (
+                    <TextField
+                      field={field}
+                      form={form}
+                      type="password"
+                      label="パスワード確認"
+                      placeholder="半角英数6文字以上"
+                    />
+                  )}
+                />
+              </div>
               <Button
                 type="submit"
                 fullWidth

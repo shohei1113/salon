@@ -15,7 +15,6 @@ import PATH from '../../../../const/path'
 import useFetchApi from '../../../../hooks/use-fetch-api'
 import { DefaultTemplate } from '../../../templates/default-template'
 import { RequireAuth } from '../../../utils/require-auth'
-import getUrlParam from '../../../../utils/get-url-param'
 import { composeValidators, required } from '../../../../utils/validator'
 import { setLoader, clearLoader } from '../../../../redux/modules/ui'
 import { TextField } from '../../../atoms/text-field'
@@ -41,6 +40,9 @@ const useStyles = makeStyles((theme: Theme) =>
     table: {},
 
     form: {},
+    formItem: {
+      marginTop: 16,
+    },
     submit: {
       marginTop: 60,
     },
@@ -48,29 +50,32 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 const Salon: React.FC = (props: any) => {
+  const { history } = props
   const classes = useStyles({})
-  const { token } = useMappedState(useCallback(state => state.auth, []))
-  const salonId = getUrlParam('salon-id')
+  const { auth, salon } = useMappedState(useCallback(state => state, []))
   const dispatch = useDispatch()
   const [axiosConfig, setAxiosConfig] = useState({})
   const [isStartFetch, setStartFetch] = useState(false)
   const { isLoading, response, error } = useFetchApi(axiosConfig, isStartFetch)
 
   useEffect(() => {
+    if (!salon.salon.id) {
+      // history.push('/')
+    }
+  }, [salon])
+
+  useEffect(() => {
     if (response) {
       console.log('成功！', response)
-      // dispatch(
-      //   initAuth({
-      //     token: response.data.access_token,
-      //     user: response.data.user,
-      //   })
-      // )
+      setStartFetch(false)
+      history.push(`/salon/member?salon-id=${salon.salon.id}`)
       dispatch(clearLoader())
     }
 
     if (error) {
       console.log('エラー！')
-      // dispatch(clearLoader())
+      setStartFetch(false)
+      dispatch(clearLoader())
     }
   }, [response, error])
 
@@ -78,8 +83,8 @@ const Salon: React.FC = (props: any) => {
     dispatch(setLoader())
     setAxiosConfig({
       method: 'POST',
-      url: `${PATH}/api/salon/${salonId}/payment/card`,
-      headers: { Authorization: `Bearer ${token}` },
+      url: `${PATH}/api/salon/${salon.salon.id}/payment/card`,
+      headers: { Authorization: `Bearer ${auth.token}` },
       data: {
         name: form.name,
         number: form.number,
@@ -116,21 +121,21 @@ const Salon: React.FC = (props: any) => {
                       <TableCell component="th" scope="row" align="left">
                         タイトル
                       </TableCell>
-                      <TableCell align="left">
-                        ああああああああああああ
-                      </TableCell>
+                      <TableCell align="left">{salon.salon.title}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">
                         オーナー
                       </TableCell>
-                      <TableCell align="left">高橋</TableCell>
+                      <TableCell align="left">
+                        {salon.salon.owner.name}
+                      </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">
                         料金（月額）
                       </TableCell>
-                      <TableCell align="left">￥1000</TableCell>
+                      <TableCell align="left">¥{salon.salon.price}</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
@@ -187,66 +192,76 @@ const Salon: React.FC = (props: any) => {
                 }}
                 render={({ handleSubmit }) => (
                   <form onSubmit={handleSubmit} className={classes.form}>
-                    <Field
-                      name="name"
-                      render={({ field, form }) => (
-                        <TextField
-                          field={field}
-                          form={form}
-                          type="text"
-                          label="名前"
-                          placeholder="TARO YAMADA"
-                        />
-                      )}
-                    />
-                    <Field
-                      name="number"
-                      render={({ field, form }) => (
-                        <TextField
-                          field={field}
-                          form={form}
-                          type="text"
-                          label="カード番号"
-                          placeholder="0123456789012345"
-                        />
-                      )}
-                    />
-                    <Field
-                      name="exp_month"
-                      render={({ field, form }) => (
-                        <TextField
-                          field={field}
-                          form={form}
-                          type="text"
-                          label="月"
-                          placeholder="01"
-                        />
-                      )}
-                    />
-                    <Field
-                      name="exp_year"
-                      render={({ field, form }) => (
-                        <TextField
-                          field={field}
-                          form={form}
-                          type="text"
-                          label="年"
-                          placeholder="20"
-                        />
-                      )}
-                    />
-                    <Field
-                      name="cvc"
-                      render={({ field, form }) => (
-                        <TextField
-                          field={field}
-                          form={form}
-                          type="text"
-                          label="セキュリティコード"
-                          placeholder="000"
-                        />
-                      )}
-                    />
+                    <div className={classes.formItem}>
+                      <Field
+                        name="name"
+                        render={({ field, form }) => (
+                          <TextField
+                            field={field}
+                            form={form}
+                            type="text"
+                            label="名前"
+                            placeholder="TARO YAMADA"
+                          />
+                        )}
+                      />
+                    </div>
+                    <div className={classes.formItem}>
+                      <Field
+                        name="number"
+                        render={({ field, form }) => (
+                          <TextField
+                            field={field}
+                            form={form}
+                            type="text"
+                            label="カード番号"
+                            placeholder="0123456789012345"
+                          />
+                        )}
+                      />
+                    </div>
+                    <div className={classes.formItem}>
+                      <Field
+                        name="exp_month"
+                        render={({ field, form }) => (
+                          <TextField
+                            field={field}
+                            form={form}
+                            type="text"
+                            label="月"
+                            placeholder="01"
+                          />
+                        )}
+                      />
+                    </div>
+                    <div className={classes.formItem}>
+                      <Field
+                        name="exp_year"
+                        render={({ field, form }) => (
+                          <TextField
+                            field={field}
+                            form={form}
+                            type="text"
+                            label="年(西暦下2ケタ)"
+                            placeholder="20"
+                          />
+                        )}
+                      />
+                    </div>
+                    <div className={classes.formItem}>
+                      <Field
+                        name="cvc"
+                        render={({ field, form }) => (
+                          <TextField
+                            field={field}
+                            form={form}
+                            type="text"
+                            label="セキュリティコード"
+                            placeholder="000"
+                          />
+                        )}
+                      />
+                    </div>
                     <Button
                       type="submit"
                       fullWidth

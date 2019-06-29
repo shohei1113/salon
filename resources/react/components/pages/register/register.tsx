@@ -34,6 +34,9 @@ const useStyles = makeStyles((theme: Theme) =>
     form: {
       width: 300,
     },
+    formItem: {
+      marginTop: 16,
+    },
     fileWrap: {
       marginTop: 24,
     },
@@ -130,45 +133,49 @@ const Register: React.FC = (props: any) => {
           }}
           render={({ values, handleSubmit, setFieldValue }) => (
             <form onSubmit={handleSubmit} className={classes.form}>
-              <Field
-                name="name"
-                render={({ field, form }) => (
-                  <TextField
-                    field={field}
-                    form={form}
-                    type="text"
-                    label="名前"
-                    placeholder="田中 太郎"
-                  />
-                )}
-              />
-              <Field
-                name="image"
-                render={({ field, form }) => (
-                  <div className={classes.fileWrap}>
-                    <input
-                      id="image"
-                      name="image"
-                      type="file"
-                      onChange={event => {
-                        setFieldValue('image', event.currentTarget.files[0])
-                      }}
-                      className={classes.inputFile}
+              <div className={classes.formItem}>
+                <Field
+                  name="name"
+                  render={({ field, form }) => (
+                    <TextField
+                      field={field}
+                      form={form}
+                      type="text"
+                      label="名前"
+                      placeholder="田中 太郎"
                     />
-                    <label htmlFor="image" className={classes.inputLabel}>
-                      <Button
-                        variant="outlined"
-                        component="span"
-                        className={classes.inputButton}
-                      >
-                        プロフィール画像を選択
-                      </Button>
-                    </label>
+                  )}
+                />
+              </div>
+              <div className={classes.formItem}>
+                <Field
+                  name="image"
+                  render={({ field, form }) => (
+                    <div className={classes.fileWrap}>
+                      <input
+                        id="image"
+                        name="image"
+                        type="file"
+                        onChange={event => {
+                          setFieldValue('image', event.currentTarget.files[0])
+                        }}
+                        className={classes.inputFile}
+                      />
+                      <label htmlFor="image" className={classes.inputLabel}>
+                        <Button
+                          variant="outlined"
+                          component="span"
+                          className={classes.inputButton}
+                        >
+                          プロフィール画像を選択
+                        </Button>
+                      </label>
 
-                    <Thumbnail file={values.image} />
-                  </div>
-                )}
-              />
+                      <Thumbnail file={values.image} />
+                    </div>
+                  )}
+                />
+              </div>
               <Button
                 type="submit"
                 fullWidth

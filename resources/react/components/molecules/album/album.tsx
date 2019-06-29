@@ -1,8 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles'
-import classNames from 'classnames'
-import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
@@ -31,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
 function Album(props: any) {
   const classes = useStyles({})
   const { cards } = props
-  console.log(cards)
+
   return (
     <div className={classes.root}>
       <Grid container spacing={2}>

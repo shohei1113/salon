@@ -35,7 +35,6 @@ function NavItem(props) {
   const changePage = () => {
     dispatch(toggleNav())
     if (handleClick) {
-      console.log('0')
       handleClick()
     }
   }
@@ -97,12 +96,8 @@ function Navigation(props: any) {
           {auth.isLoggedin ? (
             <>
               <List>
-                <ListSubheader inset>サロン</ListSubheader>
-                <Link to="/">
-                  <NavItem text="開講サロン" />
-                </Link>
-                <Link to="/">
-                  <NavItem text="受講サロン" />
+                <Link to="/user/salon">
+                  <NavItem text="Myサロン" />
                 </Link>
               </List>
               <Divider />

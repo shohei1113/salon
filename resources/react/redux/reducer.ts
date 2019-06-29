@@ -6,6 +6,7 @@ import ui, { State as UiState } from './modules/ui'
 import categories, { State as CategoriesState } from './modules/categories'
 import salons, { State as Salons } from './modules/salons'
 import member, { State as Member } from './modules/member'
+import salon, { State as Salon } from './modules/salon'
 
 export interface StoreState {
   auth: AuthState
@@ -13,6 +14,7 @@ export interface StoreState {
   categories: CategoriesState
   salons: Salons
   member: Member
+  salon: Salon
 }
 
 const authPersistConfig = {
@@ -27,4 +29,5 @@ export default combineReducers({
   categories,
   salons,
   member,
+  salon,
 })
