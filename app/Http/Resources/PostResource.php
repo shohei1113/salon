@@ -1,13 +1,26 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Class PostResource
+ * @package App\Http\Resources
+ */
 class PostResource extends JsonResource
 {
+    /**
+     * @var string
+     */
     private $message;
 
+    /**
+     * PostResource constructor.
+     * @param $resource
+     * @param string $message
+     */
     public function __construct($resource, $message='')
     {
         parent::__construct($resource);

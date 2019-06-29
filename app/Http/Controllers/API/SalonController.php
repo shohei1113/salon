@@ -24,12 +24,18 @@ class SalonController extends Controller
     private $salonService;
 
     /**
+     * @var \App\Entities\User|\Illuminate\Contracts\Auth\Authenticatable|null
+     */
+    private $user;
+
+    /**
      * SalonController constructor.
      * @param SalonService $salonService
      */
     public function __construct(SalonService $salonService)
     {
         $this->salonService = $salonService;
+        $this->user = Auth::user();
     }
 
     /**
@@ -73,5 +79,15 @@ class SalonController extends Controller
     {
         $updateSalon = $this->salonService->updateSalon($id, $request->all(), $request->image);
         return new SalonResource($updateSalon, config('const.salon.update'));
+    }
+
+    /**
+     * @param int $id
+     * @return SalonResource
+     */
+    public function preview(int $id): SalonResource
+    {
+        $salon = $this->salonService->fetchSalonById($id);
+        return new SalonResource($salon, 'const.salon.preview');
     }
 }

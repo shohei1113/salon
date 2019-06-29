@@ -1,9 +1,14 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Class UserInfoResource
+ * @package App\Http\Resources
+ */
 class UserInfoResource extends JsonResource
 {
     /**
@@ -11,6 +16,11 @@ class UserInfoResource extends JsonResource
      */
     private $message;
 
+    /**
+     * UserInfoResource constructor.
+     * @param $resource
+     * @param string $message
+     */
     public function __construct($resource, $message='')
     {
         parent::__construct($resource);
