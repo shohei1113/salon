@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 
-class Thumbnail extends React.Component<{ file: any }> {
+class Thumbnail extends React.Component<{ file: any; reset: any }> {
   state = {
     loading: false,
     thumb: undefined,
@@ -23,7 +23,7 @@ class Thumbnail extends React.Component<{ file: any }> {
   }
 
   render() {
-    const { file } = this.props
+    const { file, reset } = this.props
     const { loading, thumb } = this.state
 
     if (!file) {
@@ -35,7 +35,15 @@ class Thumbnail extends React.Component<{ file: any }> {
     }
 
     return (
-      <img src={thumb} alt={file.name} width={100} style={{ marginTop: 16 }} />
+      <div>
+        <div onClick={reset}>X</div>
+        <img
+          src={thumb}
+          alt={file.name}
+          width={100}
+          style={{ marginTop: 16 }}
+        />
+      </div>
     )
   }
 }

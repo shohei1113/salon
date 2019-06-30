@@ -5,9 +5,8 @@ import { Theme, createStyles, makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button'
-import Avatar from '@material-ui/core/Avatar'
 import PATH from '../../../../const/path'
-import { composeValidators, required } from '../../../../utils/validator'
+import { composeValidators, required, image } from '../../../../utils/validator'
 import useFetchApi from '../../../../hooks/use-fetch-api'
 import { setSnackbar } from '../../../../redux/modules/ui'
 import {
@@ -17,6 +16,10 @@ import {
 } from '../../../../redux/modules/member'
 import { TextArea } from '../../../atoms/text-area'
 import Thumbnail from './thumbnail'
+
+interface Props {
+  salonId: string
+}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -39,10 +42,16 @@ const useStyles = makeStyles((theme: Theme) =>
     inputButton: {
       width: '100%',
     },
+    invalidMessage: {
+      marginTop: 8,
+      color: 'red',
+      fontSize: 11,
+    },
   })
 )
 
-const PostForm: React.FC = (props: any) => {
+function PostForm(props: Props) {
+  const { salonId } = props
   const classes = useStyles({})
   const { token } = useMappedState(useCallback(state => state.auth, []))
   const dispatch = useDispatch()
@@ -62,16 +71,23 @@ const PostForm: React.FC = (props: any) => {
     if (error) {
       console.log('エラー！')
       dispatch(clearLoading())
+      dispatch(setSnackbar({ message: '投稿エラー' }))
       setStartFetch(false)
     }
   }, [response, error])
+
+  const resetImage = setFieldValue => {
+    setFieldValue('file', null)
+    const obj = document.getElementById('image') as any
+    obj.value = ''
+  }
 
   const handleSubmit = (form, { resetForm }) => {
     const { content, file } = form
     dispatch(setLoading())
 
     const formData = new FormData()
-    formData.append('salon_id', '3')
+    formData.append('salon_id', salonId)
     formData.append('content', content)
     if (file) formData.append('image', file)
 
@@ -104,11 +120,16 @@ const PostForm: React.FC = (props: any) => {
           const contentError = composeValidators(
             required('投稿内容を入力してください')
           )(values.content)
+          const imageError = composeValidators(
+            image('5MB以下の画像を選択してください')
+          )(values.file)
 
           if (contentError) {
             errors.content = contentError
           }
-
+          if (imageError) {
+            errors.image = imageError
+          }
           return errors
         }}
         render={({ values, handleSubmit, setFieldValue }) => (
@@ -148,7 +169,15 @@ const PostForm: React.FC = (props: any) => {
                     </Button>
                   </label>
 
-                  <Thumbnail file={values.file} />
+                  <Thumbnail
+                    file={values.file}
+                    reset={() => {
+                      resetImage(setFieldValue)
+                    }}
+                  />
+                  <div className={classes.invalidMessage}>
+                    {form.errors.image}
+                  </div>
                 </div>
               )}
             />

@@ -67,3 +67,17 @@ export const email = (value: any) => {
     ? undefined
     : '正しいメールアドレスを入力して下さい'
 }
+
+export const image = (message: string) => (value: any) => {
+  const MAX_IMAGE_SIZE = 5242880
+  // const MAX_IMAGE_SIZE = 100
+
+  if (value === null) {
+    return undefined
+  }
+
+  if (value.size >= MAX_IMAGE_SIZE) {
+    return message
+  }
+  return undefined
+}

@@ -97,7 +97,7 @@ const Member: React.FC = (props: any) => {
             <div className={classes.wrap}>
               {member.role === 1 && (
                 <div className={classes.postForm}>
-                  <PostForm />
+                  <PostForm salonId={salonId} />
                 </div>
               )}
               <div className={classes.posts}>
