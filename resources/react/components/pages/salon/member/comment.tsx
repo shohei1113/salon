@@ -109,9 +109,8 @@ function Comment(props: Props) {
           color="textSecondary"
           component="p"
           className={classes.text}
-        >
-          {props.content}
-        </Typography>
+          dangerouslySetInnerHTML={{ __html: props.content }}
+        />
       </div>
       {props.auth.user.id === props.user.id && (
         <div className={classes.action}>

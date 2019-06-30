@@ -69,8 +69,7 @@ export const email = (value: any) => {
 }
 
 export const image = (message: string) => (value: any) => {
-  const MAX_IMAGE_SIZE = 5242880
-  // const MAX_IMAGE_SIZE = 100
+  const MAX_IMAGE_SIZE = 10485760
 
   if (value === null) {
     return undefined

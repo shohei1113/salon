@@ -53,14 +53,11 @@ function Category() {
   const { isLoading, response, error } = useFetchApi(axiosConfig, true)
 
   useEffect(() => {
-    if (error) {
-      // dispatch(clearLoader())
-    }
-
     if (response) {
       console.log(response)
       dispatch(initCategories(response))
-      // dispatch(clearLoader())
+    }
+    if (error) {
     }
   }, [response, error])
 
@@ -102,7 +99,7 @@ function Category() {
 
               <CardMedia
                 className={classes.cardMedia}
-                image={`/assets/images/category/${item.category.image}`}
+                image={item.category.image_url}
                 title="Image title"
               />
             </Card>

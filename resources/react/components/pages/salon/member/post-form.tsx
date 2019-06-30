@@ -14,8 +14,10 @@ import {
   clearLoading,
   createPost,
 } from '../../../../redux/modules/member'
+import { InputImageWithThumbnail } from '../../../molecules/input-image-with-thumbnail'
 import { TextArea } from '../../../atoms/text-area'
-import Thumbnail from './thumbnail'
+// import Thumbnail from './thumbnail'
+import resizeImage from './thumbnail-2'
 
 interface Props {
   salonId: string
@@ -57,6 +59,7 @@ function PostForm(props: Props) {
   const dispatch = useDispatch()
   const [axiosConfig, setAxiosConfig] = useState({})
   const [isStartFetch, setStartFetch] = useState(false)
+  const [imageUri, setImageUri] = useState()
   const { isLoading, response, error } = useFetchApi(axiosConfig, isStartFetch)
 
   useEffect(() => {
@@ -80,6 +83,12 @@ function PostForm(props: Props) {
     setFieldValue('file', null)
     const obj = document.getElementById('image') as any
     obj.value = ''
+    setImageUri(undefined)
+  }
+
+  const imageChangeHandler = async e => {
+    const { imageFile, imageUri } = (await resizeImage(e)) as any
+    setImageUri(imageUri)
   }
 
   const handleSubmit = (form, { resetForm }) => {
@@ -103,6 +112,7 @@ function PostForm(props: Props) {
     resetForm({ content: '', file: null })
     const obj = document.getElementById('image') as any
     obj.value = ''
+    setImageUri(undefined)
 
     setStartFetch(true)
   }
@@ -121,7 +131,7 @@ function PostForm(props: Props) {
             required('投稿内容を入力してください')
           )(values.content)
           const imageError = composeValidators(
-            image('5MB以下の画像を選択してください')
+            image('10MB以下の画像を選択してください')
           )(values.file)
 
           if (contentError) {
@@ -150,15 +160,35 @@ function PostForm(props: Props) {
               name="image"
               render={({ field, form }) => (
                 <div className={classes.fileWrap}>
+                  <InputImageWithThumbnail
+                    imageUri={imageUri}
+                    errorMessage={form.errors.image}
+                    handleChange={event => {
+                      setFieldValue('file', event.currentTarget.files[0])
+                      imageChangeHandler(event.currentTarget.files[0])
+                    }}
+                    handleReset={() => {
+                      resetImage(setFieldValue)
+                    }}
+                  />
+                </div>
+              )}
+            />
+            {/* <Field
+              name="image"
+              render={({ field, form }) => (
+                <div className={classes.fileWrap}>
                   <input
                     id="image"
                     name="image"
                     type="file"
                     onChange={event => {
                       setFieldValue('file', event.currentTarget.files[0])
+                      imageChangeHandler(event.currentTarget.files[0])
                     }}
                     className={classes.inputFile}
                   />
+
                   <label htmlFor="image" className={classes.inputLabel}>
                     <Button
                       variant="outlined"
@@ -175,12 +205,13 @@ function PostForm(props: Props) {
                       resetImage(setFieldValue)
                     }}
                   />
+                  <img src={imageUri} alt="" />
                   <div className={classes.invalidMessage}>
                     {form.errors.image}
                   </div>
                 </div>
               )}
-            />
+            /> */}
 
             <Button
               type="submit"

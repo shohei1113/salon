@@ -8,14 +8,15 @@ import Button from '@material-ui/core/Button'
 import Avatar from '@material-ui/core/Avatar'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import PATH from '../../../const/path'
-import { composeValidators, required } from '../../../utils/validator'
+import { composeValidators, required, image } from '../../../utils/validator'
 import getUrlParam from '../../../utils/get-url-param'
+import getThumbnail from '../../../utils/get-thumbnail'
 import useFetchApi from '../../../hooks/use-fetch-api'
 import { initAuth } from '../../../redux/modules/auth'
 import { setLoader, clearLoader, setSnackbar } from '../../../redux/modules/ui'
 import { DefaultTemplate } from '../../templates/default-template'
+import { InputImageWithThumbnail } from '../../molecules/input-image-with-thumbnail'
 import { TextField } from '../../atoms/text-field'
-import { Thumbnail } from '../../atoms/thumbnail'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -59,7 +60,20 @@ const Register: React.FC = (props: any) => {
   const dispatch = useDispatch()
   const [axiosConfig, setAxiosConfig] = useState({})
   const [isStartFetch, setStartFetch] = useState(false)
+  const [imageUri, setImageUri] = useState()
   const { isLoading, response, error } = useFetchApi(axiosConfig, isStartFetch)
+
+  const resetImage = setFieldValue => {
+    setFieldValue('image', null)
+    const obj = document.getElementById('image') as any
+    obj.value = ''
+    setImageUri(undefined)
+  }
+
+  const imageChangeHandler = async e => {
+    const { imageFile, imageUri } = (await getThumbnail(e)) as any
+    setImageUri(imageUri)
+  }
 
   useEffect(() => {
     if (!token) {
@@ -124,9 +138,15 @@ const Register: React.FC = (props: any) => {
             const nameError = composeValidators(
               required('名前を入力してください')
             )(values.name)
+            const imageError = composeValidators(
+              image('10MB以下の画像を選択してください')
+            )(values.image)
 
             if (nameError) {
               errors.name = nameError
+            }
+            if (imageError) {
+              errors.image = imageError
             }
 
             return errors
@@ -152,26 +172,17 @@ const Register: React.FC = (props: any) => {
                   name="image"
                   render={({ field, form }) => (
                     <div className={classes.fileWrap}>
-                      <input
-                        id="image"
-                        name="image"
-                        type="file"
-                        onChange={event => {
+                      <InputImageWithThumbnail
+                        imageUri={imageUri}
+                        errorMessage={form.errors.image}
+                        handleChange={event => {
                           setFieldValue('image', event.currentTarget.files[0])
+                          imageChangeHandler(event.currentTarget.files[0])
                         }}
-                        className={classes.inputFile}
+                        handleReset={() => {
+                          resetImage(setFieldValue)
+                        }}
                       />
-                      <label htmlFor="image" className={classes.inputLabel}>
-                        <Button
-                          variant="outlined"
-                          component="span"
-                          className={classes.inputButton}
-                        >
-                          プロフィール画像を選択
-                        </Button>
-                      </label>
-
-                      <Thumbnail file={values.image} />
                     </div>
                   )}
                 />

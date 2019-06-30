@@ -1,10 +1,8 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
-import classNames from 'classnames'
 import { Theme } from '@material-ui/core/styles/createMuiTheme'
 import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
-import Grid from '@material-ui/core/Grid'
 
 const styles = (theme: Theme) => ({
   layout: {
@@ -27,16 +25,13 @@ function Header(props: Props) {
 
   return (
     <footer className={classes.footer}>
-      <Typography variant="h6" align="center" gutterBottom>
-        Footer
-      </Typography>
       <Typography
-        variant="subtitle1"
+        variant="caption"
         align="center"
         color="textSecondary"
         component="p"
       >
-        Something here to give the footer a purpose!
+        © 2019 HAYAOKURI
       </Typography>
     </footer>
   )

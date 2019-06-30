@@ -43,8 +43,8 @@ const useStyles = makeStyles((theme: Theme) =>
       // maxWidth: 345,
     },
     media: {
-      height: 0,
-      paddingTop: '56.25%', // 16:9
+      // height: 1,
+      // paddingTop: '56.25%', // 16:9
     },
     expand: {
       transform: 'rotate(0deg)',
@@ -58,6 +58,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     avatar: {
       backgroundColor: '#bbb',
+    },
+    postContent: {
+      whiteSpace: 'pre-line',
     },
   })
 )
@@ -131,16 +134,20 @@ function Post(props: Props) {
 
       {props.image_url && (
         <CardMedia
+          component="img"
           className={classes.media}
-          image={props.image_url}
-          title="Paella dish"
+          src={props.image_url}
+          // image={props.image_url} background-imageで表示させる場合
         />
       )}
 
       <CardContent>
-        <Typography variant="body2" component="p">
-          {props.content}
-        </Typography>
+        <Typography
+          variant="body2"
+          component="p"
+          className={classes.postContent}
+          dangerouslySetInnerHTML={{ __html: props.content }}
+        />
       </CardContent>
       <CardActions disableSpacing>
         <Typography variant="body2" component="p">
