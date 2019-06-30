@@ -30,4 +30,9 @@ class Comment extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getContentAttribute($value)
+    {
+        return mb_ereg_replace('(https?://[-_.!~*\'()a-zA-Z0-9;/?:@&=+$,%#]+)', '<a href="\1" target="_blank">\1</a>', $value);
+    }
 }
