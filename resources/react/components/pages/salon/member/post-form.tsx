@@ -7,6 +7,7 @@ import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button'
 import PATH from '../../../../const/path'
 import { composeValidators, required, image } from '../../../../utils/validator'
+import getThumbnail from '../../../../utils/get-thumbnail'
 import useFetchApi from '../../../../hooks/use-fetch-api'
 import { setSnackbar } from '../../../../redux/modules/ui'
 import {
@@ -16,8 +17,6 @@ import {
 } from '../../../../redux/modules/member'
 import { InputImageWithThumbnail } from '../../../molecules/input-image-with-thumbnail'
 import { TextArea } from '../../../atoms/text-area'
-// import Thumbnail from './thumbnail'
-import resizeImage from './thumbnail-2'
 
 interface Props {
   salonId: string
@@ -87,7 +86,7 @@ function PostForm(props: Props) {
   }
 
   const imageChangeHandler = async e => {
-    const { imageFile, imageUri } = (await resizeImage(e)) as any
+    const { imageFile, imageUri } = (await getThumbnail(e)) as any
     setImageUri(imageUri)
   }
 
@@ -174,44 +173,6 @@ function PostForm(props: Props) {
                 </div>
               )}
             />
-            {/* <Field
-              name="image"
-              render={({ field, form }) => (
-                <div className={classes.fileWrap}>
-                  <input
-                    id="image"
-                    name="image"
-                    type="file"
-                    onChange={event => {
-                      setFieldValue('file', event.currentTarget.files[0])
-                      imageChangeHandler(event.currentTarget.files[0])
-                    }}
-                    className={classes.inputFile}
-                  />
-
-                  <label htmlFor="image" className={classes.inputLabel}>
-                    <Button
-                      variant="outlined"
-                      component="span"
-                      className={classes.inputButton}
-                    >
-                      画像を選択
-                    </Button>
-                  </label>
-
-                  <Thumbnail
-                    file={values.file}
-                    reset={() => {
-                      resetImage(setFieldValue)
-                    }}
-                  />
-                  <img src={imageUri} alt="" />
-                  <div className={classes.invalidMessage}>
-                    {form.errors.image}
-                  </div>
-                </div>
-              )}
-            /> */}
 
             <Button
               type="submit"

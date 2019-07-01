@@ -12,12 +12,12 @@ const RequireAuth = (props: any) => {
     }
   }, [isPrepared])
 
-  if (isLoggedin) {
-    return props.children
+  if (!isPrepared || !isLoggedin) {
+    return null
   }
 
-  if (!isLoggedin) {
-    return null
+  if (isLoggedin) {
+    return props.children
   }
 }
 

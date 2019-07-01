@@ -23,6 +23,9 @@ const useStyles = makeStyles((theme: Theme) =>
     list: {
       width: 250,
     },
+    navItemText: {
+      fontSize: 12,
+    },
     fullList: {
       width: 'auto',
     },
@@ -41,7 +44,7 @@ function NavItem(props) {
 
   return (
     <ListItem button onClick={changePage}>
-      <ListItemText primary={text} />
+      <ListItemText secondary={text} />
     </ListItem>
   )
 }
@@ -96,6 +99,19 @@ function Navigation(props: any) {
           {auth.isLoggedin ? (
             <>
               <List>
+                <ListSubheader color="inherit">マイページ</ListSubheader>
+                <Link to="/user/info">
+                  <NavItem
+                    text="ユーザー情報"
+                    className={classes.navItemText}
+                  />
+                </Link>
+                <Link to="/user/password">
+                  <NavItem
+                    text="パスワード変更"
+                    className={classes.navItemText}
+                  />
+                </Link>
                 <Link to="/user/salon">
                   <NavItem text="Myサロン" />
                 </Link>

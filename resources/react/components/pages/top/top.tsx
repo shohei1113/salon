@@ -18,7 +18,7 @@ const Top: React.FC = (props: any) => {
 }
 
 const Content = styled.div`
-  margin: 40px 20px;
+  margin: 56px 20px;
 `
 
 export default withRouter(Top as any)

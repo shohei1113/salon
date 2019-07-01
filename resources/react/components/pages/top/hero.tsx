@@ -35,6 +35,9 @@ const useStyles = makeStyles((theme: Theme) =>
         paddingRight: 0,
       },
     },
+    title: {
+      letterSpacing: 4,
+    },
   })
 )
 
@@ -55,6 +58,7 @@ function Hero() {
           color="inherit"
           align="center"
           gutterBottom
+          className={classes.title}
         >
           HAYAOKURI
         </Typography>

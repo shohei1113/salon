@@ -13,6 +13,9 @@ import { initCategories } from '../../../redux/modules/categories'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    category: {
+      marginTop: 16,
+    },
     card: {
       display: 'flex',
     },
@@ -22,25 +25,11 @@ const useStyles = makeStyles((theme: Theme) =>
     cardMedia: {
       width: 160,
     },
+    cardLink: {
+      marginTop: 16,
+    },
   })
 )
-
-const featuredPosts = [
-  {
-    title: '経営コース',
-    url: '/salons?category-id=1',
-    description:
-      'This is a wider card with supporting text below as a natural lead-in to additional content.',
-    image: 'management.jpg',
-  },
-  {
-    title: '芸能コース',
-    url: '/salons?category-id=2',
-    description:
-      'This is a wider card with supporting text below as a natural lead-in to additional content.',
-    image: 'entertainment.jpg',
-  },
-]
 
 function Category() {
   const classes = useStyles({})
@@ -68,12 +57,11 @@ function Category() {
         variant="h5"
         align="center"
         color="textPrimary"
-        gutterBottom
       >
         サロンカテゴリー
       </Typography>
 
-      <Grid container spacing={4}>
+      <Grid container spacing={4} className={classes.category}>
         {categories.categories.map(item => (
           <Grid item key={item.category.id} xs={12} md={6}>
             <Card className={classes.card}>
@@ -89,7 +77,11 @@ function Category() {
                   >
                     {item.category.description}
                   </Typography>
-                  <Typography variant="body2" color="primary">
+                  <Typography
+                    variant="body2"
+                    color="primary"
+                    className={classes.cardLink}
+                  >
                     <Link to={`/salons?category-id=${item.category.id}`}>
                       サロン一覧へ
                     </Link>

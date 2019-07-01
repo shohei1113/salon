@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     previewWrap: {
       display: 'flex',
-      marginTop: 32,
+      marginBottom: 32,
     },
   })
 )
@@ -48,6 +48,15 @@ function InputImageWithThumbnail(props: Props) {
         className={classes.inputFile}
       />
 
+      {imageUri && (
+        <div className={classes.previewWrap}>
+          <img src={imageUri} alt="" />
+          <IconButton aria-label="Delete" onClick={handleReset}>
+            <DeleteIcon fontSize="small" />
+          </IconButton>
+        </div>
+      )}
+
       <label htmlFor="image" className={classes.inputLabel}>
         <Button
           variant="outlined"
@@ -57,15 +66,6 @@ function InputImageWithThumbnail(props: Props) {
           画像を選択
         </Button>
       </label>
-
-      {imageUri && (
-        <div className={classes.previewWrap}>
-          <img src={imageUri} alt="" />
-          <IconButton aria-label="Delete" onClick={handleReset}>
-            <DeleteIcon fontSize="small" />
-          </IconButton>
-        </div>
-      )}
 
       <div className={classes.invalidMessage}>{errorMessage}</div>
     </>
