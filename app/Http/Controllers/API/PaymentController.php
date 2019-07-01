@@ -44,7 +44,7 @@ class PaymentController extends Controller
     public function paymentByCard(Request $request, int $salonId): SubscriptionResource
     {
         $subscription = $this->paymentService->paymentByCard($this->user, $salonId, $request->all());
-        return new SubscriptionResource($subscription);
+        return new SubscriptionResource($subscription, config('const.payment.paymentByCard'));
     }
 
     /**
@@ -52,6 +52,6 @@ class PaymentController extends Controller
      */
     public function cancelPaymentByCard(): string
     {
-        return $this->paymentService->cancelPaymentByCard($this->user);
+        return $this->paymentService->cancelPaymentByCard($this->user, config('const.payment.cancelPaymentByCard'));
     }
 }

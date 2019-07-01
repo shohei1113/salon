@@ -36,5 +36,9 @@ return [
     'user' => [
         'update' => 'ユーザー情報更新',
         'info' => 'ログインユーザー情報',
+    ],
+    'payment' => [
+        'paymentByCard' => 'クレジットカード決済完了しました。',
+        'cancelPaymentByCard' => 'クレジットカード決済をキャンセルしました。'
     ]
 ];

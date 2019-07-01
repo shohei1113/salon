@@ -49,5 +49,3 @@ Route::get('/user/password', function () {
 Route::get('/user/salon', function () {
     return view('index');
 });
-
-Route::get('/home', 'HomeController@index')->name('home');
