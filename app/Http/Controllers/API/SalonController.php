@@ -88,6 +88,6 @@ class SalonController extends Controller
     public function preview(int $id): SalonResource
     {
         $salon = $this->salonService->fetchSalonById($id);
-        return new SalonResource($salon, 'const.salon.preview');
+        return new SalonResource($salon, config('const.salon.preview'));
     }
 }
