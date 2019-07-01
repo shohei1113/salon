@@ -16,6 +16,7 @@ class BaseRequest extends FormRequest
     {
         return true;
     }
+
     /**
      * @param Validator $validator
      */

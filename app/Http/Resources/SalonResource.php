@@ -22,7 +22,7 @@ class SalonResource extends JsonResource
      * @param $resource
      * @param $message
      */
-    public function __construct($resource, $message)
+    public function __construct($resource, $message='')
     {
         parent::__construct($resource);
         $this->message = $message;

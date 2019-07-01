@@ -7,6 +7,7 @@ use App\Entities\User;
 use App\Mail\EmailVerification;
 use App\Repositories\User\UserRepository;
 use Exception;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
@@ -109,13 +110,17 @@ class AuthService
     public function login(array $attribute): User
     {
         if (!$token = $this->auth->attempt($attribute)) {
-            throw new Exception('Unauthorized', 401);
+            throw new HttpResponseException(
+                response()->json(['message' => 'Unauthorized'], 401)
+            );
         }
 
         $user = $this->userRepository->fetchUserByEmail($attribute['email']);
 
         if ($user->email_verified == User::NOT_REGISTERED_USER) {
-            throw new Exception('email not verified', 401);
+            throw new HttpResponseException(
+                response()->json(['message' => 'email not verified'], 401)
+            );
         }
 
         $user->token = $token;

@@ -80,7 +80,7 @@ class PostService
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
-            throw new Exception($e);
+            throw $e;
         }
 
         return $post;
@@ -102,7 +102,7 @@ class PostService
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
-            throw new Exception($e);
+            throw $e;
         }
         return $post;
     }
