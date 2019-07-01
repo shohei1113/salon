@@ -15,10 +15,16 @@ class Comment extends Model
 {
     use SoftDeletes;
 
+    /**
+     * @var array
+     */
     protected $fillable = [
         'user_id', 'post_id', 'content',
     ];
 
+    /**
+     * @var array
+     */
     protected $casts = [
         'post_id' => 'integer',
     ];
@@ -31,7 +37,11 @@ class Comment extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function getContentAttribute($value)
+    /**
+     * @param $value
+     * @return false|string
+     */
+    public function getContentAttribute($value): string
     {
         return mb_ereg_replace('(https?://[-_.!~*\'()a-zA-Z0-9;/?:@&=+$,%#]+)', '<a href="\1" target="_blank">\1</a>', $value);
     }
