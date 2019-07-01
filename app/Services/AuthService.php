@@ -111,7 +111,7 @@ class AuthService
     {
         if (!$token = $this->auth->attempt($attribute)) {
             throw new HttpResponseException(
-                response()->json(['message' => 'Validation Failed'], 401)
+                response()->json(['message' => 'Unauthorized'], 401)
             );
         }
 
