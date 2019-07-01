@@ -1,12 +1,17 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entities;
 
 use Illuminate\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
+use phpDocumentor\Reflection\Types\Mixed_;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
@@ -54,17 +59,17 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     * @return MorphOne
      */
-    public function image()
+    public function image(): MorphOne
     {
         return $this->morphOne(Image::class, 'imageable');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
-    public function salons()
+    public function salons(): BelongsToMany
     {
         return $this->belongsToMany(Salon::class, 'user_salon');
     }
@@ -72,31 +77,33 @@ class User extends Authenticatable implements JWTSubject
     /**
      * @param $query
      * @param $token
-     * @return mixed
+     * @return Builder
      */
-    public function scopeSearchEmailVerifyToken($query, $token)
+    public function scopeSearchEmailVerifyToken($query, $token): Builder
     {
         if (!empty($token)) {
             return $query->where('email_verify_token', $token);
         }
+        return $query;
     }
 
     /**
      * @param $query
      * @param $email
-     * @return mixed
+     * @return Builder
      */
-    public function scopeSearchEmail($query, $email)
+    public function scopeSearchEmail($query, $email): Builder
     {
         if (!empty($email)) {
             return $query->where('email', $email);
         }
+        return $query;
     }
 
     /**
      * @return mixed
      */
-    public function getJWTIdentifier()
+    public function getJWTIdentifier(): Mixed_
     {
         return $this->getKey();
     }
@@ -104,7 +111,7 @@ class User extends Authenticatable implements JWTSubject
     /**
      * @return array
      */
-    public function getJWTCustomClaims()
+    public function getJWTCustomClaims(): array
     {
         return [];
     }

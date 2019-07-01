@@ -1,8 +1,15 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entities;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,7 +19,7 @@ class Salon extends Model
 
     const PAYMENT_INTERVAL = 'month';
     const CURRENCY = 'jpy';
-    const IS_MEMBER= true;
+    const IS_MEMBER = true;
     const IS_NOT_MEMBER = false;
 
     protected $fillable = [
@@ -21,49 +28,49 @@ class Salon extends Model
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      */
-    public function salon_detail()
+    public function salon_detail(): HasOne
     {
         return $this->hasOne(SalonDetail::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function owner()
+    public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'owner_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function category()
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     * @return MorphOne
      */
-    public function image()
+    public function image(): MorphOne
     {
         return $this->morphOne(Image::class, 'imageable');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
-    public function users()
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_salon');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function post()
+    public function post(): HasMany
     {
         return $this->hasMany(Post::class)->orderBy('created_at', 'desc');
     }
@@ -71,29 +78,29 @@ class Salon extends Model
     /**
      * @param $query
      * @param $categoryId
-     * @return mixed
+     * @return Builder
      */
-    public function scopeSearchCategory($query, $categoryId)
+    public function scopeSearchCategory($query, $categoryId): Builder
     {
         if (!empty($categoryId)) {
             return $query->where('category_id', $categoryId);
         }
+        return $query;
     }
 
     /**
-     * @return int
+     * @return bool
      */
-    public function getIsMemberAttribute()
+    public function getIsMemberAttribute(): bool
     {
         return $this->users->find(Auth::id()) ? self::IS_MEMBER : self::IS_NOT_MEMBER;
     }
-
 
     /**
      * @param $value
      * @return string
      */
-    public function getDescriptionAttribute($value)
+    public function getDescriptionAttribute($value): string
     {
         return mb_ereg_replace('(https?://[-_.!~*\'()a-zA-Z0-9;/?:@&=+$,%#]+)', '<a href="\1" target="_blank">\1</a>', $value);
     }

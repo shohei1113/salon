@@ -41,5 +41,3 @@ Route::get('/salon/member', function () {
 Route::get('/user/salon', function () {
     return view('index');
 });
-
-Route::get('/home', 'HomeController@index')->name('home');
