@@ -9,7 +9,7 @@ const TextField = props => {
 
   return (
     <StyledTextField>
-      <LabelName>{props.label}</LabelName>
+      {props.label && <LabelName>{props.label}</LabelName>}
       <Label>
         <StyledInput {...field} {...props} />
         {touched[field.name] && errors[field.name] && (
@@ -21,15 +21,14 @@ const TextField = props => {
 }
 
 const StyledTextField = styled.div`
-  margin-top: 16px;
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
 `
 const LabelName = styled.div`
   font-size: 12px;
+  margin-bottom: 8px;
 `
 const Label = styled.label`
   display: block;
-  margin-top: 8px;
   font-size: 12px;
 `
 const InvalidMessage = styled.p`

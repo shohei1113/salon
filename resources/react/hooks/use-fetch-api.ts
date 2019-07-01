@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export default (axiosConfig: any, isStartFetch: any) => {
   const [isLoading, setLoading] = useState(false)
-  const [error, setError] = useState(false)
+  const [error, setError] = useState()
   const [response, setResponse] = useState<any>(undefined)
 
   const request = async () => {

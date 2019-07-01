@@ -8,12 +8,14 @@ import Button from '@material-ui/core/Button'
 import Avatar from '@material-ui/core/Avatar'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import PATH from '../../../const/path'
-import { composeValidators, required } from '../../../utils/validator'
+import { composeValidators, required, image } from '../../../utils/validator'
 import getUrlParam from '../../../utils/get-url-param'
+import getThumbnail from '../../../utils/get-thumbnail'
 import useFetchApi from '../../../hooks/use-fetch-api'
 import { initAuth } from '../../../redux/modules/auth'
 import { setLoader, clearLoader, setSnackbar } from '../../../redux/modules/ui'
 import { DefaultTemplate } from '../../templates/default-template'
+import { InputImageWithThumbnail } from '../../molecules/input-image-with-thumbnail'
 import { TextField } from '../../atoms/text-field'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -33,6 +35,21 @@ const useStyles = makeStyles((theme: Theme) =>
     form: {
       width: 300,
     },
+    formItem: {
+      marginTop: 16,
+    },
+    fileWrap: {
+      marginTop: 24,
+    },
+    inputFile: {
+      display: 'none',
+    },
+    inputLabel: {
+      display: 'block',
+    },
+    inputButton: {
+      width: '100%',
+    },
   })
 )
 
@@ -43,7 +60,26 @@ const Register: React.FC = (props: any) => {
   const dispatch = useDispatch()
   const [axiosConfig, setAxiosConfig] = useState({})
   const [isStartFetch, setStartFetch] = useState(false)
+  const [imageUri, setImageUri] = useState()
   const { isLoading, response, error } = useFetchApi(axiosConfig, isStartFetch)
+
+  const resetImage = setFieldValue => {
+    setFieldValue('image', null)
+    const obj = document.getElementById('image') as any
+    obj.value = ''
+    setImageUri(undefined)
+  }
+
+  const imageChangeHandler = async e => {
+    const { imageFile, imageUri } = (await getThumbnail(e)) as any
+    setImageUri(imageUri)
+  }
+
+  useEffect(() => {
+    if (!token) {
+      history.push('/')
+    }
+  }, [])
 
   useEffect(() => {
     if (response) {
@@ -65,15 +101,22 @@ const Register: React.FC = (props: any) => {
     }
   }, [response, error])
 
-  const handleSubmit = form => {
+  const handleSubmit = (form, { resetForm }) => {
+    const { name, image } = form
     dispatch(setLoader())
+    const formData = new FormData()
+    formData.append('name', name)
+    formData.append('token', token)
+    if (image) formData.append('image', image)
+
     setAxiosConfig({
       method: 'POST',
       url: `${PATH}/api/register`,
-      data: {
-        token,
-        name: form.name,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
       },
+      data: formData,
     })
     setStartFetch(true)
   }
@@ -88,34 +131,62 @@ const Register: React.FC = (props: any) => {
           本登録
         </Typography>
         <Formik
-          initialValues={{ name: '' }}
+          initialValues={{ name: '', image: null }}
           onSubmit={handleSubmit}
           validate={(values: any) => {
             const errors: any = {}
             const nameError = composeValidators(
               required('名前を入力してください')
             )(values.name)
+            const imageError = composeValidators(
+              image('10MB以下の画像を選択してください')
+            )(values.image)
 
             if (nameError) {
               errors.name = nameError
             }
+            if (imageError) {
+              errors.image = imageError
+            }
 
             return errors
           }}
-          render={({ handleSubmit }) => (
+          render={({ values, handleSubmit, setFieldValue }) => (
             <form onSubmit={handleSubmit} className={classes.form}>
-              <Field
-                name="name"
-                render={({ field, form }) => (
-                  <TextField
-                    field={field}
-                    form={form}
-                    type="text"
-                    label="名前"
-                    placeholder="田中 太郎"
-                  />
-                )}
-              />
+              <div className={classes.formItem}>
+                <Field
+                  name="name"
+                  render={({ field, form }) => (
+                    <TextField
+                      field={field}
+                      form={form}
+                      type="text"
+                      label="名前"
+                      placeholder="田中 太郎"
+                    />
+                  )}
+                />
+              </div>
+              <div className={classes.formItem}>
+                <Field
+                  name="image"
+                  render={({ field, form }) => (
+                    <div className={classes.fileWrap}>
+                      <InputImageWithThumbnail
+                        imageUri={imageUri}
+                        errorMessage={form.errors.image}
+                        handleChange={event => {
+                          setFieldValue('image', event.currentTarget.files[0])
+                          imageChangeHandler(event.currentTarget.files[0])
+                        }}
+                        handleReset={() => {
+                          resetImage(setFieldValue)
+                        }}
+                      />
+                    </div>
+                  )}
+                />
+              </div>
               <Button
                 type="submit"
                 fullWidth

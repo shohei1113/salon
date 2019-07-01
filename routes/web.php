@@ -38,3 +38,6 @@ Route::get('/salon/register', function () {
 Route::get('/salon/member', function () {
     return view('index');
 });
+Route::get('/user/salon', function () {
+    return view('index');
+});

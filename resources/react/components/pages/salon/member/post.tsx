@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { useDispatch } from 'redux-react-hook'
 import dateFns from 'date-fns'
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
 import clsx from 'clsx'
 import Card from '@material-ui/core/Card'
@@ -12,19 +12,29 @@ import Collapse from '@material-ui/core/Collapse'
 import Avatar from '@material-ui/core/Avatar'
 import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
-import { red } from '@material-ui/core/colors'
-import FavoriteIcon from '@material-ui/icons/Favorite'
-import ShareIcon from '@material-ui/icons/Share'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import MoreVertIcon from '@material-ui/icons/MoreVert'
+import AccountCircle from '@material-ui/icons/AccountCircle'
+import DeleteIcon from '@material-ui/icons/Delete'
+import PATH from '../../../../const/path'
+import useFetchApi from '../../../../hooks/use-fetch-api'
+import {
+  deletePost,
+  setLoading,
+  clearLoading,
+} from '../../../../redux/modules/member'
+import { setSnackbar, setModal } from '../../../../redux/modules/ui'
+import CommentForm from './comment-form'
+import Comment from './comment'
 
 interface Props {
+  auth: any
+  owner: any
+  role: 1 | 2
+  id: number
   content: string
   image_url: string | null
-  author: {
-    name: string
-    created_at: Date
-  }
+  created_at: Date
+  comments: any[]
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -33,8 +43,8 @@ const useStyles = makeStyles((theme: Theme) =>
       // maxWidth: 345,
     },
     media: {
-      height: 0,
-      paddingTop: '56.25%', // 16:9
+      // height: 1,
+      // paddingTop: '56.25%', // 16:9
     },
     expand: {
       transform: 'rotate(0deg)',
@@ -47,57 +57,102 @@ const useStyles = makeStyles((theme: Theme) =>
       transform: 'rotate(180deg)',
     },
     avatar: {
-      backgroundColor: red[500],
+      backgroundColor: '#bbb',
+    },
+    postContent: {
+      whiteSpace: 'pre-line',
     },
   })
 )
 
 function Post(props: Props) {
   const classes = useStyles({})
-  const [expanded, setExpanded] = React.useState(false)
+  const [expanded, setExpanded] = useState(false)
+  const dispatch = useDispatch()
+  const [isStartFetch, setStartFetch] = useState(false)
+  const axiosConfig = {
+    method: 'DELETE',
+    url: `${PATH}/api/post/${props.id}`,
+    headers: { Authorization: `Bearer ${props.auth.token}` },
+  }
+  const { isLoading, response, error } = useFetchApi(axiosConfig, isStartFetch)
 
   function handleExpandClick() {
     setExpanded(!expanded)
   }
 
+  function handleDelete() {
+    dispatch(
+      setModal({
+        title: '投稿を削除しますか？',
+        description: '',
+        callback: () => {
+          dispatch(setLoading())
+          setStartFetch(true)
+        },
+      })
+    )
+  }
+
+  useEffect(() => {
+    if (response) {
+      console.log('成功！', response)
+      dispatch(deletePost(response.data.post))
+      dispatch(clearLoading())
+      dispatch(setSnackbar({ message: response.message }))
+      setStartFetch(false)
+    }
+
+    if (error) {
+      console.log('エラー！')
+      dispatch(clearLoading())
+      setStartFetch(false)
+    }
+  }, [response, error])
+
   return (
     <Card className={classes.card}>
       <CardHeader
         avatar={
-          <Avatar aria-label="Recipe" className={classes.avatar}>
-            R
-          </Avatar>
+          props.owner.image_url ? (
+            <Avatar alt="" src={props.owner.image_url} />
+          ) : (
+            <Avatar className={classes.avatar}>
+              <AccountCircle color="inherit" style={{ fontSize: 40 }} />
+            </Avatar>
+          )
         }
         action={
-          <IconButton aria-label="Settings">
-            <MoreVertIcon />
-          </IconButton>
+          props.role === 1 && (
+            <IconButton aria-label="Delete" onClick={handleDelete}>
+              <DeleteIcon fontSize="small" />
+            </IconButton>
+          )
         }
-        // title={props.author.name}
-        title="test"
-        // subheader={dateFns.format(props.author.created_at, 'YYYY-MM-DD')}
+        subheader={dateFns.format(props.created_at, 'YYYY-MM-DD hh:mm')}
       />
 
       {props.image_url && (
         <CardMedia
+          component="img"
           className={classes.media}
-          image={props.image_url}
-          title="Paella dish"
+          src={props.image_url}
+          // image={props.image_url} background-imageで表示させる場合
         />
       )}
 
       <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {props.content}
-        </Typography>
+        <Typography
+          variant="body2"
+          component="p"
+          className={classes.postContent}
+          dangerouslySetInnerHTML={{ __html: props.content }}
+        />
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="Add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="Share">
-          <ShareIcon />
-        </IconButton>
+        <Typography variant="body2" component="p">
+          コメント一覧
+        </Typography>
         <IconButton
           className={clsx(classes.expand, {
             [classes.expandOpen]: expanded,
@@ -109,35 +164,12 @@ function Post(props: Props) {
           <ExpandMoreIcon />
         </IconButton>
       </CardActions>
+      <CommentForm postId={props.id} />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>Method:</Typography>
-          <Typography paragraph>
-            Heat 1/2 cup of the broth in a pot until simmering, add saffron and
-            set aside for 10 minutes.
-          </Typography>
-          <Typography paragraph>
-            Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet
-            over medium-high heat. Add chicken, shrimp and chorizo, and cook,
-            stirring occasionally until lightly browned, 6 to 8 minutes.
-            Transfer shrimp to a large plate and set aside, leaving chicken and
-            chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes,
-            onion, salt and pepper, and cook, stirring often until thickened and
-            fragrant, about 10 minutes. Add saffron broth and remaining 4 1/2
-            cups chicken broth; bring to a boil.
-          </Typography>
-          <Typography paragraph>
-            Add rice and stir very gently to distribute. Top with artichokes and
-            peppers, and cook without stirring, until most of the liquid is
-            absorbed, 15 to 18 minutes. Reduce heat to medium-low, add reserved
-            shrimp and mussels, tucking them down into the rice, and cook again
-            without stirring, until mussels have opened and rice is just tender,
-            5 to 7 minutes more. (Discard any mussels that don’t open.)
-          </Typography>
-          <Typography>
-            Set aside off of the heat to let rest for 10 minutes, and then
-            serve.
-          </Typography>
+          {props.comments.map(comment => (
+            <Comment key={comment.id} auth={props.auth} {...comment} />
+          ))}
         </CardContent>
       </Collapse>
     </Card>

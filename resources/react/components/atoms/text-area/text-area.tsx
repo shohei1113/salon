@@ -21,7 +21,7 @@ const TextArea = props => {
 }
 
 const StyledTextField = styled.div`
-  margin-top: 16px;
+  margin-top: 16px
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
 `
 const LabelName = styled.div`

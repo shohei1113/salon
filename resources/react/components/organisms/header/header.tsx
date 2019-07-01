@@ -8,6 +8,8 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
+import Avatar from '@material-ui/core/Avatar'
+import AccountCircle from '@material-ui/icons/AccountCircle'
 import { toggleNav } from '../../../redux/modules/ui'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -21,6 +23,9 @@ const useStyles = makeStyles((theme: Theme) =>
     menuButton: {
       marginLeft: -12,
       marginRight: 20,
+    },
+    avatar: {
+      color: '#fff',
     },
   })
 )
@@ -51,7 +56,13 @@ function Header() {
             <Link to="/">HAYAOKURI</Link>
           </Typography>
           {isLoggedin ? (
-            <div>{user.name}</div>
+            user.image_url ? (
+              <Avatar alt={user.name} src={user.image_url} />
+            ) : (
+              <Avatar className={classes.avatar}>
+                <AccountCircle color="inherit" style={{ fontSize: 40 }} />
+              </Avatar>
+            )
           ) : (
             <>
               <Button color="inherit">

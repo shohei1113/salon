@@ -5,22 +5,23 @@ import { Theme, createStyles, makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button'
-import Avatar from '@material-ui/core/Avatar'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import PATH from '../../../../const/path'
-import { composeValidators, required } from '../../../../utils/validator'
-import getUrlParam from '../../../../utils/get-url-param'
+import { composeValidators, required, image } from '../../../../utils/validator'
 import useFetchApi from '../../../../hooks/use-fetch-api'
-import { initAuth } from '../../../../redux/modules/auth'
+import { setSnackbar } from '../../../../redux/modules/ui'
 import {
-  setLoader,
-  clearLoader,
-  setSnackbar,
-} from '../../../../redux/modules/ui'
-import { addPost } from '../../../../redux/modules/member'
-import { TextField } from '../../../atoms/text-field'
+  setLoading,
+  clearLoading,
+  createPost,
+} from '../../../../redux/modules/member'
+import { InputImageWithThumbnail } from '../../../molecules/input-image-with-thumbnail'
 import { TextArea } from '../../../atoms/text-area'
-import Thumbnail from './thumbnail'
+// import Thumbnail from './thumbnail'
+import resizeImage from './thumbnail-2'
+
+interface Props {
+  salonId: string
+}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -43,45 +44,62 @@ const useStyles = makeStyles((theme: Theme) =>
     inputButton: {
       width: '100%',
     },
+    invalidMessage: {
+      marginTop: 8,
+      color: 'red',
+      fontSize: 11,
+    },
   })
 )
 
-const PostForm: React.FC = (props: any) => {
+function PostForm(props: Props) {
+  const { salonId } = props
   const classes = useStyles({})
   const { token } = useMappedState(useCallback(state => state.auth, []))
   const dispatch = useDispatch()
   const [axiosConfig, setAxiosConfig] = useState({})
   const [isStartFetch, setStartFetch] = useState(false)
+  const [imageUri, setImageUri] = useState()
   const { isLoading, response, error } = useFetchApi(axiosConfig, isStartFetch)
 
   useEffect(() => {
     if (response) {
       console.log('成功！', response)
-      // dispatch(
-      //   initAuth({
-      //     token: response.data.access_token,
-      //     user: response.data.user,
-      //   })
-      // )
-      // dispatch(clearLoader())
-      dispatch(addPost(response))
+      dispatch(createPost(response.data.post))
+      dispatch(clearLoading())
       dispatch(setSnackbar({ message: response.message }))
+      setStartFetch(false)
     }
 
     if (error) {
       console.log('エラー！')
-      dispatch(clearLoader())
+      dispatch(clearLoading())
+      dispatch(setSnackbar({ message: '投稿エラー' }))
+      setStartFetch(false)
     }
   }, [response, error])
 
+  const resetImage = setFieldValue => {
+    setFieldValue('file', null)
+    const obj = document.getElementById('image') as any
+    obj.value = ''
+    setImageUri(undefined)
+  }
+
+  const imageChangeHandler = async e => {
+    const { imageFile, imageUri } = (await resizeImage(e)) as any
+    setImageUri(imageUri)
+  }
+
   const handleSubmit = (form, { resetForm }) => {
     const { content, file } = form
+    dispatch(setLoading())
 
     const formData = new FormData()
-    formData.append('salon_id', '3')
+    formData.append('salon_id', salonId)
     formData.append('content', content)
     if (file) formData.append('image', file)
-    // dispatch(setLoader())
+
     setAxiosConfig({
       method: 'POST',
       url: `${PATH}/api/post`,
@@ -94,6 +112,7 @@ const PostForm: React.FC = (props: any) => {
     resetForm({ content: '', file: null })
     const obj = document.getElementById('image') as any
     obj.value = ''
+    setImageUri(undefined)
 
     setStartFetch(true)
   }
@@ -111,11 +130,16 @@ const PostForm: React.FC = (props: any) => {
           const contentError = composeValidators(
             required('投稿内容を入力してください')
           )(values.content)
+          const imageError = composeValidators(
+            image('10MB以下の画像を選択してください')
+          )(values.file)
 
           if (contentError) {
             errors.content = contentError
           }
-
+          if (imageError) {
+            errors.image = imageError
+          }
           return errors
         }}
         render={({ values, handleSubmit, setFieldValue }) => (
@@ -136,15 +160,35 @@ const PostForm: React.FC = (props: any) => {
               name="image"
               render={({ field, form }) => (
                 <div className={classes.fileWrap}>
+                  <InputImageWithThumbnail
+                    imageUri={imageUri}
+                    errorMessage={form.errors.image}
+                    handleChange={event => {
+                      setFieldValue('file', event.currentTarget.files[0])
+                      imageChangeHandler(event.currentTarget.files[0])
+                    }}
+                    handleReset={() => {
+                      resetImage(setFieldValue)
+                    }}
+                  />
+                </div>
+              )}
+            />
+            {/* <Field
+              name="image"
+              render={({ field, form }) => (
+                <div className={classes.fileWrap}>
                   <input
                     id="image"
                     name="image"
                     type="file"
                     onChange={event => {
                       setFieldValue('file', event.currentTarget.files[0])
+                      imageChangeHandler(event.currentTarget.files[0])
                     }}
                     className={classes.inputFile}
                   />
+
                   <label htmlFor="image" className={classes.inputLabel}>
                     <Button
                       variant="outlined"
@@ -155,10 +199,19 @@ const PostForm: React.FC = (props: any) => {
                     </Button>
                   </label>
 
-                  <Thumbnail file={values.file} />
+                  <Thumbnail
+                    file={values.file}
+                    reset={() => {
+                      resetImage(setFieldValue)
+                    }}
+                  />
+                  <img src={imageUri} alt="" />
+                  <div className={classes.invalidMessage}>
+                    {form.errors.image}
+                  </div>
                 </div>
               )}
-            />
+            /> */}
 
             <Button
               type="submit"
