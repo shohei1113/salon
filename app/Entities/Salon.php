@@ -87,4 +87,14 @@ class Salon extends Model
     {
         return $this->users->find(Auth::id()) ? self::IS_MEMBER : self::IS_NOT_MEMBER;
     }
+
+
+    /**
+     * @param $value
+     * @return string
+     */
+    public function getDescriptionAttribute($value)
+    {
+        return mb_ereg_replace('(https?://[-_.!~*\'()a-zA-Z0-9;/?:@&=+$,%#]+)', '<a href="\1" target="_blank">\1</a>', $value);
+    }
 }
