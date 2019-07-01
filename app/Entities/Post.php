@@ -43,7 +43,10 @@ class Post extends Model
      */
     public function scopeSearchPost($query, $salonId): Builder
     {
-        return $query->where('salon_id', $salonId);
+        if (!empty($salonId)) {
+            return $query->where('salon_id', $salonId);
+        }
+        return $query;
     }
 
     /**

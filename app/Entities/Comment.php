@@ -39,7 +39,7 @@ class Comment extends Model
 
     /**
      * @param $value
-     * @return false|string
+     * @return string
      */
     public function getContentAttribute($value): string
     {

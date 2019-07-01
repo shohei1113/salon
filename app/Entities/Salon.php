@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Entities;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -10,7 +11,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Auth;
 
 class Salon extends Model
@@ -85,6 +85,7 @@ class Salon extends Model
         if (!empty($categoryId)) {
             return $query->where('category_id', $categoryId);
         }
+        return $query;
     }
 
     /**
