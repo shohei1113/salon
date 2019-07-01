@@ -1,9 +1,15 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entities;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
+use phpDocumentor\Reflection\Types\Mixed_;
 
 class Post extends Model
 {
@@ -17,17 +23,17 @@ class Post extends Model
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function comment()
+    public function comment(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     * @return MorphOne
      */
-    public function image()
+    public function image(): MorphOne
     {
         return $this->morphOne(Image::class, 'imageable');
     }
@@ -35,10 +41,19 @@ class Post extends Model
     /**
      * @param $query
      * @param $salonId
-     * @return mixed
+     * @return Builder
      */
-    public function scopeSearchPost($query, $salonId)
+    public function scopeSearchPost($query, $salonId): Builder
     {
         return $query->where('salon_id', $salonId);
+    }
+
+    /**
+     * @param $value
+     * @return string
+     */
+    public function getContentAttribute($value): string
+    {
+        return mb_ereg_replace('(https?://[-_.!~*\'()a-zA-Z0-9;/?:@&=+$,%#]+)', '<a href="\1" target="_blank">\1</a>', $value);
     }
 }
