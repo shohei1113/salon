@@ -29,7 +29,7 @@ Route::group(['namespace' => 'API', 'as' => 'api.'], function() {
 //    Route::get('auth/login/{socialite}', 'AuthController@redirectToSocialiteProvider');
 //    Route::get('auth/{socialite}/callback', 'AuthController@socialiteCallback');
 
-    Route::get('category/{category}/salon', 'SalonController@index')->name('category.salon.index');
+    Route::get('category/{category}/salon', 'CategoryController@categoryListWithSalons')->name('category.salon.categoryListWithSalons');
     Route::get('salon', 'SalonController@index')->name('salon.index');
     Route::get('salon/preview/{salon}', 'SalonController@preview')->name('salon.preview');
 

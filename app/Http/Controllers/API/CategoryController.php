@@ -7,6 +7,7 @@ use App\Entities\Category;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BaseResource;
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\CategorySimpleResource;
 use App\Services\CategoryService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -73,5 +74,15 @@ class CategoryController extends Controller
     {
         $deleteCategory = $this->categoryService->deleteCategory($id);
         return new CategoryResource($deleteCategory, config('const.category.delete'));
+    }
+
+    /**
+     * @param int $id
+     * @return CategorySimpleResource
+     */
+    public function categoryListWithSalons(int $id): CategorySimpleResource
+    {
+        $categoryListWithSalons = $this->categoryService->fetchCategoryListwithSalons($id);
+        return new CategorySimpleResource($categoryListWithSalons);
     }
 }
