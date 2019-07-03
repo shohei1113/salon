@@ -13,6 +13,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
 use phpDocumentor\Reflection\Types\Mixed_;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 
 /**
  * Class User
@@ -114,5 +115,15 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims(): array
     {
         return [];
+    }
+
+    /**
+     * @throws TokenExpiredException
+     */
+    public function validatePayload()
+    {
+        if ($this->isPast($this->getValue())) {
+            throw new TokenExpiredException('Token has expired');
+        }
     }
 }

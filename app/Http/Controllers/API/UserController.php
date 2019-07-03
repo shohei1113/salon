@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 
 use App\Entities\User;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BaseResource;
+use App\Http\Resources\SalonResource;
 use App\Http\Resources\UserInfoResource;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -22,12 +24,18 @@ class UserController extends Controller
     private $userService;
 
     /**
+     * @var User
+     */
+    private $user;
+
+    /**
      * UserController constructor.
      * @param UserService $userService
      */
     public function __construct(UserService $userService)
     {
         $this->userService = $userService;
+        $this->user = Auth::user();
     }
 
     /**
@@ -47,7 +55,17 @@ class UserController extends Controller
      */
     public function info(): UserInfoResource
     {
-        $user = $this->userService->fetchUserById(Auth::id());
+        $user = $this->userService->fetchUserById($this->user->id);
         return new UserInfoResource($user, config('const.user.info'));
+    }
+
+    /**
+     * @return BaseResource
+     */
+    public function mypage(): BaseResource
+    {
+        $userSalons = $this->userService->fetchUserWithSalon($this->user->id);
+        return new BaseResource(SalonResource::collection($userSalons));
+
     }
 }
