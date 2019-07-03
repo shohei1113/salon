@@ -36,7 +36,7 @@ class CategorySimpleResource extends JsonResource
                 'name' => $this->name,
                 'description' => $this->description,
                 'image_url' => $this->image->image_path ?? NULL,
-                'salons' => SalonShowResource::collection($this->salons),
+                'salons' => SalonShowResource::collection($this->salons) ?? NULL,
             ],
         ];
     }
