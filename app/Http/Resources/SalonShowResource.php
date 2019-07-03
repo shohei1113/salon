@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CategorySimpleResource extends JsonResource
+class SalonShowResource extends JsonResource
 {
     /**
      * @var
@@ -12,7 +12,7 @@ class CategorySimpleResource extends JsonResource
     private $message;
 
     /**
-     * SalonSimpleResource constructor.
+     * SalonResource constructor.
      * @param $resource
      * @param $message
      */
@@ -31,13 +31,17 @@ class CategorySimpleResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'category' => [
-                'id' => $this->id,
-                'name' => $this->name,
-                'description' => $this->description,
-                'image_url' => $this->image->image_path ?? NULL,
-                'salons' => SalonShowResource::collection($this->salons),
-            ],
+            'id' => $this->id,
+            'owner' => new UserResource($this->owner),
+            'category' => new CategoryResource($this->category),
+            'title' => $this->title,
+            'description' => $this->description,
+            'price' => $this->price,
+            'plan_id' => $this->plan_id,
+            'product_id' => $this->product_id,
+            'salon_detail' => new SalonDetailResource($this->salon_detail),
+            'image_url' => $this->image->image_path ?? NULL,
+            'is_member' => $this->is_member,
         ];
     }
 

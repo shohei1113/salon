@@ -76,6 +76,10 @@ class CategoryController extends Controller
         return new CategoryResource($deleteCategory, config('const.category.delete'));
     }
 
+    /**
+     * @param int $id
+     * @return CategorySimpleResource
+     */
     public function categoryListWithSalons(int $id): CategorySimpleResource
     {
         $categoryListWithSalons = $this->categoryService->fetchCategoryListwithSalons($id);
