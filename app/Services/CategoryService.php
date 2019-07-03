@@ -100,4 +100,13 @@ class CategoryService
     {
         return $this->categoryRepository->delete($id);
     }
+
+    /**
+     * @param int $id
+     * @return Category
+     */
+    public function fetchCategoryListwithSalons(int $id): Category
+    {
+        return $this->categoryRepository->fetchCategoryById($id);
+    }
 }

@@ -42,6 +42,15 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     /**
      * @param int $id
+     * @return Category
+     */
+    public function fetchCategoryById(int $id): Category
+    {
+        return $this->category->find($id);
+    }
+
+    /**
+     * @param int $id
      * @param array $attribute
      * @return Category
      */
