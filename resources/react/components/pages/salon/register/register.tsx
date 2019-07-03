@@ -60,7 +60,7 @@ const Salon: React.FC = (props: any) => {
 
   useEffect(() => {
     if (!salon.salon.id) {
-      // history.push('/')
+      history.push('/')
     }
   }, [salon])
 

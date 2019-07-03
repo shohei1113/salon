@@ -1,3 +1,4 @@
+const TerserPlugin = require('terser-webpack-plugin')
 let mix = require('laravel-mix')
 
 mix.browserSync('http://localhost:8085')
@@ -5,6 +6,7 @@ mix.browserSync('http://localhost:8085')
 mix
   .react('resources/react/index.tsx', 'public/assets/javascript')
   .sourceMaps()
+  .disableNotifications()
   .webpackConfig({
     module: {
       rules: [
@@ -21,5 +23,17 @@ mix
   })
 
 if (mix.inProduction()) {
-  mix.version()
+  mix
+    .webpackConfig({
+      optimization: {
+        minimizer: [
+          new TerserPlugin({
+            terserOptions: {
+              compress: { drop_console: true },
+            },
+          }),
+        ],
+      },
+    })
+    .version()
 }

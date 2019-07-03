@@ -13,14 +13,32 @@ import { Album } from '../../molecules/album'
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     heroUnit: {
-      backgroundColor: theme.palette.background.paper,
+      position: 'relative',
+      height: 150,
+      backgroundSize: 'cover',
+      backgroundPosition: 'top',
+      [theme.breakpoints.up('sm')]: {
+        height: 150,
+      },
+    },
+    heroMask: {
+      position: 'absolute',
+      top: 0,
+      width: '100%',
+      height: '100%',
+      backgroundColor: 'rgba(0,0,0,0.5)',
     },
     heroContent: {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      width: '100%',
       maxWidth: 600,
-      margin: '0 auto',
+      textShadow: '2px 2px 10px #000',
     },
     salons: {
-      marginTop: 24,
+      marginTop: 60,
     },
   })
 )
@@ -53,32 +71,35 @@ const Salons: React.FC = (props: any) => {
   }, [response, error])
 
   return (
-    <DefaultTemplate {...props} isDefaultSpace={true}>
-      <div className={classes.heroUnit}>
+    <DefaultTemplate {...props}>
+      <div
+        className={classes.heroUnit}
+        style={{ backgroundImage: `url(${salons.category.image_url})` }}
+      >
+        <div className={classes.heroMask} />
         <div className={classes.heroContent}>
           <Typography
             component="h1"
-            variant="h4"
+            variant="h5"
             align="center"
             color="textPrimary"
             gutterBottom
+            style={{ color: '#fff' }}
           >
-            経営者コース
+            {salons.category.name}
           </Typography>
           <Typography
-            variant="body1"
+            variant="body2"
             align="center"
-            color="textSecondary"
+            style={{ color: '#fff' }}
             paragraph
           >
-            Something short and leading about the collection below—its contents,
-            the creator, etc. Make it short and sweet, but not too short so
-            folks don&apos;t simply skip over it entirely.
+            {salons.category.description}
           </Typography>
         </div>
       </div>
       <div className={classes.salons}>
-        <Album cards={salons.salons} />
+        <Album cards={salons.category.salons} />
       </div>
     </DefaultTemplate>
   )

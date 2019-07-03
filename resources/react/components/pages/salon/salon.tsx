@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import {
   withRouter,
   BrowserRouter as Router,
@@ -48,32 +48,42 @@ const Salon: React.FC = (props: any) => {
   const { auth, salon } = useMappedState(useCallback(state => state, []))
   const dispatch = useDispatch()
   const salonId = getUrlParam('salon-id')
+  const [axiosConfig, setAxiosConfig] = useState({})
+  const [isStartFetch, setStartFetch] = useState(false)
 
-  const axiosConfig = {
-    method: 'GET',
-    url: `${PATH}/api/salon/preview/${salonId}`,
-  }
-  const { isLoading, response, error } = useFetchApi(axiosConfig, true)
+  const { isLoading, response, error } = useFetchApi(axiosConfig, isStartFetch)
 
   useEffect(() => {
     if (auth.isPrepared) {
-      if (response) {
-        if (!auth.user) {
-          dispatch(initSalon({ salon: response.data.salon, role: 3 }))
-          return
-        }
-        const role = getRole(
-          auth.user.id,
-          response.data.salon.owner.id,
-          response.data.salon.is_member
-        )
-        dispatch(initSalon({ salon: response.data.salon, role }))
+      if (auth.isLoggedin) {
+        setAxiosConfig({
+          method: 'GET',
+          url: `${PATH}/api/salon/preview/${salonId}`,
+          headers: { Authorization: `Bearer ${auth.token}` },
+        })
+      } else {
+        setAxiosConfig({
+          method: 'GET',
+          url: `${PATH}/api/salon/preview/${salonId}`,
+        })
       }
-
-      if (error) {
-      }
+      setStartFetch(true)
     }
-  }, [response, error, auth])
+  }, [auth])
+
+  useEffect(() => {
+    if (response) {
+      const role = getRole(
+        auth.user.id,
+        response.data.salon.owner.id,
+        response.data.salon.is_member
+      )
+      dispatch(initSalon({ salon: response.data.salon, role }))
+    }
+
+    if (error) {
+    }
+  }, [response, error])
 
   useEffect(() => {
     return () => {
