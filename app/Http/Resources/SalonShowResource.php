@@ -33,7 +33,6 @@ class SalonShowResource extends JsonResource
         return [
             'id' => $this->id,
             'owner' => new UserResource($this->owner),
-            'category' => new CategoryResource($this->category),
             'title' => $this->title,
             'description' => $this->description,
             'price' => $this->price,
