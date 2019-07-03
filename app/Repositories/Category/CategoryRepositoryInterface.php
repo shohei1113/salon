@@ -22,6 +22,12 @@ interface CategoryRepositoryInterface
 
     /**
      * @param int $id
+     * @return Category
+     */
+    public function fetchCategoryById(int $id): Category;
+
+    /**
+     * @param int $id
      * @param array $attribute
      * @return Category
      */
