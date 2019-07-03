@@ -95,4 +95,13 @@ class UserRepository implements UserRepositoryInterface
     {
         return $user->salons()->save($salon);
     }
+
+    /**
+     * @param int $id
+     * @return Collection
+     */
+    public function fetchUserWithSalon(int $id): Collection
+    {
+        return $this->user->find($id)->salons;
+    }
 }

@@ -48,9 +48,9 @@ Route::group(['namespace' => 'API', 'as' => 'api.'], function() {
         |--------------------------------------------------------------------------
         */
         Route::get('me', 'UserController@info')->name('user');
+        Route::get('user/mypage', 'UserController@mypage')->name('user.mypage');
         Route::get('user', 'UserController@index')->name('user.index');
         Route::post('user', 'UserController@store')->name('user.store');
-        Route::get('user/{user}', 'UserController@show')->name('user.show');
         Route::put('user/{user}', 'UserController@update')->name('user.update');
         Route::delete('user/{user}', 'UserController@destroy')->name('user.delete');
 

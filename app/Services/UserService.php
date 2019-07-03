@@ -7,6 +7,7 @@ use App\Entities\Image;
 use App\Entities\User;
 use App\Repositories\User\UserRepository;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 
@@ -19,7 +20,7 @@ class UserService
     /**
      * @var UserRepository
      */
-    private $user;
+    private $userRepository;
 
     /**
      * @var ImageService
@@ -38,11 +39,11 @@ class UserService
      * @param S3Service $s3Service
      */
     public function __construct(
-        UserRepository $user,
+        UserRepository $userRepository,
         ImageService $imageService,
         S3Service $s3Service
     ) {
-        $this->user = $user;
+        $this->userRepository = $userRepository;
         $this->imageService = $imageService;
         $this->s3Service = $s3Service;
     }
@@ -58,7 +59,7 @@ class UserService
     {
         DB::beginTransaction();
         try {
-            $user = $this->user->update($id, $attribute);
+            $user = $this->userRepository->update($id, $attribute);
             $this->imageService->upload($image, $user->id, Image::S3_DIR_USER, Image::TYPE_USER);
             DB::commit();
         } catch (Exception $e) {
@@ -75,6 +76,15 @@ class UserService
      */
     public function fetchUserById(int $id): User
     {
-        return $this->user->fetchUserById($id);
+        return $this->userRepository->fetchUserById($id);
+    }
+
+    /**
+     * @param int $id
+     * @return Collection
+     */
+    public function fetchUserWithSalon(int $id): Collection
+    {
+        return $this->userRepository->fetchUserWithSalon($id);
     }
 }

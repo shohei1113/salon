@@ -51,4 +51,10 @@ interface UserRepositoryInterface
      * @return mixed
      */
     public function createUserSalon(User $user, Salon $salon);
+
+    /**
+     * @param int $id
+     * @return Collection
+     */
+    public function fetchUserWithSalon(int $id): Collection;
 }
