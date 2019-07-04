@@ -72,6 +72,7 @@ class PostRepository implements PostRepositoryInterface
     /**
      * @param int $id
      * @return Post
+     * @throws \Exception
      */
     public function delete(int $id): Post
     {

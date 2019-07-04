@@ -34,6 +34,8 @@ class SalonController extends Controller
      */
     public function __construct(SalonService $salonService)
     {
+        $this->middleware('can:update,salon')->only('update');
+        $this->middleware('can:delete,salon')->only('delete');
         $this->salonService = $salonService;
         $this->user = Auth::user();
     }
@@ -75,19 +77,30 @@ class SalonController extends Controller
      * @return SalonResource
      * @throws \Exception
      */
-    public function update(Request $request, int $id): SalonResource
+    public function update(Request $request, Salon $salon): SalonResource
     {
-        $updateSalon = $this->salonService->updateSalon($id, $request->all(), $request->image);
+        $updateSalon = $this->salonService->updateSalon($salon->id, $request->all(), $request->image);
         return new SalonResource($updateSalon, config('const.salon.update'));
+    }
+
+    /**
+     * @param Salon $salon
+     * @return SalonResource
+     * @throws \Exception
+     */
+    public function destroy(Salon $salon)
+    {
+        $deleteSalon = $this->salonService->deleteSalon($salon->id);
+        return new SalonResource($deleteSalon, config('const.salon.delete'));
     }
 
     /**
      * @param int $id
      * @return SalonResource
      */
-    public function preview(int $id): SalonResource
+    public function preview(Salon $salon): SalonResource
     {
-        $salon = $this->salonService->fetchSalonById($id);
+        $salon = $this->salonService->fetchSalonById($salon->id);
         return new SalonResource($salon, config('const.salon.preview'));
     }
 }
