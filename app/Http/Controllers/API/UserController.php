@@ -9,6 +9,7 @@ use App\Http\Resources\BaseResource;
 use App\Http\Resources\SalonResource;
 use App\Http\Resources\UserInfoResource;
 use App\Services\UserService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -72,12 +73,18 @@ class UserController extends Controller
     }
 
     /**
-     * @return BaseResource
+     * @return array
      */
-    public function mypage(): BaseResource
+    public function mypage(): JsonResponse
     {
-        $userSalons = $this->userService->fetchUserWithSalon($this->user->id);
-        return new BaseResource(SalonResource::collection($userSalons));
-
+        $memberSalons = $this->userService->fetchMemeberSalons($this->user->id);
+        $ownerSalons = $this->userService->fetchOwnerSalons($this->user->id);
+        return response()->json([
+            'data' => [
+                'owner' => SalonResource::collection($ownerSalons),
+                'member' => SalonResource::collection($memberSalons),
+            ],
+            'message' => config('const.user.mypage'),
+        ]);
     }
 }
