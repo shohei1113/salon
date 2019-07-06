@@ -55,7 +55,7 @@ class UserService
      * @return User
      * @throws Exception
      */
-    public function updateUser(int $id, array $attribute, ?UploadedFile $image): User
+    public function updateUser(int $id, array $attribute, ?UploadedFile $image=null): User
     {
         DB::beginTransaction();
         try {

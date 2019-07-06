@@ -51,7 +51,8 @@ Route::group(['namespace' => 'API', 'as' => 'api.'], function() {
         Route::get('user/mypage', 'UserController@mypage')->name('user.mypage');
         Route::get('user', 'UserController@index')->name('user.index');
         Route::post('user', 'UserController@store')->name('user.store');
-        Route::put('user/{user}', 'UserController@update')->name('user.update');
+        Route::put('user/{user}/auth', 'UserController@updateAuthInfo')->name('user.updateAuthInfo');
+        Route::put('user/{user}/basic', 'UserController@updateBasicInfo')->name('user.updateBasicInfo');
         Route::delete('user/{user}', 'UserController@destroy')->name('user.delete');
 
         /*
@@ -77,7 +78,7 @@ Route::group(['namespace' => 'API', 'as' => 'api.'], function() {
         | Category Routes
         |--------------------------------------------------------------------------
         */
-        Route::post('category', 'CategoryController@store')->name('category.store');
+        Route::post('category', 'CategoryController@store')->name('category.st　ore');
         Route::put('category/{category}', 'CategoryController@update')->name('category.update');
 //        Route::delete('category/{category}', 'CategoryController@destroy')->name('category.delete');
 

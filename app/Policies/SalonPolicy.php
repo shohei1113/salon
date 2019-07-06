@@ -6,6 +6,10 @@ use App\Entities\User;
 use App\Entities\Salon;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
+/**
+ * Class SalonPolicy
+ * @package App\Policies
+ */
 class SalonPolicy
 {
     use HandlesAuthorization;

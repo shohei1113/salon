@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API;
 
+use App\Entities\Comment;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\PostResource;
 use App\Http\Resources\PostSimpleResource;
@@ -33,6 +34,8 @@ class CommentController extends Controller
      */
     public function __construct(CommentService $commentService)
     {
+        $this->middleware('can:update,comment')->only('update');
+        $this->middleware('can:delete,comment')->only('destroy');
         $this->commentService = $commentService;
         $this->user = Auth::user();
     }
@@ -52,9 +55,9 @@ class CommentController extends Controller
      * @param int $id
      * @return PostSimpleResource
      */
-    public function update(Request $request, int $id): PostSimpleResource
+    public function update(Request $request, Comment $comment): PostSimpleResource
     {
-        $post = $this->commentService->updateComment($id, $request->all());
+        $post = $this->commentService->updateComment($comment->id, $request->all());
         return new PostSimpleResource($post, config('const.comment.update'));
     }
 
@@ -63,9 +66,9 @@ class CommentController extends Controller
      * @return PostSimpleResource
      * @throws \Exception
      */
-    public function destroy(int $id): PostSimpleResource
+    public function destroy(Comment $comment): PostSimpleResource
     {
-        $post = $this->commentService->deleteComment($id);
+        $post = $this->commentService->deleteComment($comment->id);
         return new PostSimpleResource($post, config('const.comment.delete'));
     }
 }
