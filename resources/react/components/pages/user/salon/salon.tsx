@@ -1,14 +1,13 @@
-import React, { useEffect, useCallback } from 'react'
-import { withRouter } from 'react-router-dom'
+import React, { useState, useEffect, useCallback } from 'react'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { useMappedState, useDispatch } from 'redux-react-hook'
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
+import Grid from '@material-ui/core/Grid'
 import PATH from '../../../../const/path'
 import useFetchApi from '../../../../hooks/use-fetch-api'
-import getUrlParam from '../../../../utils/get-url-param'
-import { initSalons } from '../../../../redux/modules/salons'
 import { DefaultTemplate } from '../../../templates/default-template'
-import { Album } from '../../../molecules/album'
+import Card from './card'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -19,18 +18,26 @@ const useStyles = makeStyles((theme: Theme) =>
       maxWidth: 600,
       margin: '0 auto',
     },
+    contents: {
+      marginTop: 60,
+    },
     salons: {
       marginTop: 24,
+      flexGrow: 1,
+      maxWidth: 900,
+      margin: '0 auto',
+      [theme.breakpoints.down('sm')]: {
+        padding: '0 16px',
+      },
     },
   })
 )
 
 const Salons: React.FC = (props: any) => {
-  const { history } = props
   const classes = useStyles({})
+  const [ownerSalons, setOwnerSalons] = useState([])
+  const [memberSalons, setMemberSalons] = useState([])
   const { auth } = useMappedState(useCallback(state => state, []))
-  const dispatch = useDispatch()
-  const categoryId = getUrlParam('category-id')
   const axiosConfig = {
     method: 'GET',
     url: `${PATH}/api/user/mypage`,
@@ -42,7 +49,8 @@ const Salons: React.FC = (props: any) => {
 
   useEffect(() => {
     if (response) {
-      // dispatch(initSalons(response))
+      setOwnerSalons(response.data.owner)
+      setMemberSalons(response.data.member)
     }
 
     if (error) {
@@ -52,33 +60,49 @@ const Salons: React.FC = (props: any) => {
   return (
     <DefaultTemplate {...props} isDefaultSpace={true}>
       <div className={classes.heroUnit}>
-        <div className={classes.heroContent}>
-          <Typography
-            component="h1"
-            variant="h4"
-            align="center"
-            color="textPrimary"
-            gutterBottom
-          >
-            経営者コース
-          </Typography>
-          <Typography
-            variant="body1"
-            align="center"
-            color="textSecondary"
-            paragraph
-          >
-            Something short and leading about the collection below—its contents,
-            the creator, etc. Make it short and sweet, but not too short so
-            folks don&apos;t simply skip over it entirely.
-          </Typography>
+        <div>
+          <div className={classes.heroContent}>
+            <Typography
+              component="h1"
+              variant="h6"
+              align="center"
+              color="textPrimary"
+              gutterBottom
+            >
+              開設サロン
+            </Typography>
+          </div>
+          <div className={classes.salons}>
+            <Grid container spacing={2}>
+              {ownerSalons.map(card => (
+                <Card key={card.salon.id} card={card.salon} />
+              ))}
+            </Grid>
+          </div>
         </div>
-      </div>
-      <div className={classes.salons}>
-        {/* <Album cards={salons.salons} /> */}
+        <div className={classes.contents}>
+          <div className={classes.heroContent}>
+            <Typography
+              component="h1"
+              variant="h6"
+              align="center"
+              color="textPrimary"
+              gutterBottom
+            >
+              受講サロン
+            </Typography>
+          </div>
+          <div className={classes.salons}>
+            <Grid container spacing={2}>
+              {memberSalons.map(card => (
+                <Card key={card.salon.id} card={card.salon} />
+              ))}
+            </Grid>
+          </div>
+        </div>
       </div>
     </DefaultTemplate>
   )
 }
 
-export default withRouter(Salons as any)
+export default Salons as any

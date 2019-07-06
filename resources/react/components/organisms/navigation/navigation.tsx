@@ -106,12 +106,12 @@ function Navigation(props: any) {
                     className={classes.navItemText}
                   />
                 </Link>
-                <Link to="/user/email">
+                {/* <Link to="/user/email">
                   <NavItem
                     text="メールアドレス変更"
                     className={classes.navItemText}
                   />
-                </Link>
+                </Link> */}
                 <Link to="/user/password">
                   <NavItem
                     text="パスワード変更"

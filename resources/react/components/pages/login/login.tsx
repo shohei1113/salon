@@ -63,12 +63,14 @@ const Login: React.FC = (props: any) => {
       )
       dispatch(clearLoader())
       dispatch(setSnackbar({ message: response.message }))
+      setStartFetch(false)
       history.push('/')
     }
 
     if (error) {
       console.log('エラー！')
       dispatch(clearLoader())
+      setStartFetch(false)
     }
   }, [response, error])
 

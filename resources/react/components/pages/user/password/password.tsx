@@ -80,6 +80,7 @@ function Password(props: any) {
         Authorization: `Bearer ${auth.token}`,
       },
       data: {
+        _method: 'put',
         password: password,
       },
     })
