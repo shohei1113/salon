@@ -22,7 +22,7 @@ class SalonService
     /**
      * @var SalonRepository
      */
-    private $salonService;
+    private $salonRepository;
 
     /**
      * @var ImageService
@@ -39,11 +39,11 @@ class SalonService
      * @param S3Service $s3Service
      */
     public function __construct(
-        SalonRepository $salonService,
+        SalonRepository $salonRepository,
         ImageService $imageService,
         S3Service $s3Service
     ) {
-        $this->salonService = $salonService;
+        $this->salonRepository = $salonRepository;
         $this->imageService = $imageService;
         $this->s3Service = $s3Service;
     }
@@ -53,7 +53,7 @@ class SalonService
      */
     public function fetchSalonList(?int $categoryId): Collection
     {
-        return $this->salonService
+        return $this->salonRepository
             ->fetchSalonList($categoryId)
             ->sortByDesc('created_at');
     }
@@ -70,8 +70,8 @@ class SalonService
         DB::beginTransaction();
         try {
             $stripePlan = $this->createStripePlan($attribute);
-            $salon = $this->salonService->createSalon($userId, $attribute, $stripePlan);
-            $this->salonService->createSalonDetail($salon, $attribute);
+            $salon = $this->salonRepository->create($userId, $attribute, $stripePlan);
+            $this->salonRepository->createSalonDetail($salon, $attribute);
             $this->imageService->upload($image, $salon->id, Image::S3_DIR_SALON, Image::TYPE_SALON);
             DB::commit();
         } catch (Exception $e) {
@@ -88,7 +88,41 @@ class SalonService
      */
     public function fetchSalonById(int $id): Salon
     {
-        return $this->salonService->fetchSalonById($id);
+        return $this->salonRepository->fetchSalonById($id);
+    }
+
+    /**
+     * @param int $id
+     * @param array $attribute
+     * @param UploadedFile|null $image
+     * @return Salon
+     * @throws Exception
+     */
+    public function updateSalon(int $id, array $attribute, ?UploadedFile $image): Salon
+    {
+        DB::beginTransaction();
+        try {
+            $salon = $this->salonRepository->update($id, $attribute);
+            $this->salonRepository->updateSalonDetail($salon, $attribute);
+            $this->updateStripePlan($salon, $attribute);
+            $this->imageService->upload($image, $salon->id, Image::S3_DIR_SALON, Image::TYPE_SALON);
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw new Exception('error');
+        }
+
+        return $salon;
+    }
+
+    /**
+     * @param int $id
+     * @return Salon
+     * @throws Exception
+     */
+    public function deleteSalon(int $id): Salon
+    {
+        return $this->salonRepository->delete($id);
     }
 
     /**
@@ -108,29 +142,6 @@ class SalonService
             'nickname' => $attribute['title'],
             'currency' => Salon::CURRENCY,
         ]);
-    }
-
-    /**
-     * @param int $id
-     * @param array $attribute
-     * @return Salon
-     * @throws Exception
-     */
-    public function updateSalon(int $id, array $attribute, ?UploadedFile $image): Salon
-    {
-        DB::beginTransaction();
-        try {
-            $salon = $this->salonService->updateSalon($id, $attribute);
-            $this->salonService->updateSalonDetail($salon, $attribute);
-            $this->updateStripePlan($salon, $attribute);
-            $this->imageService->upload($image, $salon->id, Image::S3_DIR_SALON, Image::TYPE_SALON);
-            DB::commit();
-        } catch (Exception $e) {
-            DB::rollBack();
-            throw new Exception('error');
-        }
-
-        return $salon;
     }
 
     /**

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API;
 
+use App\Entities\Post;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BaseResource;
 use App\Http\Resources\PostResource;
@@ -27,6 +28,8 @@ class PostController extends Controller
      */
     public function __construct(PostService $postService)
     {
+        $this->middleware('can:update,post')->only('update');
+        $this->middleware('can:delete,post')->only('destroy');
         $this->postService = $postService;
     }
 
@@ -53,23 +56,23 @@ class PostController extends Controller
 
     /**
      * @param Request $request
-     * @param int $id
+     * @param Post $post
      * @return PostSimpleResource
      * @throws \Exception
      */
-    public function update(Request $request, int $id): PostSimpleResource
+    public function update(Request $request, Post $post): PostSimpleResource
     {
-        $updatePost = $this->postService->updatePost($id, $request->all(), $request->image);
+        $updatePost = $this->postService->updatePost($post->id, $request->all(), $request->image);
         return new PostSimpleResource($updatePost, config('const.post.update'));
     }
 
     /**
-     * @param int $id
+     * @param Post $post
      * @return PostSimpleResource
      */
-    public function destroy(int $id): PostSimpleResource
+    public function destroy(Post $post): PostSimpleResource
     {
-        $deletePost = $this->postService->deletePost($id);
+        $deletePost = $this->postService->deletePost($post->id);
         return new PostSimpleResource($deletePost, config('const.post.delete'));
     }
 }

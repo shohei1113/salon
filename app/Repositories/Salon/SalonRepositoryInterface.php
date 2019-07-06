@@ -26,7 +26,7 @@ interface SalonRepositoryInterface
      * @param Plan $stripePlan
      * @return Salon
      */
-    public function createSalon(int $userId, array $attribute, Plan $stripePlan): Salon;
+    public function create(int $userId, array $attribute, Plan $stripePlan): Salon;
 
     /**
      * @param Salon $salon
@@ -46,7 +46,7 @@ interface SalonRepositoryInterface
      * @param array $attribute
      * @return Salon
      */
-    public function updateSalon(int $id, array $attribute): Salon;
+    public function update(int $id, array $attribute): Salon;
 
     /**
      * @param Salon $salon
@@ -54,4 +54,10 @@ interface SalonRepositoryInterface
      * @return int
      */
     public function updateSalonDetail(Salon $salon, array $attribute): int;
+
+    /**
+     * @param int $id
+     * @return Salon
+     */
+    public function delete(int $id): Salon;
 }
