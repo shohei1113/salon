@@ -36,6 +36,7 @@ return [
     'user' => [
         'update' => 'ユーザー情報更新',
         'info' => 'ログインユーザー情報',
+        'mypage' => 'マイページ情報取得',
     ],
     'payment' => [
         'paymentByCard' => 'クレジットカード決済完了しました。',

@@ -56,5 +56,12 @@ interface UserRepositoryInterface
      * @param int $id
      * @return Collection
      */
-    public function fetchUserWithSalon(int $id): Collection;
+    public function fetchMemberSalons(int $id): Collection;
+
+    /**
+     * @param int $id
+     * @return Collection
+     */
+    public function fetchOwnerSalons(int $id): Collection;
+
 }
