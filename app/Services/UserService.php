@@ -83,8 +83,17 @@ class UserService
      * @param int $id
      * @return Collection
      */
-    public function fetchUserWithSalon(int $id): Collection
+    public function fetchMemeberSalons(int $id): Collection
     {
-        return $this->userRepository->fetchUserWithSalon($id);
+        return $this->userRepository->fetchMemberSalons($id);
+    }
+
+    /**
+     * @param int $id
+     * @return Collection
+     */
+    public function fetchOwnerSalons(int $id): Collection
+    {
+        return $this->userRepository->fetchOwnerSalons($id);
     }
 }

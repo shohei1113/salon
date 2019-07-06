@@ -100,8 +100,18 @@ class UserRepository implements UserRepositoryInterface
      * @param int $id
      * @return Collection
      */
-    public function fetchUserWithSalon(int $id): Collection
+    public function fetchMemberSalons(int $id): Collection
     {
         return $this->user->find($id)->salons;
     }
+
+    /**
+     * @param int $id
+     * @return Collection
+     */
+    public function fetchOwnerSalons(int $id): Collection
+    {
+        return $this->user->find($id)->owner_salons;
+    }
+
 }

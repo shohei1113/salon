@@ -6,12 +6,12 @@ namespace App\Entities;
 use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
-use phpDocumentor\Reflection\Types\Mixed_;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 
@@ -73,6 +73,14 @@ class User extends Authenticatable implements JWTSubject
     public function salons(): BelongsToMany
     {
         return $this->belongsToMany(Salon::class, 'user_salon');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function owner_salons(): HasMany
+    {
+        return $this->hasMany(Salon::class, 'owner_id');
     }
 
     /**
