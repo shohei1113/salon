@@ -93,7 +93,7 @@ function Info(props: any) {
 
     setAxiosConfig({
       method: 'POST',
-      url: `${PATH}/api/user/${auth.user.id}`,
+      url: `${PATH}/api/user/${auth.user.id}/basic`,
       headers: {
         Authorization: `Bearer ${auth.token}`,
         'Content-Type': 'multipart/form-data',

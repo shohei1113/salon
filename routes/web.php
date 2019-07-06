@@ -43,6 +43,9 @@ Route::get('/salon/member', function () {
 Route::get('/user/info', function () {
     return view('index');
 });
+Route::get('/user/email', function () {
+    return view('index');
+});
 Route::get('/user/password', function () {
     return view('index');
 });

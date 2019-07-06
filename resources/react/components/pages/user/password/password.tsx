@@ -15,7 +15,6 @@ import {
   sameValue,
 } from '../../../../utils/validator'
 import useFetchApi from '../../../../hooks/use-fetch-api'
-import { updateUser } from '../../../../redux/modules/auth'
 import {
   setLoader,
   clearLoader,
@@ -76,7 +75,7 @@ function Password(props: any) {
     dispatch(setLoader())
     setAxiosConfig({
       method: 'POST',
-      url: `${PATH}/api/user/${auth.user.id}`,
+      url: `${PATH}/api/user/${auth.user.id}/auth`,
       headers: {
         Authorization: `Bearer ${auth.token}`,
       },
@@ -119,7 +118,7 @@ function Password(props: any) {
 
               return errors
             }}
-            render={({ values, handleSubmit, setFieldValue }) => (
+            render={({ handleSubmit }) => (
               <form onSubmit={handleSubmit} className={classes.form}>
                 <div className={classes.formItem}>
                   <Field

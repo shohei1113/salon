@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
-import { persistReducer } from 'redux-persist'
+import { persistReducer, createMigrate } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
+import { version, migrations } from './migration'
 import auth, { State as AuthState } from './modules/auth'
 import ui, { State as UiState } from './modules/ui'
 import categories, { State as CategoriesState } from './modules/categories'
@@ -21,6 +22,8 @@ const authPersistConfig = {
   key: 'auth',
   storage: storage,
   blacklist: ['isPrepared', 'isLoggedin', 'user'],
+  version: version,
+  migrate: createMigrate(migrations, { debug: false }),
 }
 
 export default combineReducers({

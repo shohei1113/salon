@@ -28,18 +28,21 @@ const useStyles = makeStyles((theme: Theme) =>
 const Salons: React.FC = (props: any) => {
   const { history } = props
   const classes = useStyles({})
-  const { salons } = useMappedState(useCallback(state => state, []))
+  const { auth } = useMappedState(useCallback(state => state, []))
   const dispatch = useDispatch()
   const categoryId = getUrlParam('category-id')
   const axiosConfig = {
     method: 'GET',
-    url: `${PATH}/api/category/${categoryId}/salon`,
+    url: `${PATH}/api/user/mypage`,
+    headers: {
+      Authorization: `Bearer ${auth.token}`,
+    },
   }
   const { isLoading, response, error } = useFetchApi(axiosConfig, true)
 
   useEffect(() => {
     if (response) {
-      dispatch(initSalons(response))
+      // dispatch(initSalons(response))
     }
 
     if (error) {
