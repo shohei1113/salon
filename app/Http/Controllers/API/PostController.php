@@ -29,7 +29,7 @@ class PostController extends Controller
     public function __construct(PostService $postService)
     {
         $this->middleware('can:update,post')->only('update');
-        $this->middleware('can:delete,post')->only('delete');
+        $this->middleware('can:delete,post')->only('destroy');
         $this->postService = $postService;
         $this->authorizeResource(Post::class, 'post');
     }

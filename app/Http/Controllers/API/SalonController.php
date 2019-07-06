@@ -35,7 +35,7 @@ class SalonController extends Controller
     public function __construct(SalonService $salonService)
     {
         $this->middleware('can:update,salon')->only('update');
-        $this->middleware('can:delete,salon')->only('delete');
+        $this->middleware('can:delete,salon')->only('destroy');
         $this->salonService = $salonService;
         $this->user = Auth::user();
     }
