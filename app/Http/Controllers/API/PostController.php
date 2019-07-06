@@ -31,7 +31,6 @@ class PostController extends Controller
         $this->middleware('can:update,post')->only('update');
         $this->middleware('can:delete,post')->only('destroy');
         $this->postService = $postService;
-        $this->authorizeResource(Post::class, 'post');
     }
 
     /**
