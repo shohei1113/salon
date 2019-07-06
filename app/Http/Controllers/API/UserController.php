@@ -44,9 +44,21 @@ class UserController extends Controller
      * @return UserInfoResource
      * @throws \Exception
      */
-    public function update(Request $request, int $id): UserInfoResource
+    public function updateAuthInfo(Request $request, int $id): UserInfoResource
     {
-        $user = $this->userService->updateUser($id, $request->all(), $request->image);
+        $user = $this->userService->updateUser($id, $request->only(['email', 'password']));
+        return new UserInfoResource($user, config('const.user.update'));
+    }
+
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return UserInfoResource
+     * @throws \Exception
+     */
+    public function updateBasicInfo(Request $request, int $id): UserInfoResource
+    {
+        $user = $this->userService->updateUser($id, $request->except(['email', 'password']), $request->image);
         return new UserInfoResource($user, config('const.user.update'));
     }
 
