@@ -54,6 +54,7 @@ class UserRepository implements UserRepositoryInterface
         if (isset($attribute['password'])) {
             $attribute['password'] = Hash::make($attribute['password']);
         }
+        $attribute['email_verified'] = User::REGISTERED_USER;
         $user->update($attribute);
 
         return $user;
