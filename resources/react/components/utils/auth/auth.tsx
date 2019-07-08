@@ -37,6 +37,12 @@ const Auth: React.FC = (props: Props) => {
 
     if (response) {
       // TODO: token切れ対応
+      if (!response.data) {
+        dispatch(resetAuth())
+        dispatch(clearLoader())
+        return
+      }
+
       dispatch(
         loginAuth({
           user: response.data.user,
