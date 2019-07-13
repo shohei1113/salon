@@ -21,13 +21,42 @@ class ChangeEmailRepository implements ChangeEmailRepositoryInterface
         $this->changeEmail = $changeEmail;
     }
 
-    public function create(int $id, string $email): ChangeEmail
+    /**
+     * @param int $id
+     * @param string $email
+     * @return ChangeEmail
+     */
+    public function updateOrCreate(int $id, string $email): ChangeEmail
     {
-        return $this->changeEmail->create([
-            'user_id' => $id,
-            'email' => $email,
-            'token' => sha1(uniqid($email , true)),
-            'status' => ChangeEmail::UNREGISTERED,
+        return $this->changeEmail->updateOrCreate(
+            [
+                'user_id' => $id,
+                'status' => ChangeEmail::UNREGISTERED
+            ],
+            [
+                'email' => $email,
+                'token' => sha1(uniqid($email , true)),
+            ]
+        );
+    }
+
+    /**
+     * @param string $token
+     * @return ChangeEmail
+     */
+    public function fetchChangeEmailByToken(string $token): ChangeEmail
+    {
+        return $this->changeEmail->where('token', $token)->first();
+    }
+
+    /**
+     * @param int $id
+     */
+    public function registeredEmail(int $id): void
+    {
+        $changeEmail = $this->changeEmail->find($id);
+        $changeEmail->update([
+            'status' => ChangeEmail::REGISTERED,
         ]);
     }
 }

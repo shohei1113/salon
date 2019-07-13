@@ -7,5 +7,18 @@ use App\Entities\ChangeEmail;
 
 interface ChangeEmailRepositoryInterface
 {
-    public function create(int $id, string $email): ChangeEmail;
+    /**
+     * @param int $id
+     * @param string $email
+     * @return ChangeEmail
+     */
+    public function updateOrCreate(int $id, string $email): ChangeEmail;
+
+    /**
+     * @param string $token
+     * @return ChangeEmail
+     */
+    public function fetchChangeEmailByToken(string $token): ChangeEmail;
+
+    public function registeredEmail(int $id): void;
 }

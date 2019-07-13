@@ -1,26 +1,46 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Mail;
 
-use App\Entities\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
+/**
+ * Class EmailVerification
+ * @package App\Mail
+ */
 class EmailVerification extends Mailable
 {
     use Queueable, SerializesModels;
 
-    private $user;
     /**
-     * Create a new message instance.
-     *
-     * @return void
+     * @var string
      */
-    public function __construct(User $user)
+    private $token;
+
+    /**
+     * @var string
+     */
+    private $blade;
+
+    /**
+     * @var string
+     */
+    private $title;
+
+    /**
+     * EmailVerification constructor.
+     * @param string $token
+     * @param string $blade
+     * @param $title
+     */
+    public function __construct(string $token, string $blade, $title)
     {
-        $this->user = $user;
+        $this->token = $token;
+        $this->blade = $blade;
+        $this->title = $title;
     }
 
     /**
@@ -30,8 +50,8 @@ class EmailVerification extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.pre_register')
-            ->subject('仮登録が完了メール')
-            ->with(['user' => $this->user]);
+        return $this->view('emails.' . $this->blade)
+            ->subject($this->title)
+            ->with(['token' => $this->token]);
     }
 }

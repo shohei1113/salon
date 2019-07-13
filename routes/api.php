@@ -54,7 +54,8 @@ Route::group(['namespace' => 'API', 'as' => 'api.'], function() {
         Route::put('user/basic', 'UserController@updateBasicInfo')->name('user.updateBasicInfo');
 //        Route::delete('user/{user}', 'UserController@destroy')->name('user.delete');
         Route::get('user/mypage', 'UserController@mypage')->name('user.mypage');
-        Route::post('user/change/email', 'UserController@changeEmail')->name('user.change.email');
+        Route::post('user/reset/email', 'UserController@sendMailToChangeEmail')->name('user.change.email');
+        Route::post('user/update/email', 'UserController@resetEmail')->name('user.update.email');
 
         /*
         |--------------------------------------------------------------------------

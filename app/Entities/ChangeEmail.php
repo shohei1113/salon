@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ChangeEmail extends Model
 {
     const UNREGISTERED = 0;
-    const REGISTER = 1;
+    const REGISTERED = 1;
     const INVALID = 2;
 
     /**

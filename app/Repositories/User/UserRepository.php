@@ -115,4 +115,18 @@ class UserRepository implements UserRepositoryInterface
         return $this->user->find($id)->owner_salons;
     }
 
+    /**
+     * @param int $id
+     * @param string $email
+     * @return User
+     */
+    public function updateEmail(int $id, string $email): User
+    {
+        $user = $this->user->find($id);
+        $user->update([
+            'email' => $email,
+        ]);
+
+        return $user;
+    }
 }
