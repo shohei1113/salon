@@ -37,8 +37,10 @@ return [
             'update' => 'ユーザー情報更新',
             'info' => 'ログインユーザー情報',
             'mypage' => 'マイページ情報取得',
-            'send_change_email' => 'メールアドレス再設定用メール送信完了',
-            'reset_email' => 'メールアドレス再設定完了',
+            'send_mail_email_reset' => 'メールアドレス再設定用メール送信完了',
+            'send_mail_password_reset' => 'パスワード再設定用メール送信完了',
+            'email_reset' => 'メールアドレス再設定完了',
+            'password_reset' => 'パスワード再設定完了',
         ],
         'payment' => [
             'payment_by_card' => 'クレジットカード決済完了しました。',
@@ -48,5 +50,6 @@ return [
     'email_title' => [
         'pre_register' => 'HAYAOKURI: 仮登録が完了しました',
         'email_reset' => 'HAYAOKURI: ご登録メールアドレス変更手続きのお知らせ',
+        'password_reset' => 'HAYAOKURI: パスワード再設定手続きのお知らせ',
     ]
 ];

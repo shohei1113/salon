@@ -94,7 +94,7 @@ class UserController extends Controller
     public function sendMailToChangeEmail(Request $request)
     {
         $changeEmailUser = $this->userService->sendMailToChangeEmail($this->user->id, $request->input('email'));
-        return new UserInfoResource($changeEmailUser, config('const.message.user.send_change_email'));
+        return new UserInfoResource($changeEmailUser, config('const.message.user.send_mail_email_reset'));
     }
 
     /**
@@ -105,6 +105,26 @@ class UserController extends Controller
     public function resetEmail(Request $request)
     {
         $user = $this->userService->resetEmail($request->all());
-        return new UserInfoResource($user, config('const.message.user.reset_email'));
+        return new UserInfoResource($user, config('const.message.user.email_reset'));
+    }
+
+    /**
+     * @param Request $request
+     * @return UserInfoResource
+     */
+    public function sendMailToPasswordResetUser(Request $request)
+    {
+        $user = $this->userService->sendMailToPasswordResetUser($request->input('email'));
+        return new UserInfoResource($user, config('const.message.user.send_mail_password_reset'));
+    }
+
+    /**
+     * @param Request $request
+     * @throws \Exception
+     */
+    public function resetPassword(Request $request)
+    {
+        $user = $this->userService->resetPassword($request->all());
+        return new UserInfoResource($user, config('const.message.user.password_reset'));
     }
 }

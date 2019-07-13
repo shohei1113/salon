@@ -7,6 +7,7 @@ use App\Entities\ChangeEmail;
 use App\Entities\Image;
 use App\Entities\User;
 use App\Repositories\ChangeEmail\ChangeEmailRepository;
+use App\Repositories\PasswordReset\PasswordResetRepository;
 use App\Repositories\User\UserRepository;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -29,6 +30,11 @@ class UserService
      * @var ChangeEmailRepository
      */
     private $changeEmailRepository;
+
+    /**
+     * @var PasswordResetRepository
+     */
+    private $passwordResetRepository;
 
     /**
      * @var ImageService
@@ -56,12 +62,14 @@ class UserService
     public function __construct(
         UserRepository $userRepository,
         ChangeEmailRepository $changeEmailRepository,
+        PasswordResetRepository $passwordResetRepository,
         ImageService $imageService,
         S3Service $s3Service,
         SESService $sesService
     ) {
         $this->userRepository = $userRepository;
         $this->changeEmailRepository = $changeEmailRepository;
+        $this->passwordResetRepository = $passwordResetRepository;
         $this->imageService = $imageService;
         $this->s3Service = $s3Service;
         $this->sesService = $sesService;
@@ -155,6 +163,56 @@ class UserService
         try {
             $user = $this->userRepository->updateEmail($changeEmail->user_id, $changeEmail->email);
             $this->changeEmailRepository->registeredEmail($changeEmail->id);
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw new Exception($e);
+        }
+
+        return $user;
+    }
+
+    /**
+     * @param $email
+     * @return User
+     */
+    public function sendMailToPasswordResetUser(string $email): User
+    {
+        $user = $this->userRepository->fetchUserByEmail($email);
+
+        if (!isset($user)) {
+            throw new HttpResponseException(
+                response()->json(['message' => 'invalid email'], 401)
+            );
+        }
+
+        $passwordReset = $this->passwordResetRepository->create($email);
+        $this->sesService
+            ->sendEmailVerifyMail($email, $passwordReset->token, 'password_reset', config('const.email_title.password_reset'));
+
+        return $user;
+    }
+
+    /**
+     * @param array $attribute
+     * @return User
+     * @throws Exception
+     */
+    public function resetPassword(array $attribute): User
+    {
+        $resetPassword = $this->passwordResetRepository->fetchEmailByToken($attribute['token']);
+        $updateUser = $this->userRepository->fetchUserByEmail($resetPassword->email);
+
+        if (!isset($resetPassword)) {
+            throw new HttpResponseException(
+                response()->json(['message' => 'invalid token'], 401)
+            );
+        }
+
+        DB::beginTransaction();
+        try {
+            $user = $this->userRepository->update($updateUser->id, $attribute);
+            $this->passwordResetRepository->delete($resetPassword->email);
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
