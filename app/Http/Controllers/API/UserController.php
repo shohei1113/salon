@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API;
 
 use App\Entities\User;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\BaseResource;
 use App\Http\Resources\SalonResource;
 use App\Http\Resources\UserInfoResource;
 use App\Services\UserService;
@@ -45,9 +44,9 @@ class UserController extends Controller
      * @return UserInfoResource
      * @throws \Exception
      */
-    public function updateAuthInfo(Request $request, int $id): UserInfoResource
+    public function updateAuthInfo(Request $request): UserInfoResource
     {
-        $user = $this->userService->updateUser($id, $request->only(['email', 'password']));
+        $user = $this->userService->updateUser($this->user->id, $request->only(['email', 'password']));
         return new UserInfoResource($user, config('const.user.update'));
     }
 
@@ -57,9 +56,9 @@ class UserController extends Controller
      * @return UserInfoResource
      * @throws \Exception
      */
-    public function updateBasicInfo(Request $request, int $id): UserInfoResource
+    public function updateBasicInfo(Request $request): UserInfoResource
     {
-        $user = $this->userService->updateUser($id, $request->except(['email', 'password']), $request->image);
+        $user = $this->userService->updateUser($this->user->id, $request->except(['email', 'password']), $request->image);
         return new UserInfoResource($user, config('const.user.update'));
     }
 
@@ -86,5 +85,10 @@ class UserController extends Controller
             ],
             'message' => config('const.user.mypage'),
         ]);
+    }
+
+    public function sendMailToChangeEmail(Request $request)
+    {
+        $changeEmailUser = $this->userService->sendToChangeEmail($this->user->id, $request->only('email'));
     }
 }

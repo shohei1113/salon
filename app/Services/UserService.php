@@ -5,11 +5,14 @@ namespace App\Services;
 
 use App\Entities\Image;
 use App\Entities\User;
+use App\Mail\EmailVerification;
+use App\Repositories\ChangeEmail\ChangeEmailRepository;
 use App\Repositories\User\UserRepository;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * Class UserService
@@ -23,6 +26,11 @@ class UserService
     private $userRepository;
 
     /**
+     * @var ChangeEmailRepository
+     */
+    private $changeEmailRepository;
+
+    /**
      * @var ImageService
      */
     private $imageService;
@@ -34,16 +42,19 @@ class UserService
 
     /**
      * UserService constructor.
-     * @param UserRepository $user
+     * @param UserRepository $userRepository
+     * @param ChangeEmailRepository $changeEmailRepository
      * @param ImageService $imageService
      * @param S3Service $s3Service
      */
     public function __construct(
         UserRepository $userRepository,
+        ChangeEmailRepository $changeEmailRepository,
         ImageService $imageService,
         S3Service $s3Service
     ) {
         $this->userRepository = $userRepository;
+        $this->changeEmailRepository = $changeEmailRepository;
         $this->imageService = $imageService;
         $this->s3Service = $s3Service;
     }
@@ -96,4 +107,27 @@ class UserService
     {
         return $this->userRepository->fetchOwnerSalons($id);
     }
+
+    /**
+     * @param int $id
+     * @param string $email
+     * @return User
+     */
+    public function sendMailToChangeEmail(int $id, string $email): User
+    {
+        $user = $this->userRepository->fetchUserById($id);
+        $this->changeEmailRepository->create($id, $email);
+        $this->sendMail($user, $email, 'pre_register');
+        return $user;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function sendMail(User $user, string $email)
+    {
+        $emailVerify = new EmailVerification($user);
+        Mail::to($email)->send($emailVerify);
+    }
+
 }

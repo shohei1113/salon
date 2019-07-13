@@ -37,9 +37,9 @@ class AuthController extends Controller
      * @return UserInfoResource
      * @throws \Exception
      */
-    public function signup(RegisterRequest $request): UserInfoResource
+    public function preRegister(RegisterRequest $request): UserInfoResource
     {
-        $registerUser = $this->authService->signupUser($request->all());
+        $registerUser = $this->authService->preRegister($request->all());
         return new UserInfoResource($registerUser, config('const.auth.signup'));
     }
 

@@ -21,7 +21,7 @@ Route::group(['namespace' => 'API', 'as' => 'api.'], function() {
     | Auth Routes
     |--------------------------------------------------------------------------
     */
-    Route::post('signup', 'AuthController@signup')->name('signup');
+    Route::post('signup', 'AuthController@preRegister')->name('preRegister');
     Route::post('register', 'AuthController@register')->name('register');
     Route::post('me', 'AuthController@login')->name('auth.login');
     Route::delete('me', 'AuthController@logout')->middleware('jwt.refresh')->name('auth.logout');
@@ -48,12 +48,13 @@ Route::group(['namespace' => 'API', 'as' => 'api.'], function() {
         |--------------------------------------------------------------------------
         */
         Route::get('me', 'UserController@info')->name('user');
-        Route::get('user/mypage', 'UserController@mypage')->name('user.mypage');
         Route::get('user', 'UserController@index')->name('user.index');
         Route::post('user', 'UserController@store')->name('user.store');
-        Route::put('user/{user}/auth', 'UserController@updateAuthInfo')->name('user.updateAuthInfo');
-        Route::put('user/{user}/basic', 'UserController@updateBasicInfo')->name('user.updateBasicInfo');
-        Route::delete('user/{user}', 'UserController@destroy')->name('user.delete');
+        Route::put('user/auth', 'UserController@updateAuthInfo')->name('user.updateAuthInfo');
+        Route::put('user/basic', 'UserController@updateBasicInfo')->name('user.updateBasicInfo');
+//        Route::delete('user/{user}', 'UserController@destroy')->name('user.delete');
+        Route::get('user/mypage', 'UserController@mypage')->name('user.mypage');
+        Route::post('user/change/email', 'UserController@changeEmail')->name('user.change.email');
 
         /*
         |--------------------------------------------------------------------------

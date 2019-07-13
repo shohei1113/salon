@@ -54,12 +54,12 @@ class AuthService
      * @return User
      * @throws Exception
      */
-    public function signupUser(array $attribute): User
+    public function preRegister(array $attribute): User
     {
         DB::beginTransaction();
         try {
             $user = $this->userRepository->create($attribute);
-            $this->sendPreRegisterMail($user);
+            $this->sendMail($user);
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
@@ -96,7 +96,7 @@ class AuthService
     /**
      * @param User $user
      */
-    public function sendPreRegisterMail(User $user)
+    public function sendMail(User $user)
     {
         $email = new EmailVerification($user);
         Mail::to($user->email)->send($email);

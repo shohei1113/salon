@@ -31,8 +31,7 @@ class EmailVerification extends Mailable
     public function build()
     {
         return $this->view('emails.pre_register')
-            ->subject('仮登録が完了しました')
-            ->subject('hayaokuri登録メール')
+            ->subject('仮登録が完了メール')
             ->with(['user' => $this->user]);
     }
 }

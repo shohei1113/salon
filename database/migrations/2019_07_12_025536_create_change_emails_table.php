@@ -15,6 +15,10 @@ class CreateChangeEmailsTable extends Migration
     {
         Schema::create('change_emails', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('user_id')->unsigned();
+            $table->string('email');
+            $table->string('token');
+            $table->integer('status');
             $table->timestamps();
         });
     }
