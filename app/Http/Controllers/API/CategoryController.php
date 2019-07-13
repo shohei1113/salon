@@ -39,7 +39,7 @@ class CategoryController extends Controller
     public function index(): BaseResource
     {
         $categoryList = $this->categoryService->fetchCategoryList();
-        return new BaseResource(CategoryResource::collection($categoryList), config('const.category.index'));
+        return new BaseResource(CategoryResource::collection($categoryList), config('const.message.category.index'));
     }
 
     /**
@@ -50,7 +50,7 @@ class CategoryController extends Controller
     public function store(Request $request): CategoryResource
     {
         $createCategory = $this->categoryService->createCategory($request->all(), $request->image);
-        return new CategoryResource($createCategory, config('const.category.store'));
+        return new CategoryResource($createCategory, config('const.message.category.store'));
     }
 
     /**
@@ -62,7 +62,7 @@ class CategoryController extends Controller
     public function update(Request $request, int $id): CategoryResource
     {
         $updateCategory = $this->categoryService->updateCategory($id, $request->all(), $request->image);
-        return new CategoryResource($updateCategory, config('const.category.update'));
+        return new CategoryResource($updateCategory, config('const.message.category.update'));
     }
 
     /**
@@ -73,7 +73,7 @@ class CategoryController extends Controller
     public function destroy(int $id): CategoryResource
     {
         $deleteCategory = $this->categoryService->deleteCategory($id);
-        return new CategoryResource($deleteCategory, config('const.category.delete'));
+        return new CategoryResource($deleteCategory, config('const.message.category.delete'));
     }
 
     /**

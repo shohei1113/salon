@@ -47,7 +47,7 @@ class CommentController extends Controller
     public function store(Request $request): PostSimpleResource
     {
         $post = $this->commentService->createComment($request->all(), $this->user->id);
-        return new PostSimpleResource($post, config('const.comment.store'));
+        return new PostSimpleResource($post, config('const.message.comment.store'));
     }
 
     /**
@@ -58,7 +58,7 @@ class CommentController extends Controller
     public function update(Request $request, Comment $comment): PostSimpleResource
     {
         $post = $this->commentService->updateComment($comment->id, $request->all());
-        return new PostSimpleResource($post, config('const.comment.update'));
+        return new PostSimpleResource($post, config('const.message.comment.update'));
     }
 
     /**
@@ -69,6 +69,6 @@ class CommentController extends Controller
     public function destroy(Comment $comment): PostSimpleResource
     {
         $post = $this->commentService->deleteComment($comment->id);
-        return new PostSimpleResource($post, config('const.comment.delete'));
+        return new PostSimpleResource($post, config('const.message.comment.delete'));
     }
 }

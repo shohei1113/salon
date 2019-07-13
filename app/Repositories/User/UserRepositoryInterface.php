@@ -64,4 +64,6 @@ interface UserRepositoryInterface
      */
     public function fetchOwnerSalons(int $id): Collection;
 
+    public function updateEmail(int $id, string $email): User;
+
 }

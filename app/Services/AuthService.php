@@ -4,14 +4,12 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Entities\User;
-use App\Mail\EmailVerification;
 use App\Repositories\User\UserRepository;
 use Exception;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Laravel\Socialite\Facades\Socialite;
 use Tymon\JWTAuth\JWTAuth;
 
@@ -27,6 +25,11 @@ class AuthService
     private $auth;
 
     /**
+     * @var SESService
+     */
+    private $sesService;
+
+    /**
      * @var UserRepository
      */
     private $userRepository;
@@ -39,12 +42,18 @@ class AuthService
     /**
      * AuthService constructor.
      * @param JWTAuth $auth
+     * @param SESService $sesService
      * @param UserService $userService
      * @param UserRepository $userRepository
      */
-    public function __construct(JWTAuth $auth, UserService $userService, UserRepository $userRepository)
-    {
+    public function __construct(
+        JWTAuth $auth,
+        SESService $sesService,
+        UserService $userService,
+        UserRepository $userRepository
+    ) {
         $this->auth = $auth;
+        $this->sesService = $sesService;
         $this->userRepository = $userRepository;
         $this->userService = $userService;
     }
@@ -54,12 +63,13 @@ class AuthService
      * @return User
      * @throws Exception
      */
-    public function signupUser(array $attribute): User
+    public function preRegister(array $attribute): User
     {
         DB::beginTransaction();
         try {
             $user = $this->userRepository->create($attribute);
-            $this->sendPreRegisterMail($user);
+            $this->sesService
+                ->sendEmailVerifyMail($user->email, $user->email_verify_token, 'pre_register', config('const.email_title.pre_register'));
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
@@ -77,29 +87,20 @@ class AuthService
      */
     public function registerUser(array $attribute, ?UploadedFile $image): User
     {
-        $user = $this->userRepository->fetchUserByToken($attribute['token']);
+        $preRegisterUser = $this->userRepository->fetchUserByToken($attribute['token']);
 
-        if (!isset($user)) {
+        if (!isset($preRegisterUser)) {
             throw new Exception('invalid token', 401);
         }
 
-        if ($user->email_verified == User::REGISTERED_USER) {
+        if ($preRegisterUser->email_verified == User::REGISTERED_USER) {
             throw new Exception('registerd user');
         }
 
-        $this->userService->updateUser($user->id, $attribute, $image);
+        $user = $this->userService->updateUser($preRegisterUser->id, $attribute, $image);
         $user->token = $this->auth->fromUser($user);
 
         return $user;
-    }
-
-    /**
-     * @param User $user
-     */
-    public function sendPreRegisterMail(User $user)
-    {
-        $email = new EmailVerification($user);
-        Mail::to($user->email)->send($email);
     }
 
     /**
