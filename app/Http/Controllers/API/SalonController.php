@@ -47,7 +47,7 @@ class SalonController extends Controller
     public function index(?int $categoryId = NULL): BaseResource
     {
         $salonList = $this->salonService->fetchSalonList($categoryId);
-        return new BaseResource(SalonResource::collection($salonList), config('const.salon.index'));
+        return new BaseResource(SalonResource::collection($salonList), config('const.message.salon.index'));
     }
 
     /**
@@ -58,7 +58,7 @@ class SalonController extends Controller
     public function store(Request $request): SalonResource
     {
         $createSalon = $this->salonService->createSalon(Auth::id(), $request->all(), $request->image);
-        return new SalonResource($createSalon, config('const.salon.store'));
+        return new SalonResource($createSalon, config('const.message.salon.store'));
     }
 
     /**
@@ -68,7 +68,7 @@ class SalonController extends Controller
     public function show(int $id): SalonSimpleResource
     {
         $salon = $this->salonService->fetchSalonById($id);
-        return new SalonSimpleResource($salon, config('const.salon.show'));
+        return new SalonSimpleResource($salon, config('const.message.salon.show'));
     }
 
     /**
@@ -80,7 +80,7 @@ class SalonController extends Controller
     public function update(Request $request, Salon $salon): SalonResource
     {
         $updateSalon = $this->salonService->updateSalon($salon->id, $request->all(), $request->image);
-        return new SalonResource($updateSalon, config('const.salon.update'));
+        return new SalonResource($updateSalon, config('const.message.salon.update'));
     }
 
     /**
@@ -91,7 +91,7 @@ class SalonController extends Controller
     public function destroy(Salon $salon)
     {
         $deleteSalon = $this->salonService->deleteSalon($salon->id);
-        return new SalonResource($deleteSalon, config('const.salon.delete'));
+        return new SalonResource($deleteSalon, config('const.message.salon.delete'));
     }
 
     /**
@@ -101,6 +101,6 @@ class SalonController extends Controller
     public function preview(Salon $salon): SalonResource
     {
         $salon = $this->salonService->fetchSalonById($salon->id);
-        return new SalonResource($salon, config('const.salon.preview'));
+        return new SalonResource($salon, config('const.message.salon.preview'));
     }
 }

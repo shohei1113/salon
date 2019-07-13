@@ -40,7 +40,7 @@ class AuthController extends Controller
     public function preRegister(RegisterRequest $request): UserInfoResource
     {
         $registerUser = $this->authService->preRegister($request->all());
-        return new UserInfoResource($registerUser, config('const.auth.signup'));
+        return new UserInfoResource($registerUser, config('const.message.auth.signup'));
     }
 
     /**
@@ -51,7 +51,7 @@ class AuthController extends Controller
     public function register(Request $request): AuthResource
     {
         $user = $this->authService->registerUser($request->all(), $request->image);
-        return new AuthResource($user, config('const.auth.register'));
+        return new AuthResource($user, config('const.message.auth.register'));
     }
 
     /**
@@ -62,7 +62,7 @@ class AuthController extends Controller
     public function login(Request $request): AuthResource
     {
         $user = $this->authService->login($request->all());
-        return new AuthResource($user, config('const.auth.login'));
+        return new AuthResource($user, config('const.message.auth.login'));
     }
 
     /**
@@ -71,7 +71,7 @@ class AuthController extends Controller
     public function logout(): JsonResponse
     {
         return response()->json([
-            'message' => config('const.auth.logout')
+            'message' => config('const.message.auth.logout')
         ]);
     }
 
