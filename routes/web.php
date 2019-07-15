@@ -26,6 +26,17 @@ Route::get('/register', function () {
 Route::get('/login', function () {
     return view('index');
 });
+
+Route::get('/password/send', function () {
+    return view('index');
+});
+Route::get('/password/complete', function () {
+    return view('index');
+});
+Route::get('/password/reset', function () {
+    return view('index');
+});
+
 Route::get('/salons', function () {
     return view('index');
 });

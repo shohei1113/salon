@@ -8,6 +8,8 @@ export default (axiosConfig: any, isStartFetch: any) => {
 
   const request = async () => {
     setLoading(true)
+    setResponse(undefined)
+    setError(undefined)
     try {
       const { data } = await axios(axiosConfig)
       setResponse(data)

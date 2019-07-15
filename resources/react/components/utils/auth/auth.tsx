@@ -36,8 +36,10 @@ const Auth: React.FC = (props: Props) => {
     }
 
     if (response) {
+      console.log(response)
       // TODO: token切れ対応
       if (!response.data) {
+        console.log(1)
         dispatch(resetAuth())
         dispatch(clearLoader())
         return

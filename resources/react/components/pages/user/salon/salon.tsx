@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid'
 import PATH from '../../../../const/path'
 import useFetchApi from '../../../../hooks/use-fetch-api'
 import { DefaultTemplate } from '../../../templates/default-template'
+import { RequireAuth } from '../../../utils/require-auth'
 import Card from './card'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -59,48 +60,50 @@ const Salons: React.FC = (props: any) => {
 
   return (
     <DefaultTemplate {...props} isDefaultSpace={true}>
-      <div className={classes.heroUnit}>
-        <div>
-          <div className={classes.heroContent}>
-            <Typography
-              component="h1"
-              variant="h6"
-              align="center"
-              color="textPrimary"
-              gutterBottom
-            >
-              開設サロン
-            </Typography>
+      <RequireAuth {...props}>
+        <div className={classes.heroUnit}>
+          <div>
+            <div className={classes.heroContent}>
+              <Typography
+                component="h1"
+                variant="h6"
+                align="center"
+                color="textPrimary"
+                gutterBottom
+              >
+                開設サロン
+              </Typography>
+            </div>
+            <div className={classes.salons}>
+              <Grid container spacing={2}>
+                {ownerSalons.map(card => (
+                  <Card key={card.salon.id} card={card.salon} />
+                ))}
+              </Grid>
+            </div>
           </div>
-          <div className={classes.salons}>
-            <Grid container spacing={2}>
-              {ownerSalons.map(card => (
-                <Card key={card.salon.id} card={card.salon} />
-              ))}
-            </Grid>
+          <div className={classes.contents}>
+            <div className={classes.heroContent}>
+              <Typography
+                component="h1"
+                variant="h6"
+                align="center"
+                color="textPrimary"
+                gutterBottom
+              >
+                受講サロン
+              </Typography>
+            </div>
+            <div className={classes.salons}>
+              <Grid container spacing={2}>
+                {memberSalons.map(card => (
+                  <Card key={card.salon.id} card={card.salon} />
+                ))}
+              </Grid>
+            </div>
           </div>
         </div>
-        <div className={classes.contents}>
-          <div className={classes.heroContent}>
-            <Typography
-              component="h1"
-              variant="h6"
-              align="center"
-              color="textPrimary"
-              gutterBottom
-            >
-              受講サロン
-            </Typography>
-          </div>
-          <div className={classes.salons}>
-            <Grid container spacing={2}>
-              {memberSalons.map(card => (
-                <Card key={card.salon.id} card={card.salon} />
-              ))}
-            </Grid>
-          </div>
-        </div>
-      </div>
+      </RequireAuth>
     </DefaultTemplate>
   )
 }

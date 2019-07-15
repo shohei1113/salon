@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import { useDispatch } from 'redux-react-hook'
 import { Field, Formik } from 'formik'
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles'
@@ -40,6 +40,11 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     submit: {
       marginTop: 60,
+    },
+    passwordLink: {
+      marginTop: 40,
+      fontSize: 12,
+      textDecoration: 'underline',
     },
   })
 )
@@ -164,6 +169,9 @@ const Login: React.FC = (props: any) => {
             </form>
           )}
         />
+        <Link to="/password/send" className={classes.passwordLink}>
+          パスワードを忘れた方はこちら
+        </Link>
       </div>
     </DefaultTemplate>
   )

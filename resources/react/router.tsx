@@ -8,6 +8,7 @@ import { Register } from './components/pages/register'
 import { Salons } from './components/pages/salons'
 import { Salon } from './components/pages/salon'
 import { User } from './components/pages/user'
+import { Password } from './components/pages/password'
 
 export default () => {
   return (
@@ -20,6 +21,7 @@ export default () => {
         <Route path="/salons" component={Salons} />
         <Route path="/salon" component={Salon} />
         <Route path="/user" component={User} />
+        <Route path="/password" component={Password} />
       </ScrollToTop>
     </Router>
   )
