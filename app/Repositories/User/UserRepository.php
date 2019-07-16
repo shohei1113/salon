@@ -80,11 +80,11 @@ class UserRepository implements UserRepositoryInterface
 
     /**
      * @param string $email
-     * @return User
+     * @return User|\Illuminate\Database\Eloquent\Builder|Model|object|null
      */
-    public function fetchUserByEmail(string $email): User
+    public function fetchUserByEmail(string $email)
     {
-        return dd($this->user->searchEmail($email)->firstOrFail());
+        return $this->user->searchEmail($email)->first();
     }
 
     /**

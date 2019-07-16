@@ -41,9 +41,9 @@ interface UserRepositoryInterface
 
     /**
      * @param string $email
-     * @return User
+     * @return mixed
      */
-    public function fetchUserByEmail(string $email): User;
+    public function fetchUserByEmail(string $email);
 
     /**
      * @param User $user

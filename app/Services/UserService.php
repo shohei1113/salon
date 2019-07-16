@@ -133,6 +133,11 @@ class UserService
     public function sendMailToChangeEmail(int $id, string $email): User
     {
         $user = $this->userRepository->fetchUserById($id);
+        if (!is_null($this->userRepository->fetchUserByEmail($email))) {
+            throw new HttpResponseException(
+                response()->json(['message' => 'email is already exist'], 401)
+            );
+        }
 
         $changeEmail = $this->changeEmailRepository->updateOrCreate($id, $email);
         $this->sesService
