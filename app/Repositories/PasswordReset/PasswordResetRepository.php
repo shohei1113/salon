@@ -33,6 +33,9 @@ class PasswordResetRepository implements PasswordResetRepositoryInterface
         return $this->passwordReset->where('token', $token)->first();
     }
 
+    /**
+     * @param string $email
+     */
     public function delete(string $email): void
     {
         $this->passwordReset->where('email', $email)->forceDelete();

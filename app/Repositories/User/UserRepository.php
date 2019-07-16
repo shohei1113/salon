@@ -66,7 +66,7 @@ class UserRepository implements UserRepositoryInterface
      */
     public function fetchUserById(int $id): User
     {
-        return $this->user->find($id);
+        return $this->user->findOrFail($id);
     }
 
     /**
@@ -84,7 +84,7 @@ class UserRepository implements UserRepositoryInterface
      */
     public function fetchUserByEmail(string $email): User
     {
-        return $this->user->searchEmail($email)->first();
+        return dd($this->user->searchEmail($email)->firstOrFail());
     }
 
     /**

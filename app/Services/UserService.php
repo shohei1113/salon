@@ -11,6 +11,7 @@ use App\Repositories\PasswordReset\PasswordResetRepository;
 use App\Repositories\User\UserRepository;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
@@ -132,6 +133,7 @@ class UserService
     public function sendMailToChangeEmail(int $id, string $email): User
     {
         $user = $this->userRepository->fetchUserById($id);
+
         $changeEmail = $this->changeEmailRepository->updateOrCreate($id, $email);
         $this->sesService
             ->sendEmailVerifyMail($email, $changeEmail->token, 'email_verify', config('const.email_title.email_reset'));
@@ -178,7 +180,13 @@ class UserService
      */
     public function sendMailToPasswordResetUser(string $email): User
     {
-        $user = $this->userRepository->fetchUserByEmail($email);
+        try {
+            $user = $this->userRepository->fetchUserByEmail($email);
+        } catch (ModelNotFoundException $e) {
+            throw new HttpResponseException(
+                response()->json(['message' => 'not found email'], 401)
+            );
+        }
 
         if (!isset($user)) {
             throw new HttpResponseException(
