@@ -66,7 +66,7 @@ class UserRepository implements UserRepositoryInterface
      */
     public function fetchUserById(int $id): User
     {
-        return $this->user->find($id);
+        return $this->user->findOrFail($id);
     }
 
     /**
@@ -80,9 +80,9 @@ class UserRepository implements UserRepositoryInterface
 
     /**
      * @param string $email
-     * @return User
+     * @return User|\Illuminate\Database\Eloquent\Builder|Model|object|null
      */
-    public function fetchUserByEmail(string $email): User
+    public function fetchUserByEmail(string $email)
     {
         return $this->user->searchEmail($email)->first();
     }
