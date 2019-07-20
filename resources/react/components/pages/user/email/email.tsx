@@ -47,11 +47,6 @@ function Email(props: any) {
   useEffect(() => {
     if (response) {
       console.log('成功！', response)
-      // dispatch(
-      //   updateUser({
-      //     user: response.data.user,
-      //   })
-      // )
       dispatch(clearLoader())
       dispatch(setSnackbar({ message: response.message }))
       setStartFetch(false)
@@ -60,16 +55,17 @@ function Email(props: any) {
     if (error) {
       console.log('エラー！')
       dispatch(clearLoader())
+      dispatch(setSnackbar({ message: error.response.data.message }))
       setStartFetch(false)
     }
   }, [response, error])
 
   const handleSubmit = (form, { resetForm }) => {
-    const { password } = form
+    const { email } = form
     dispatch(setLoader())
     setAxiosConfig({
       method: 'POST',
-      url: `${PATH}/api/user/${auth.user.id}/auth`,
+      url: `${PATH}/api/user/reset/email`,
       headers: {
         Authorization: `Bearer ${auth.token}`,
       },
@@ -94,7 +90,8 @@ function Email(props: any) {
             validate={(values: any) => {
               const errors: any = {}
               const emailError = composeValidators(
-                required('メールアドレスを入力してください')
+                required('メールアドレスを入力してください'),
+                email
               )(values.email)
 
               if (emailError) {

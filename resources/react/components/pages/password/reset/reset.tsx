@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import { useMappedState, useDispatch } from 'redux-react-hook'
+import React, { useState, useEffect } from 'react'
+import { useDispatch } from 'redux-react-hook'
 import { withRouter } from 'react-router-dom'
 import { Field, Formik } from 'formik'
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles'
@@ -13,6 +13,7 @@ import {
   greaterNumber,
   sameValue,
 } from '../../../../utils/validator'
+import getUrlParam from '../../../../utils/get-url-param'
 import useFetchApi from '../../../../hooks/use-fetch-api'
 import {
   setLoader,
@@ -43,7 +44,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
 function Password(props: any) {
   const classes = useStyles({})
-  const { auth } = useMappedState(useCallback(state => state, []))
+  const { history } = props
+  const token = getUrlParam('token')
   const dispatch = useDispatch()
   const [axiosConfig, setAxiosConfig] = useState({})
   const [isStartFetch, setStartFetch] = useState(false)
@@ -52,14 +54,10 @@ function Password(props: any) {
   useEffect(() => {
     if (response) {
       console.log('成功！', response)
-      // dispatch(
-      //   updateUser({
-      //     user: response.data.user,
-      //   })
-      // )
       dispatch(clearLoader())
       dispatch(setSnackbar({ message: response.message }))
       setStartFetch(false)
+      history.push('/')
     }
 
     if (error) {
@@ -74,13 +72,10 @@ function Password(props: any) {
     dispatch(setLoader())
     setAxiosConfig({
       method: 'POST',
-      url: `${PATH}/api/user/${auth.user.id}/auth`,
-      headers: {
-        Authorization: `Bearer ${auth.token}`,
-      },
+      url: `${PATH}/api/user/update/password`,
       data: {
-        _method: 'put',
-        password: password,
+        token,
+        password,
       },
     })
     setStartFetch(true)

@@ -30,9 +30,6 @@ Route::get('/login', function () {
 Route::get('/password/send', function () {
     return view('index');
 });
-Route::get('/password/complete', function () {
-    return view('index');
-});
 Route::get('/password/reset', function () {
     return view('index');
 });
@@ -55,6 +52,9 @@ Route::get('/user/info', function () {
     return view('index');
 });
 Route::get('/user/email', function () {
+    return view('index');
+});
+Route::get('/user/email/complete', function () {
     return view('index');
 });
 Route::get('/user/password', function () {

@@ -63,7 +63,6 @@ const Send: React.FC = (props: any) => {
       console.log('エラー！')
       dispatch(clearLoader())
       dispatch(setSnackbar({ message: 'ログインに失敗しました' }))
-      // dispatch(setSnackbar({ message: error.response.data.message }))
       setStartFetch(false)
     }
   }, [response, error])
@@ -72,10 +71,9 @@ const Send: React.FC = (props: any) => {
     dispatch(setLoader())
     setAxiosConfig({
       method: 'POST',
-      url: `${PATH}/api/me`,
+      url: `${PATH}/api/user/reset/password`,
       data: {
         email: form.email,
-        password: form.password,
       },
     })
     setStartFetch(true)
