@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API;
 
 use App\Entities\User;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\BaseResource;
 use App\Http\Resources\SalonResource;
 use App\Http\Resources\UserInfoResource;
 use App\Services\UserService;
@@ -45,10 +44,10 @@ class UserController extends Controller
      * @return UserInfoResource
      * @throws \Exception
      */
-    public function updateAuthInfo(Request $request, int $id): UserInfoResource
+    public function updateAuthInfo(Request $request): UserInfoResource
     {
-        $user = $this->userService->updateUser($id, $request->only(['email', 'password']));
-        return new UserInfoResource($user, config('const.user.update'));
+        $user = $this->userService->updateUser($this->user->id, $request->only(['email', 'password']));
+        return new UserInfoResource($user, config('const.message.user.update'));
     }
 
     /**
@@ -57,10 +56,10 @@ class UserController extends Controller
      * @return UserInfoResource
      * @throws \Exception
      */
-    public function updateBasicInfo(Request $request, int $id): UserInfoResource
+    public function updateBasicInfo(Request $request): UserInfoResource
     {
-        $user = $this->userService->updateUser($id, $request->except(['email', 'password']), $request->image);
-        return new UserInfoResource($user, config('const.user.update'));
+        $user = $this->userService->updateUser($this->user->id, $request->except(['email', 'password']), $request->image);
+        return new UserInfoResource($user, config('const.message.user.update'));
     }
 
     /**
@@ -69,7 +68,7 @@ class UserController extends Controller
     public function info(): UserInfoResource
     {
         $user = $this->userService->fetchUserById($this->user->id);
-        return new UserInfoResource($user, config('const.user.info'));
+        return new UserInfoResource($user, config('const.message.user.info'));
     }
 
     /**
@@ -84,7 +83,48 @@ class UserController extends Controller
                 'owner' => SalonResource::collection($ownerSalons),
                 'member' => SalonResource::collection($memberSalons),
             ],
-            'message' => config('const.user.mypage'),
+            'message' => config('const.message.user.mypage'),
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return UserInfoResource
+     */
+    public function sendMailToChangeEmail(Request $request)
+    {
+        $changeEmailUser = $this->userService->sendMailToChangeEmail($this->user->id, $request->input('email'));
+        return new UserInfoResource($changeEmailUser, config('const.message.user.send_mail_email_reset'));
+    }
+
+    /**
+     * @param Request $request
+     * @return UserInfoResource
+     * @throws \Exception
+     */
+    public function resetEmail(Request $request)
+    {
+        $user = $this->userService->resetEmail($request->all());
+        return new UserInfoResource($user, config('const.message.user.email_reset'));
+    }
+
+    /**
+     * @param Request $request
+     * @return UserInfoResource
+     */
+    public function sendMailToPasswordResetUser(Request $request)
+    {
+        $user = $this->userService->sendMailToPasswordResetUser($request->input('email'));
+        return new UserInfoResource($user, config('const.message.user.send_mail_password_reset'));
+    }
+
+    /**
+     * @param Request $request
+     * @throws \Exception
+     */
+    public function resetPassword(Request $request)
+    {
+        $user = $this->userService->resetPassword($request->all());
+        return new UserInfoResource($user, config('const.message.user.password_reset'));
     }
 }

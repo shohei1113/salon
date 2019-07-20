@@ -7,6 +7,7 @@ use App\Entities\User;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SubscriptionResource;
 use App\Services\PaymentService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -44,14 +45,18 @@ class PaymentController extends Controller
     public function paymentByCard(Request $request, int $salonId): SubscriptionResource
     {
         $subscription = $this->paymentService->paymentByCard($this->user, $salonId, $request->all());
-        return new SubscriptionResource($subscription, config('const.payment.paymentByCard'));
+        return new SubscriptionResource($subscription, config('const.message.payment.payment_by_card'));
     }
 
     /**
      * @return string
      */
-    public function cancelPaymentByCard(): string
+    public function cancelPaymentByCard(): JsonResponse
     {
-        return $this->paymentService->cancelPaymentByCard($this->user, config('const.payment.cancelPaymentByCard'));
+        $result = $this->paymentService->cancelPaymentByCard($this->user);
+        return response()->json([
+            'data' => $result,
+            'message' => config('const.message.payment.cancel_payment_by_card'),
+        ]);
     }
 }

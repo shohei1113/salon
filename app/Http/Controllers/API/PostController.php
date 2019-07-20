@@ -40,7 +40,7 @@ class PostController extends Controller
     public function index(?int $salonId = NULL): BaseResource
     {
         $postList = $this->postService->fetchPostList($salonId);
-        return new BaseResource(PostResource::collection($postList), config('const.post.index'));
+        return new BaseResource(PostResource::collection($postList), config('const.message.post.index'));
     }
 
     /**
@@ -51,7 +51,7 @@ class PostController extends Controller
     public function store(Request $request): PostSimpleResource
     {
         $createPost = $this->postService->createPost($request->all(), $request->image);
-        return new PostSimpleResource($createPost, config('const.post.store'));
+        return new PostSimpleResource($createPost, config('const.message.post.store'));
     }
 
     /**
@@ -63,7 +63,7 @@ class PostController extends Controller
     public function update(Request $request, Post $post): PostSimpleResource
     {
         $updatePost = $this->postService->updatePost($post->id, $request->all(), $request->image);
-        return new PostSimpleResource($updatePost, config('const.post.update'));
+        return new PostSimpleResource($updatePost, config('const.message.post.update'));
     }
 
     /**
@@ -73,6 +73,6 @@ class PostController extends Controller
     public function destroy(Post $post): PostSimpleResource
     {
         $deletePost = $this->postService->deletePost($post->id);
-        return new PostSimpleResource($deletePost, config('const.post.delete'));
+        return new PostSimpleResource($deletePost, config('const.message.post.delete'));
     }
 }

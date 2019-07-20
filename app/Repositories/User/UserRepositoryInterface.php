@@ -41,9 +41,9 @@ interface UserRepositoryInterface
 
     /**
      * @param string $email
-     * @return User
+     * @return mixed
      */
-    public function fetchUserByEmail(string $email): User;
+    public function fetchUserByEmail(string $email);
 
     /**
      * @param User $user
@@ -63,5 +63,7 @@ interface UserRepositoryInterface
      * @return Collection
      */
     public function fetchOwnerSalons(int $id): Collection;
+
+    public function updateEmail(int $id, string $email): User;
 
 }
