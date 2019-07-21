@@ -62,7 +62,7 @@ const Send: React.FC = (props: any) => {
     if (error) {
       console.log('エラー！')
       dispatch(clearLoader())
-      dispatch(setSnackbar({ message: 'ログインに失敗しました' }))
+      dispatch(setSnackbar({ message: error.response.data.message }))
       setStartFetch(false)
     }
   }, [response, error])

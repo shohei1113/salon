@@ -53,11 +53,6 @@ function Password(props: any) {
   useEffect(() => {
     if (response) {
       console.log('成功！', response)
-      // dispatch(
-      //   updateUser({
-      //     user: response.data.user,
-      //   })
-      // )
       dispatch(clearLoader())
       dispatch(setSnackbar({ message: response.message }))
       setStartFetch(false)
@@ -75,7 +70,7 @@ function Password(props: any) {
     dispatch(setLoader())
     setAxiosConfig({
       method: 'POST',
-      url: `${PATH}/api/user/${auth.user.id}/auth`,
+      url: `${PATH}/api/user/auth`,
       headers: {
         Authorization: `Bearer ${auth.token}`,
       },
