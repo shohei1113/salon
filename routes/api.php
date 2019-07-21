@@ -28,6 +28,7 @@ Route::group(['namespace' => 'API', 'as' => 'api.'], function() {
 
     Route::post('user/reset/password', 'UserController@sendMailToPasswordResetUser')->name('user.reset.password');
     Route::post('user/update/password', 'UserController@resetPassword')->name('user.update.password');
+    Route::post('user/update/email', 'UserController@resetEmail')->name('user.update.email');
 
 //    Route::get('auth/login/{socialite}', 'AuthController@redirectToSocialiteProvider');
 //    Route::get('auth/{socialite}/callback', 'AuthController@socialiteCallback');
@@ -58,7 +59,6 @@ Route::group(['namespace' => 'API', 'as' => 'api.'], function() {
 //        Route::delete('user/{user}', 'UserController@destroy')->name('user.delete');
         Route::get('user/mypage', 'UserController@mypage')->name('user.mypage');
         Route::post('user/reset/email', 'UserController@sendMailToChangeEmail')->name('user.change.email');
-        Route::post('user/update/email', 'UserController@resetEmail')->name('user.update.email');
 
         /*
         |--------------------------------------------------------------------------
