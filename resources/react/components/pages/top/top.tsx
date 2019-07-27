@@ -7,6 +7,7 @@ import Hero from './hero'
 import Category from './category'
 
 const Top: React.FC = (props: any) => {
+  //
   return (
     <DefaultTemplate {...props}>
       <Hero />
