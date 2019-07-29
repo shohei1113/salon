@@ -1,6 +1,12 @@
 version: 0.2
 
 phases:
-  pre_build:
+  install:
+    runtime-versions:
+      php: 7.3
+  build:
     commands:
-      - echo Logging in to Amazon ECR...
+      - php --version
+artifacts:
+  files:
+    -  README.md
