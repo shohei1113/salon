@@ -9,4 +9,4 @@ phases:
       - php --version
 artifacts:
   files:
-    -  readme.md
+    - '**/*'
