@@ -1,9 +1,12 @@
 version: 0.2
 
 phases:
-  install:
-    runtime-versions:
-      php: 7.3
-  build:
-    commands:
-      - php --version
+  test:
+    - DEFAULT=`pwd`
+      - mkdir -p hoge
+      - cd hoge
+      - cd $DEFAULT
+      - echo "hoge" > test.txt
+artifacts:
+  files:
+    - test.txt
